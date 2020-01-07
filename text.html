@@ -1,0 +1,25 @@
+- Phải biến ứng dụng như 1 trò chơi game và có điểm số, tích điểm.
+- Mỗi 1 lượt sẽ gồm 10 câu hỏi ứng với 10 đáp án, nếu trả lời đúng lần 1 sẽ được 10 điểm, đúng lần 2 sẽ có 7 điểm, số
+điểm đó được cộng dồn nếu đạt từng mức điểm tương ứng với các thứ hạng như liên minh huyền thoại từ đồng 5 đến kim cương
+1( nên cho điểm theo bộ phim số lời thoại nhiều tương ứng với tổng điểm bộ phim cao và độ khó bộ phim cao, nếu người
+dùng không tương tác lâu ví dụ như trong vòng 24h sẽ bị tụt điểmvà tụt thường tối đa 2 đến 3 bậc để tránh khả năng người
+dùng hack trên sever sẽ validate tối đa số điểm có thể có cho 10 câu hỏi).
+- Phải nhắc nhớ cho người dùng học lại các từ đã học theo mo hình ghi nhớ của trí nhớ sau 24h, 7 ngày, 1 tháng (nếu
+người đó học luôn không quá lâu vd như sau 24 thì từ ghi nhớ sẽ xuất hiện trước 3 tiếng và sau 3 tiếng điểm số tại thời
+điểm đó là cao nhất, nếu người đó không học thì vẫn nhắc nhớ nhưng điểm số bị giảm đi nhiều, 7 ngày có thể xuất hiện
+trước sau 1 ngày, có chức năng ôn tập nhanh nhanh).
+- Người dùng có thể đăng nhập trên facebook, zalo, gmail để xem thứ hạng bạn bè, kết bạn bạn bè, (tương lai sẽ cho người
+dùng tương tác với nhau qua thi đấu....., kết bạn với nhau, người dùng có thể up đại diện xác nhận bản thân và tìm kiếm
+bạn bè qua id, hoặc tên)
+- Người dùng sẽ được phép chọn 2 đáp án, nếu trong 2 đáp án đó có 1 đáp án đúng thì đáp án sẽ được cho là đúng(phần giao
+diện nên có 1 ô select để người dùng chọn nhiều đáp án), đáp án còn lại sẽ được bổ sung id của câu hỏi, nếu id của 1 câu
+hỏi chứa trong câu trả lời nhiều lần(có thể 3,5 lần thì nó sẽ được coi là đáp án của câu hỏi kia và sẽ không được select
+ra cho người dùng chọn nữa).
+- Cách select câu trả lời sẽ dựa vào câu trả lời chính xác tìm các từ có chiều dài câu trả lời gần như tương đương với
+câu trả lời chính xác
+- trong 1 row dữ liệu sẽ có 1 file audio, 1file audio câu trả lời, 1 đoạn text câu hỏi, 1 đoạn text câu trả lời, có 1
+cell, 1 cell chứa tốc dộ hiện tại và sẽ tăng dần sau khi người đó học xong, 1 cell chứa thời gian đã học để chúng ta
+nhắc nhớ người dùng học lại từ đó, 1cell chứa những id nghi ngờ, 1 cell chứa id xác định để tránh select vào chính nó
+- Người dùng sẽ nghe câu hỏi và trả lời khi kích vào câu trả lời thì nó cũng sẽ đọc(nên đọc câu trả lời, nếu ôn luyện
+nhanh sẽ không đọc nữa), hoặc có thể có câu trả lời tìm câu hỏi(nhưng điều ngược lại đó không nên vì nó không thuận theo
+logic tư duy). Sẽ bố trí 1 nút nhở để người dùng có thể xem phần text, và 1 nút lớn để người dùng nghe lại đoạn audio
