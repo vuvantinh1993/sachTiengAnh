@@ -23,7 +23,7 @@ CREATE TABLE easy(
 	unselectid varchar(70),
 	dataDb varchar(100),
 );
-GO
+GO 
 
 CREATE TABLE [user](
 	id INT PRIMARY KEY IDENTITY(100000,1),
@@ -37,3 +37,8 @@ CREATE TABLE [user](
 	dataDb varchar(100)
 );
 GO
+
+CREATE TABLE tips(
+	id INT PRIMARY KEY IDENTITY(1,1),
+	content nvarchar(100) NOT NULL,
+)
