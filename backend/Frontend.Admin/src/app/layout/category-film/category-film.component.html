@@ -48,14 +48,12 @@
       <tr>
         <th nzWidth="62px" nzShowCheckbox [nzChecked]="exTableService.isSelectAll(listOfData)"
           (nzCheckedChange)="exTableService.changeSelected($event, listOfData)"></th>
-        <th class="text-center" style="width: 300px">Tên hợp đồng</th>
-        <th class="text-center">Số hợp đồng</th>
-        <th class="text-center" style="width: 300px">Tên gói thầu</th>
-        <th class="text-center">Ngày quyết định</th>
-        <th class="text-center">Ngày hết hạn</th>
-        <th class="text-center">GT hợp đồng</th>
-        <th class="text-center">Tỉ giá</th>
-        <th class="text-center">Loại tiền</th>
+        <th class="text-center">Id</th>
+        <th class="text-center">Tên phim</th>
+        <th class="text-center">Lever</th>
+        <th class="text-center">Số điểm</th>
+        <th class="text-center">Ngày tạo</th>
+        <th class="text-center">Ngày sửa</th>
         <th class="text-center">Trạng thái</th>
         <th class="action text-center">Thao tác</th>
       </tr>
@@ -63,15 +61,18 @@
     <tbody>
       <tr *ngFor="let item of listOfData">
         <td nzShowCheckbox [(nzChecked)]="item.selected">
-        <td>{{item.contractName}}</td>
-        <td class="text-center">{{item.contractCode}}</td>
-        <td>{{item.packageBids?.packageBidName}}</td>
-        <td class="text-center">{{item.dateOfSignedDecision | dateFormat}}</td>
-        <td class="text-center">{{item.expiryDate | dateFormat}}</td>
-        <td class="text-center">{{item.contractValue | numberFormat}}</td>
-        <td class="text-center">{{item.exchangeRate}}</td>
-        <td class="text-center">{{item.currency}}</td>
-        <td class="text-center">{{item.status?.data.statusName}}</td>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td class="text-center">{{item.level}}</td>
+        <td class="text-center">{{item.pointword | numberFormat}}</td>
+        <td class="text-center">{{item.dataDb.createdBy}} : {{item.dataDb.createdDate | dateFormat}}</td>
+        <td class="text-center">{{item.dataDb.createdBy}} : {{item.dataDb.createdDate | dateFormat}}</td>
+        <td class="text-center">
+          <nz-switch nz-popconfirm
+            [nzPopconfirmTitle]="'Bạn có chắc chắn muốn ' + (!item.dataDb.status ? 'hiện' : 'ẩn') + ' không?'"
+            [(ngModel)]="item.dataDb.status" (nzOnConfirm)="updateStatus(item, item.dataDb.status)" [nzControl]="true">
+          </nz-switch>
+        </td>
         <td class="text-center">
           <div class="list-icons list-icons-extended text-center">
             <a class="list-icons-item view" (click)="openModal(item, true)">

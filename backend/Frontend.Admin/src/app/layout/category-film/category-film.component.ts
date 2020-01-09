@@ -15,7 +15,10 @@ import { FormBuilder } from '@angular/forms';
 export class CategoryFilmComponent extends BaseListComponent implements OnInit {
 
   public item: any;
-  public listStatus: any[];
+  public listStatus: any[] = [
+    { id: 0, name: 'Ẩn' },
+    { id: 1, name: 'Hiện' }
+  ];
   public name = 'danh mục phim';
   constructor(
     private categoryfilmservice: CategoryFilmService,
@@ -72,6 +75,16 @@ export class CategoryFilmComponent extends BaseListComponent implements OnInit {
         this.getData(this.paging.page);
         this.message.success('Xóa dữ liệu thành công');
       }
+    }
+  }
+
+  async updateStatus(item: any, status: number) {
+    const changeVal = 1 - status;
+    const rs = await this.categoryfilmservice.patch(item.id, { dataDb: { status: changeVal } });
+    if (rs.ok) {
+      item.dataDb.status = changeVal;
+    } else {
+      this.dl.error('Lỗi hệ thống', 'Dữ liệu của bạn không cập nhật thành công do lỗi hệ thống');
     }
   }
 
