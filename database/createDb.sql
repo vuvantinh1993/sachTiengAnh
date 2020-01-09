@@ -1,3 +1,7 @@
+
+CREATE DATABASE TLNEnglish
+GO
+
 USE TLNEnglish;  
 GO  
 ALTER DATABASE TLNEnglish  

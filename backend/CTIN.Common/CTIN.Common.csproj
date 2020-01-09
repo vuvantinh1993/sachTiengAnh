@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>CTIN.Common</AssemblyName>
+    <RootNamespace>CTIN.Common</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Constants\**" />
+    <Compile Remove="Extentions\**" />
+    <EmbeddedResource Remove="Constants\**" />
+    <EmbeddedResource Remove="Extentions\**" />
+    <None Remove="Constants\**" />
+    <None Remove="Extentions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Extentions\ArrayExtentiton.cs" />
+    <Compile Include="Extentions\DateTimeExtention.cs" />
+    <Compile Include="Extentions\EnumExtension.cs" />
+    <Compile Include="Extentions\FileExtension.cs" />
+    <Compile Include="Extentions\ImageExtention.cs" />
+    <Compile Include="Extentions\JsonExtention.cs" />
+    <Compile Include="Extentions\ObjectExtention.cs" />
+    <Compile Include="Extentions\ServiceCollectionExtension.cs" />
+    <Compile Include="Extentions\StringBuilderExtention.cs" />
+    <Compile Include="Extentions\StringExtention.cs" />
+    <Compile Include="Extentions\ValidationResultExtension.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="140.17283.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
+    <PackageReference Include="runtime.linux-x64.CoreCompat.System.Drawing" Version="1.0.0-beta009" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.6.20" />
+    <PackageReference Include="Templater" Version="2.9.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+  </ItemGroup>
+</Project>
