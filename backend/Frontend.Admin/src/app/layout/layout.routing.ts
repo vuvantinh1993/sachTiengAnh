@@ -7,6 +7,10 @@ const routes: Routes = [
       {
         path: 'bidding-model',
         loadChildren: () => import('./bidding-model/bidding-model.module').then(m => m.BiddingModelModule)
+      },
+      {
+        path: 'category-film',
+        loadChildren: () => import('./category-film/category-film.module').then(m => m.CategoryFilmModule)
       }
     ]
   }

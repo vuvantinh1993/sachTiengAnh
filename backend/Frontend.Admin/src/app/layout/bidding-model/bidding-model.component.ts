@@ -64,7 +64,7 @@ export class BiddingModelComponent extends BaseListComponent implements OnInit {
       if (!isNaN(+formSearch.txtSearch)) {
         where.and.push({
           or: [
-            { 'id': formSearch.txtSearch },
+            { id: formSearch.txtSearch },
             { 'data.binddingModelName': { like: this.ex.BoDau(formSearch.txtSearch) } }
           ]
         });
@@ -140,7 +140,7 @@ export class BiddingModelComponent extends BaseListComponent implements OnInit {
   }
 
   deleteMessage() {
-    this.message.success("Xóa dữ liệu thành công");
+    this.message.success('Xóa dữ liệu thành công');
   }
 
 
