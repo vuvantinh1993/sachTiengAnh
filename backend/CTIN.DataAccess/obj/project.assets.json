@@ -6068,23 +6068,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Vu Tinh\\.nuget\\packages\\": {},
+    "C:\\Users\\TINHVU\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj",
+      "projectUniqueName": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj",
       "projectName": "CTIN.DataAccess",
-      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj",
-      "packagesPath": "C:\\Users\\Vu Tinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\obj\\",
+      "projectPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj",
+      "packagesPath": "C:\\Users\\TINHVU\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Vu Tinh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\TINHVU\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6097,8 +6097,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj": {
-              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj"
+            "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj": {
+              "projectPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj"
             }
           }
         }

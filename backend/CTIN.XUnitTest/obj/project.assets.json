@@ -15858,23 +15858,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Vu Tinh\\.nuget\\packages\\": {},
+    "C:\\Users\\TINHVU\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
+      "projectUniqueName": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
       "projectName": "CTIN.XUnitTest",
-      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
-      "packagesPath": "C:\\Users\\Vu Tinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\obj\\",
+      "projectPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
+      "packagesPath": "C:\\Users\\TINHVU\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Vu Tinh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\TINHVU\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -15887,8 +15887,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj": {
-              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj"
+            "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj": {
+              "projectPath": "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj"
             }
           }
         }

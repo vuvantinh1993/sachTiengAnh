@@ -24,3 +24,16 @@ C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcorea
 C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.csproj.CopyComplete
 C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.dll
 C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.pdb
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.DataAccess.deps.json
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.DataAccess.runtimeconfig.json
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.DataAccess.runtimeconfig.dev.json
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.DataAccess.dll
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.DataAccess.pdb
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.Common.dll
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\bin\Debug\netcoreapp2.2\CTIN.Common.pdb
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.csprojAssemblyReference.cache
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.AssemblyInfoInputs.cache
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.AssemblyInfo.cs
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.csproj.CopyComplete
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.dll
+C:\Users\TINHVU\Desktop\sachTiengAnh\backend\CTIN.DataAccess\obj\Debug\netcoreapp2.2\CTIN.DataAccess.pdb

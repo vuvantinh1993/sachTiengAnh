@@ -11,10 +11,10 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common", "CTIN.Common.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess", "CTIN.DataAccess.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Domain", "CTIN.Domain.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi", "CTIN.WebApi.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.Common", "CTIN.Common.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess", "CTIN.DataAccess.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.Domain", "CTIN.Domain.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("CTIN.WebApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\TINHVU\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi", "CTIN.WebApi.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTIN.XUnitTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
