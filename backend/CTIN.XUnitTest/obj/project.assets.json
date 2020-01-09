@@ -15864,11 +15864,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
+      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
       "projectName": "CTIN.XUnitTest",
-      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
+      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\CTIN.XUnitTest.csproj",
       "packagesPath": "C:\\Users\\Vu Tinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.XUnitTest\\obj\\",
+      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.XUnitTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -15887,8 +15887,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.WebApi\\CTIN.WebApi.csproj": {
-              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.WebApi\\CTIN.WebApi.csproj"
+            "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj": {
+              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.WebApi\\CTIN.WebApi.csproj"
             }
           }
         }

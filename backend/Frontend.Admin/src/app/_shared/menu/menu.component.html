@@ -37,9 +37,12 @@
             <span> Danh mục phim</span></a>
         </li>
 
-        <li class="nav-item">
-          <a [routerLink]="['/film-easy']" routerLinkActive="active" class="nav-link"><i class="icon-city"></i>
-            <span>Phim easy</span></a>
+        <li class="nav-item nav-item-submenu">
+          <a href="#" routerLinkActive="active" class="nav-link"> <i class="icon-coin-dollar"></i><span>Phim</span></a>
+          <ul class="nav nav-group-sub">
+            <li class="nav-item"><a [routerLink]="['/costs/expected']" routerLinkActive="active" class="nav-link">Extra
+                One</a></li>
+          </ul>
         </li>
 
         <li class="nav-item">

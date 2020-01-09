@@ -42,3 +42,47 @@ C:\Users\Vu Tinh\Desktop\CTIN_RD_ERP_PM1\04. Implementation\4.1 Code\PM\CTIN.Web
 C:\Users\Vu Tinh\Desktop\CTIN_RD_ERP_PM1\04. Implementation\4.1 Code\PM\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\CTIN.WebApi.runtimeconfig.json
 C:\Users\Vu Tinh\Desktop\CTIN_RD_ERP_PM1\04. Implementation\4.1 Code\PM\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\package.json
 C:\Users\Vu Tinh\Desktop\CTIN_RD_ERP_PM1\04. Implementation\4.1 Code\PM\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\package.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\web.config
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\web.config
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\web.config
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\web.config
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\appsettings.Development.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\appsettings.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\CTIN.WebApi.deps.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\CTIN.WebApi.runtimeconfig.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\appsettings.Development.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\appsettings.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\CTIN.WebApi.deps.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\CTIN.WebApi.runtimeconfig.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\appsettings.Development.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\appsettings.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\CTIN.WebApi.deps.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\CTIN.WebApi.runtimeconfig.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\deploy\package.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\deploy\package.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\deploy\package.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\package.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.deps.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.runtimeconfig.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.runtimeconfig.dev.json
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.dll
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.pdb
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.WebApi.xml
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.Common.dll
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.DataAccess.dll
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.Domain.dll
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.Domain.pdb
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.Common.pdb
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\bin\Debug\netcoreapp2.2\CTIN.DataAccess.pdb
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.csprojAssemblyReference.cache
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.RazorAssemblyInfo.cache
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.RazorAssemblyInfo.cs
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.AssemblyInfoInputs.cache
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.AssemblyInfo.cs
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.RazorTargetAssemblyInfo.cache
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.csproj.CopyComplete
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.dll
+C:\Users\Vu Tinh\Desktop\sachTiengAnh\backend\CTIN.WebApi\obj\Debug\netcoreapp2.2\CTIN.WebApi.pdb

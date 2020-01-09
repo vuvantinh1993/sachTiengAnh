@@ -155,7 +155,7 @@ namespace CTIN.Domain.Services
             var statusActive = (int)StatusDb.Nomal;
             var statusHide = (int)StatusDb.Hide;
 
-            var query = _db.BiddingModel.AsQueryable();
+            var query = _db.Acttachments.AsQueryable();
 
             if (model.where != null)
             {

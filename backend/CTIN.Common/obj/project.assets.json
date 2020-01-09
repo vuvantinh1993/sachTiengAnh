@@ -5048,11 +5048,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Common\\CTIN.Common.csproj",
+      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj",
       "projectName": "CTIN.Common",
-      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Common\\CTIN.Common.csproj",
+      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\CTIN.Common.csproj",
       "packagesPath": "C:\\Users\\Vu Tinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Common\\obj\\",
+      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

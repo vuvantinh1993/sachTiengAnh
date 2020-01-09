@@ -1,8 +1,0 @@
-﻿using System;namespace CTIN.DataAccess.Models{    public partial class Issue    {        public virtual int id { get; set; }        public virtual int? issueTypeId { get; set; }        public virtual int? statusId { get; set; }        public virtual int percentCompleted { get; set; }        public virtual DateTime completedDate { get; set; }        public virtual int priority { get; set; }        public virtual DateTime beginDate { get; set; }        public virtual DateTime endDate { get; set; }        public virtual int timePlan { get; set; }        public virtual int timeReality { get; set; }        public virtual int? empId { get; set; }        public virtual string content { get; set; }        public object coordinationList { get; set; }        public virtual int? projId { get; set; }        public virtual string contactList { get; set; }        public virtual string createdBy { get; set; }        public virtual DateTime createdDate { get; set; }        public virtual string modifiedBy { get; set; }        public virtual DateTime modifiedDate { get; set; }        public string note { get; set; }        public int levelIssue { get; set; }        public string solusion { get; set; }        public int? issueCausesId { get; set; }        public string issueName { get; set; }        public int flag { get; set; }        public int? delete { get; set; }
-
-        public virtual IssueType issueType { get; private set; }
-        public virtual Status status { get; private set; }
-        public virtual ProjGeneral proj { get; private set; }
-        public virtual IssueCauses issueCauses { get; private set; }
-
-    }}

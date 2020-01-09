@@ -12,11 +12,12 @@ CREATE TABLE categoryfilm(
 	id INT PRIMARY KEY IDENTITY(1,1),
 	[level] INT NOT NULL,
 	[name] nvarchar(50) NOT NULL,
+	pointword tinyint NOT NULL,
 	dataDb varchar(100),
 );
 GO
 
-CREATE TABLE easy(
+CREATE TABLE extraone(
 	id INT PRIMARY KEY IDENTITY(1,1),
 	audioquestion varchar(50) NOT NULL,
 	textquestion nvarchar(100) NOT NULL,
@@ -45,4 +46,8 @@ GO
 CREATE TABLE tips(
 	id INT PRIMARY KEY IDENTITY(1,1),
 	content nvarchar(100) NOT NULL,
+	dataDb varchar(100)
 )
+
+alter table [dbo].[tips] add  dataDb varchar(100);
+GO

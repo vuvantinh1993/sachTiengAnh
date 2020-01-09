@@ -6426,11 +6426,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Domain\\CTIN.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Domain\\CTIN.Domain.csproj",
       "projectName": "CTIN.Domain",
-      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Domain\\CTIN.Domain.csproj",
+      "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Domain\\CTIN.Domain.csproj",
       "packagesPath": "C:\\Users\\Vu Tinh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.Domain\\obj\\",
+      "outputPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6449,8 +6449,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.DataAccess\\CTIN.DataAccess.csproj": {
-              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\CTIN_RD_ERP_PM1\\04. Implementation\\4.1 Code\\PM\\CTIN.DataAccess\\CTIN.DataAccess.csproj"
+            "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj": {
+              "projectPath": "C:\\Users\\Vu Tinh\\Desktop\\sachTiengAnh\\backend\\CTIN.DataAccess\\CTIN.DataAccess.csproj"
             }
           }
         }
