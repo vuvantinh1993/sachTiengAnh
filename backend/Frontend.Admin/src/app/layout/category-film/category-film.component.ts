@@ -20,6 +20,7 @@ export class CategoryFilmComponent extends BaseListComponent implements OnInit {
     { id: 1, name: 'Hiện' }
   ];
   public name = 'danh mục phim';
+  public nameLever: any;
   constructor(
     private categoryfilmservice: CategoryFilmService,
     public exTableService: ExtentionTableService,
@@ -123,8 +124,18 @@ export class CategoryFilmComponent extends BaseListComponent implements OnInit {
     this.isLoading = false;
     if (rs.ok) {
       this.listOfData = rs.result.data;
+      this.listOfData.forEach(element => {
+        element.nameLever = element.level === 1 ? 'easy' : (element.level === 2 ? 'Medium' : (element.level === 3 ? 'Hard' : 'Very Hard'));
+      });
       this.paging = rs.result.paging;
       console.log('getdata', this.listOfData);
     }
+  }
+
+  closeDataModal(value: any) {
+    if (!!value) {
+      this.getData(this.paging.page);
+    }
+    super.closeDataModal(value);
   }
 }

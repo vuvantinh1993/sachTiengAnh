@@ -1,7 +1,7 @@
 <div class="page-header page-header-light border-bottom-0">
   <div class="page-header-content header-elements-md-inline">
     <div class="page-title d-flex">
-      <h4><span class="font-weight-semibold">Danh sách hợp đồng</span></h4>
+      <h4><span class="font-weight-semibold">Danh sách {{name}}</span></h4>
     </div>
 
     <div class="header-elements">
@@ -48,7 +48,7 @@
       <tr>
         <th nzWidth="62px" nzShowCheckbox [nzChecked]="exTableService.isSelectAll(listOfData)"
           (nzCheckedChange)="exTableService.changeSelected($event, listOfData)"></th>
-        <th class="text-center">Id</th>
+        <th class="text-center">STT</th>
         <th class="text-center">Tên phim</th>
         <th class="text-center">Lever</th>
         <th class="text-center">Số điểm</th>
@@ -59,14 +59,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of listOfData">
+      <tr *ngFor="let item of listOfData; let i = index">
         <td nzShowCheckbox [(nzChecked)]="item.selected">
-        <td>{{item.id}}</td>
+        <td class="text-center">{{i+1}}</td>
         <td>{{item.name}}</td>
-        <td class="text-center">{{item.level}}</td>
+        <td class="text-center">{{item.nameLever}}</td>
         <td class="text-center">{{item.pointword | numberFormat}}</td>
         <td class="text-center">{{item.dataDb.createdBy}} : {{item.dataDb.createdDate | dateFormat}}</td>
-        <td class="text-center">{{item.dataDb.createdBy}} : {{item.dataDb.createdDate | dateFormat}}</td>
+        <td class="text-center">{{item.dataDb.modifiedBy}} : {{item.dataDb.modifiedDate | dateFormat}}</td>
         <td class="text-center">
           <nz-switch nz-popconfirm
             [nzPopconfirmTitle]="'Bạn có chắc chắn muốn ' + (!item.dataDb.status ? 'hiện' : 'ẩn') + ' không?'"
@@ -112,7 +112,7 @@
   </ng-template>
 
   <ng-template #modalContent>
-    <app-category-film-data [id]="id" (cusOnClose)="closeDataModal($event)" (onAddData)="addData($event)">
+    <app-category-film-data [item]="item" [id]="id" (cusOnClose)="closeDataModal($event)" (onAddData)="addData($event)">
     </app-category-film-data>
   </ng-template>
 </nz-modal>

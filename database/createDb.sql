@@ -13,7 +13,7 @@ CREATE TABLE categoryfilm(
 	[level] INT NOT NULL,
 	[name] nvarchar(50) NOT NULL,
 	pointword tinyint NOT NULL,
-	dataDb varchar(100),
+	dataDb varchar(200),
 );
 GO
 
@@ -26,7 +26,7 @@ CREATE TABLE extraone(
 	categoryfilmid int NOT NULL,
 	doubtid varchar(70),
 	unselectid varchar(70),
-	dataDb varchar(100),
+	dataDb varchar(200),
 );
 GO 
 
@@ -39,15 +39,25 @@ CREATE TABLE [user](
 	filmleanning varchar(max),
 	point INT,
 	listfrendid varchar(max),
-	dataDb varchar(100)
+	dataDb varchar(200)
 );
 GO
 
 CREATE TABLE tips(
 	id INT PRIMARY KEY IDENTITY(1,1),
 	content nvarchar(100) NOT NULL,
-	dataDb varchar(100)
+	dataDb varchar(200)
 )
+
+CREATE TABLE [files](
+	id INT PRIMARY KEY IDENTITY(1,1),
+	audioquestion varbinary NOT NULL,
+	audioanswer varbinary NOT NULL,
+	data varchar(300),
+	dataDb varchar(200)
+);
+GO
+
 
 alter table [dbo].[tips] add  dataDb varchar(100);
 GO

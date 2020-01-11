@@ -10,7 +10,7 @@ export abstract class BaseListComponent<T = any> {
   isLoading = false;
   paging: PagingModel = {
     page: 1,
-    size: 15
+    size: 10
   };
   myForm: FormGroup;
   lstStatus = [

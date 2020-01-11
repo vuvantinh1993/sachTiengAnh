@@ -22,6 +22,7 @@ namespace CTIN.DataAccess.Contexts
         public virtual DbSet<Extraone> Easy { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Extraone> Extraone { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -92,7 +93,7 @@ namespace CTIN.DataAccess.Contexts
 
             modelBuilder.Entity<Extraone>(entity =>
             {
-                entity.ToTable("easy");
+                entity.ToTable("extraone");
 
                 entity.Property(e => e.id).HasColumnName("id");
 
