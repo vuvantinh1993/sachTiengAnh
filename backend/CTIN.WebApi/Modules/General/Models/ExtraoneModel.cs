@@ -24,8 +24,8 @@ namespace CTIN.WebApi.Modules.General.Models
         public string audioanswer { get; set; }
         public string textanswer { get; set; }
         public int categoryfilmid { get; set; }
-        public string doubtid { get; set; }
-        public string unselectid { get; set; }
+        public List<int> doubtid { get; set; }
+        public List<int> unselectid { get; set; }
         public Add_ExtraoneModel_DataDbJson dataDb { get; set; }
         public class Add_ExtraoneModel_DataDbJson
         {

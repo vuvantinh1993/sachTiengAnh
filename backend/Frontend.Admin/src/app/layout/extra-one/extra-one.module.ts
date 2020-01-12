@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ExtraOneComponent } from './extra-one.component';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ExtraOneDataComponent } from './extra-one-data/extra-one-data.component';
-
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @NgModule({
   declarations: [ExtraOneComponent, ExtraOneDataComponent],
@@ -13,7 +13,8 @@ import { ExtraOneDataComponent } from './extra-one-data/extra-one-data.component
     CommonModule,
     ExtraoneRoutes,
     NgZorroAntdModule,
-    FormModule
+    FormModule,
+    NzUploadModule
   ],
   exports: [ExtraOneComponent]
 })

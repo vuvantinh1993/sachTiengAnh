@@ -119,7 +119,7 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.doubtid)
                     .HasColumnName("doubtid")
                     .HasMaxLength(70)
-                    .IsUnicode(false);
+                    .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.textanswer)
                     .IsRequired()
@@ -134,7 +134,7 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.unselectid)
                     .HasColumnName("unselectid")
                     .HasMaxLength(70)
-                    .IsUnicode(false);
+                    .IsUnicode(false).IsJson();
             });
 
             modelBuilder.Entity<Tips>(entity =>

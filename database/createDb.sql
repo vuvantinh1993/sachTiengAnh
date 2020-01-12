@@ -59,5 +59,5 @@ CREATE TABLE [files](
 GO
 
 
-alter table [dbo].[tips] add  dataDb varchar(100);
+alter table [dbo].[files] add  source varbinary NOT NULL
 GO
