@@ -15,6 +15,10 @@ const routes: Routes = [
       {
         path: 'extra-one',
         loadChildren: () => import('./extra-one/extra-one.module').then(m => m.ExtraOneModule)
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
       }
     ]
   }

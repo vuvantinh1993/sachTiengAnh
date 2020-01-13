@@ -17,7 +17,6 @@ namespace CTIN.DataAccess.Contexts
         }
         public virtual DbSet<Acttachments> Acttachments { get; set; }
         public virtual DbSet<Files> Files { get; set; }
-
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
         public virtual DbSet<Extraone> Easy { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
@@ -177,7 +176,7 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.listfrendid)
                     .HasColumnName("listfrendid")
-                    .IsUnicode(false);
+                    .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.name)
                     .IsRequired()

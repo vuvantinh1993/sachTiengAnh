@@ -11,15 +11,15 @@ namespace CTIN.DataAccess.Models
         public string email { get; set; }
         public string phone { get; set; }
         public string password { get; set; }
-        public UserfilmleanningDataJson filmleanning { get; set; }
+        public List<UserfilmleanningDataJson> filmleanning { get; set; }
         public int? point { get; set; }
-        public string listfrendid { get; set; }
+        public List<int> listfrendid { get; set; }
         public DataDbJson dataDb { get; set; }
     }
 
     public class UserfilmleanningDataJson
     {
-        public List<string> namefilm { get; set; }
-        public List<int> positionword { get; set; }
+        public string namefilm { get; set; }
+        public int positionword { get; set; }
     }
 }
