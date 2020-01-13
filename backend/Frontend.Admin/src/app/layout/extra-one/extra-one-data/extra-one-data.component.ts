@@ -4,6 +4,7 @@ import { GlobalValidate } from 'src/app/_base/class/global-validate';
 import { BaseDataComponent } from 'src/app/_base/components/base-data-component';
 import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import { HttpRequest, HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-extra-one-data',
@@ -21,12 +22,13 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
   messages: string[] = [];
   theFiles: any[] = [];
   public MAX_SIZE = 1048576000;
+  public progress: number;
 
   constructor(
     public fb: FormBuilder,
     private extraoneService: ExtraoneService,
     private message: NzMessageService,
-
+    private http: HttpClient,
   ) { super(fb); }
 
   ngOnInit() {
@@ -73,7 +75,7 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
         this.theFile = event.target.files[0];
         this.theFiles.push(this.theFile);
       } else { // Display error message
-        this.messages.push('File: ' + event.target.files[0].name + ' is too large to upload.');
+        this.message.error('File: ' + event.target.files[0].name + ' is too large to upload.');
       }
     }
     this.onupload();
@@ -108,8 +110,12 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     reader.onload = () => {
       // Store base64 encoded representation of file
       // this.file.fileAsBase64 = reader.result.toString();
-      this.myForm.patchValue({ audioanswer: reader.result.toString() }); // pass về base 64 rồi import
-      console.log('tinh', this.myForm.controls.audioanswer.value);
+      let fileAsBase64 = reader.result.toString();
+      if (fileAsBase64) {
+        fileAsBase64 = fileAsBase64.substring(fileAsBase64.indexOf(',') + 1);
+      }
+      this.myForm.patchValue({ audioanswer: fileAsBase64 }); // pass về base 64 rồi import
+      console.log('tinh', this.myForm.controls.audioquestion);
 
       // // POST to server
       // this.uploadService.uploadFile(this.file)
@@ -118,6 +124,28 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
 
     // Read the file
     reader.readAsDataURL(theFile);
+  }
+
+  upload(files) {
+    if (files.length === 0) {
+      return;
+    }
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append(file.name, file);
+    }
+    console.log('tinhsaaa', formData);
+
+    const uploadReq = new HttpRequest('POST', `api/upload`, formData, {
+      reportProgress: true,
+    });
+    this.http.request(uploadReq).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+        this.progress = Math.round(100 * event.loaded / event.total);
+      } else if (event.type === HttpEventType.Response) {
+        this.message.error(event.body.toString());
+      }
+    });
   }
 
 
