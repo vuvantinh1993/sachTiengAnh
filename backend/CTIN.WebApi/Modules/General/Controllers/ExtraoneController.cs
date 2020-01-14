@@ -39,7 +39,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Add([FromBody] Add_ExtraoneModel model)
+        public async Task<object> Add([FromForm] Add_ExtraoneModel model)
         {
             if (ModelState.IsValid)
             {

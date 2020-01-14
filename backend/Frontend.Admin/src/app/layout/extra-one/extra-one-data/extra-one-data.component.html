@@ -63,6 +63,23 @@
               </div>
             </div>
 
+
+
+            <h1>File Upload Using Angular 5 and ASP.NET Core 2.1</h1>
+            <input type="file" multiple (change)="upload($event)" />
+            <br />
+            <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+              {{progress}}%
+            </span>
+
+            <span style="font-weight:bold;color:green;" *ngIf="message">
+              {{message}}
+            </span>
+
+
+
+
+
           </fieldset>
           <!-- /content area -->
           <div class="text-right mt-4">

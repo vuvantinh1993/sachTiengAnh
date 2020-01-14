@@ -126,27 +126,27 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     reader.readAsDataURL(theFile);
   }
 
-  upload(files) {
-    if (files.length === 0) {
-      return;
-    }
-    const formData = new FormData();
-    for (const file of files) {
-      formData.append(file.name, file);
-    }
-    console.log('tinhsaaa', formData);
+  upload(event) {
+    if (event.target.files.length > 0) {
+      const profile = event.target.files[0];
+      this.myForm.get('audioquestion').setValue(profile);
 
-    const uploadReq = new HttpRequest('POST', `api/upload`, formData, {
-      reportProgress: true,
-    });
-    this.http.request(uploadReq).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress = Math.round(100 * event.loaded / event.total);
-      } else if (event.type === HttpEventType.Response) {
-        this.message.error(event.body.toString());
-      }
-    });
+      const formData = new FormData();
+      formData.append('textquestion', this.myForm.get('textquestion').value);
+      formData.append('audioquestion', this.myForm.get('audioquestion').value);
+
+      console.log('anh', this.myForm.get('audioquestion').value);
+
+      this.extraoneService.add(formData);
+    }
+
+
   }
+
+
+
+
+
 
 
 
