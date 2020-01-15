@@ -135,7 +135,7 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       formData.append('textquestion', this.myForm.get('textquestion').value);
       formData.append('audioquestion', this.myForm.get('audioquestion').value);
 
-      console.log('anh', this.myForm.get('audioquestion').value);
+      console.log('anh', formData.get('audioquestion'));
 
       this.extraoneService.add(formData);
     }
