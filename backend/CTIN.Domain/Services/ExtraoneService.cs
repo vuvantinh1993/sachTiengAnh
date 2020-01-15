@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -77,7 +78,18 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            _db.Extraone.Add(model);
+            var folderUpload = "upload";
+            var api = "api/file/dowload";
+            var directoryBase = Directory.GetCurrentDirectory();
+            var folder = Path.Combine(directoryBase, "wwwroot", folderUpload);
+
+            foreach (var file in model.audioanswer)
+            {
+                byte[] source = null;
+                var name = Guid.NewGuid().ToString();
+                //var path = Path.Combine(folder, $"{name}{Path.GetExtension()}");
+            }
+            //_db.Extraone.Add(model);
             await _db.SaveChangesAsync();
             return (model, errors);
         }

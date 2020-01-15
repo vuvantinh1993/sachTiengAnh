@@ -18,7 +18,6 @@ namespace CTIN.DataAccess.Contexts
         public virtual DbSet<Acttachments> Acttachments { get; set; }
         public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
-        public virtual DbSet<Extraone> Easy { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Extraone> Extraone { get; set; }
@@ -129,6 +128,10 @@ namespace CTIN.DataAccess.Contexts
                     .IsRequired()
                     .HasColumnName("textquestion")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.domain)
+                    .HasColumnName("domain")
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.unselectid)
                     .HasColumnName("unselectid")

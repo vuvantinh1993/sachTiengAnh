@@ -17,20 +17,9 @@ namespace CTIN.WebApi.Modules.General.Models
     {
     }
 
-    public class Add_ExtraoneModel
+    public class Add_ExtraoneModel : Add_ExtraoneServiceModel
     {
-        public string audioquestion { get; set; }
-        public string textquestion { get; set; }
-        public string audioanswer { get; set; }
-        public string textanswer { get; set; }
-        public int categoryfilmid { get; set; }
-        public List<int> doubtid { get; set; }
-        public List<int> unselectid { get; set; }
-        public Add_ExtraoneModel_DataDbJson dataDb { get; set; }
-        public class Add_ExtraoneModel_DataDbJson
-        {
-            public int status { get; set; }
-        }
+
     }
 
     public class Edit_ExtraoneModel : Add_ExtraoneModel

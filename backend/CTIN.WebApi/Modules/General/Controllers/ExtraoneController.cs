@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
+using static CTIN.Domain.Models.Add_ExtraoneServiceModel;
 
 namespace CTIN.WebApi.Modules.General.Controllers
 {
@@ -43,11 +44,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             if (ModelState.IsValid)
             {
-                var modelService = model.MapToObject<Add_ExtraoneServiceModel>();
                 //set value default
-                modelService.dataDb.createdDate = DateTime.Now;
-                modelService.dataDb.createdBy = Int32.Parse(_currentUserService.userId);
-                var result = await _sv.Add(modelService);
+                model.domain = GetDomain();
+                model.dataDb = new Add_ExtraoneModel_DataDbJson()
+                {
+                    createdDate = DateTime.Now,
+                    createdBy = Int32.Parse(_currentUserService.userId)
+                };
+                var result = await _sv.Add(model);
                 if (result.errors.Count == 0)
                 {
                     //new task  sent mail
