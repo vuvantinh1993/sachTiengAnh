@@ -115,8 +115,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       }
       // this.extraoneService.add(this.formData);
     }
-
-
   }
 
 
