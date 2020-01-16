@@ -76,7 +76,6 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.dataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.level).HasColumnName("level");
@@ -96,22 +95,18 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.id).HasColumnName("id");
 
                 entity.Property(e => e.audioanswer)
-                    .IsRequired()
                     .HasColumnName("audioanswer")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(8000);
 
                 entity.Property(e => e.audioquestion)
-                    .IsRequired()
                     .HasColumnName("audioquestion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(8000);
 
                 entity.Property(e => e.categoryfilmid).HasColumnName("categoryfilmid");
 
                 entity.Property(e => e.dataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.doubtid)
@@ -120,23 +115,27 @@ namespace CTIN.DataAccess.Contexts
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.textanswer)
-                    .IsRequired()
                     .HasColumnName("textanswer")
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.textquestion)
-                    .IsRequired()
                     .HasColumnName("textquestion")
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.domain)
-                    .HasColumnName("domain")
-                    .HasMaxLength(200);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.unselectid)
                     .HasColumnName("unselectid")
                     .HasMaxLength(70)
                     .IsUnicode(false).IsJson();
+
+                entity.Property(e => e.urlaudioanswer)
+                    .HasColumnName("urlaudioanswer")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.urlaudioquestion)
+                    .HasColumnName("urlaudioquestion")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Tips>(entity =>
@@ -152,7 +151,7 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.dataDb)
                    .HasColumnName("dataDb")
-                   .HasMaxLength(100)
+                   .HasMaxLength(200)
                    .IsUnicode(false).IsJson();
             });
 
@@ -164,7 +163,7 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.dataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.email)

@@ -38,11 +38,11 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
 
   creatForm() {
     this.myForm = this.fb.group({
-      audioquestion: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Cấp độ
-      textquestion: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
-      audioanswer: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
-      textanswer: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
-      categoryfilmid: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
+      audioquestion: [null], // Cấp độ
+      textquestion: [null], // Tên bộ phim
+      audioanswer: [null], // Điểm số cho từng câu hỏi
+      textanswer: [null], // Điểm số cho từng câu hỏi
+      categoryfilmid: [null], // Điểm số cho từng câu hỏi
       dataDb: this.fb.group({
         status: [{ value: true }],
       })
@@ -76,6 +76,14 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     this.formData.append('textanswer', this.myForm.get('textanswer').value);
     this.formData.append('categoryfilmid', this.myForm.get('categoryfilmid').value);
     this.formData.append('status', this.myForm.value.dataDb.status);
+
+
+    console.log(this.formData.getAll('status'));
+    console.log(this.formData.getAll('textquestion'));
+    console.log(this.formData.getAll('textanswer'));
+    console.log(this.formData.getAll('audioanswer'));
+    console.log(this.formData.getAll('audioquestion'));
+
 
     const rs = ((!this.item) ? await this.extraoneService.add(this.formData)
       : await this.extraoneService.edit(this.item.id as number, this.formData));

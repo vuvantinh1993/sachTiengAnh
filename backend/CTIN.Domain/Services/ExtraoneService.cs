@@ -78,20 +78,36 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            var folderUpload = "upload";
             var api = "api/file/dowload";
-            var directoryBase = Directory.GetCurrentDirectory();
-            var folder = Path.Combine(directoryBase, "wwwroot", folderUpload);
+            var urlaudioanswer = $"/{api}/{model.audioanswer.FileName}";
+            var urlaudioquestion = $"/{api}/{model.audioquestion.FileName}";
+            var textanswer = Path.GetFileNameWithoutExtension(model.audioanswer.FileName);
+            var textquestion = Path.GetFileNameWithoutExtension(model.audioquestion.FileName);
 
-            foreach (var file in model.audioanswer)
+
+            byte[] sourceaudioanswer = null;
+            byte[] sourceaudioquestion = null;
+            using (var ms = new MemoryStream())
             {
-                byte[] source = null;
-                var name = Guid.NewGuid().ToString();
-                //var path = Path.Combine(folder, $"{name}{Path.GetExtension()}");
+                await model.audioanswer.CopyToAsync(ms);
+                sourceaudioanswer = ms.ToArray();
+                await model.audioquestion.CopyToAsync(ms);
+                sourceaudioquestion = ms.ToArray();
             }
-            //_db.Extraone.Add(model);
+
+            var data = new Extraone
+            {
+                audioanswer = sourceaudioanswer,
+                audioquestion = sourceaudioquestion,
+                textanswer = textanswer,
+                textquestion = textquestion,
+                urlaudioanswer = urlaudioanswer,
+                urlaudioquestion = urlaudioquestion
+            };
+
+            _db.Extraone.Add(data);
             await _db.SaveChangesAsync();
-            return (model, errors);
+            return (data, errors);
         }
 
         public async Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_ExtraoneServiceModel model)

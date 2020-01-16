@@ -17,6 +17,7 @@ namespace CTIN.DataAccess.ModelsRender
 
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
         public virtual DbSet<Extraone> Extraone { get; set; }
+        public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -25,7 +26,7 @@ namespace CTIN.DataAccess.ModelsRender
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=TINHVV_DES\\SQLEXPRESS;Database=TLNEnglish;user id=sa;password=123456;Trusted_Connection=False;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-VKP9EEJ\\VUVANTINH;Database=TLNEnglish;user id=sa;password=123456;Trusted_Connection=False;");
             }
         }
 
@@ -41,7 +42,7 @@ namespace CTIN.DataAccess.ModelsRender
 
                 entity.Property(e => e.DataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Level).HasColumnName("level");
@@ -61,22 +62,18 @@ namespace CTIN.DataAccess.ModelsRender
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Audioanswer)
-                    .IsRequired()
                     .HasColumnName("audioanswer")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(8000);
 
                 entity.Property(e => e.Audioquestion)
-                    .IsRequired()
                     .HasColumnName("audioquestion")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(8000);
 
                 entity.Property(e => e.Categoryfilmid).HasColumnName("categoryfilmid");
 
                 entity.Property(e => e.DataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Doubtid)
@@ -85,19 +82,49 @@ namespace CTIN.DataAccess.ModelsRender
                     .IsUnicode(false);
 
                 entity.Property(e => e.Textanswer)
-                    .IsRequired()
                     .HasColumnName("textanswer")
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Textquestion)
-                    .IsRequired()
                     .HasColumnName("textquestion")
-                    .HasMaxLength(100);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Unselectid)
                     .HasColumnName("unselectid")
                     .HasMaxLength(70)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Urlaudioanswer)
+                    .HasColumnName("urlaudioanswer")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Urlaudioquestion)
+                    .HasColumnName("urlaudioquestion")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Files>(entity =>
+            {
+                entity.ToTable("files");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Data)
+                    .HasColumnName("data")
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DataDb)
+                    .HasColumnName("dataDb")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Source)
+                    .IsRequired()
+                    .HasColumnName("source")
+                    .HasMaxLength(1);
             });
 
             modelBuilder.Entity<Tips>(entity =>
@@ -110,6 +137,11 @@ namespace CTIN.DataAccess.ModelsRender
                     .IsRequired()
                     .HasColumnName("content")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.DataDb)
+                    .HasColumnName("dataDb")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -120,7 +152,7 @@ namespace CTIN.DataAccess.ModelsRender
 
                 entity.Property(e => e.DataDb)
                     .HasColumnName("dataDb")
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
