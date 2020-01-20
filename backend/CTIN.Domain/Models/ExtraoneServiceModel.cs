@@ -20,7 +20,7 @@ namespace CTIN.Domain.Models
         public string textquestion { get; set; }
         public IFormFile audioanswer { get; set; }
         public string textanswer { get; set; }
-        public int categoryfilmid { get; set; }
+        public int? categoryfilmid { get; set; }
         public List<int> doubtid { get; set; }
         public List<int> unselectid { get; set; }
         public Add_ExtraoneModel_DataDbJson dataDb { get; set; }

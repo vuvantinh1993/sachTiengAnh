@@ -95,12 +95,10 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.id).HasColumnName("id");
 
                 entity.Property(e => e.audioanswer)
-                    .HasColumnName("audioanswer")
-                    .HasMaxLength(8000);
+                    .HasColumnName("audioanswer");
 
                 entity.Property(e => e.audioquestion)
-                    .HasColumnName("audioquestion")
-                    .HasMaxLength(8000);
+                    .HasColumnName("audioquestion");
 
                 entity.Property(e => e.categoryfilmid).HasColumnName("categoryfilmid");
 

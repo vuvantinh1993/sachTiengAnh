@@ -11,7 +11,7 @@ namespace CTIN.DataAccess.Models
         public string textquestion { get; set; }
         public byte[] audioanswer { get; set; }
         public string textanswer { get; set; }
-        public int categoryfilmid { get; set; }
+        public int? categoryfilmid { get; set; }
         public string urlaudioanswer { get; set; }
         public string urlaudioquestion { get; set; }
         public List<int> doubtid { get; set; }

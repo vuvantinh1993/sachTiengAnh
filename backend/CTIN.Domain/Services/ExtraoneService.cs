@@ -78,33 +78,44 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            var api = "api/file/dowload";
-            var urlaudioanswer = $"/{api}/{model.audioanswer.FileName}";
-            var urlaudioquestion = $"/{api}/{model.audioquestion.FileName}";
-            var textanswer = Path.GetFileNameWithoutExtension(model.audioanswer.FileName);
-            var textquestion = Path.GetFileNameWithoutExtension(model.audioquestion.FileName);
-
-
-            byte[] sourceaudioanswer = null;
-            byte[] sourceaudioquestion = null;
-            using (var ms = new MemoryStream())
+            var data = new Extraone();
+            var api = "api/Extraone/dowload";
+            if (model.audioanswer != null)
             {
-                await model.audioanswer.CopyToAsync(ms);
-                sourceaudioanswer = ms.ToArray();
-                await model.audioquestion.CopyToAsync(ms);
-                sourceaudioquestion = ms.ToArray();
+                var urlaudioanswer = $"/{api}/{model.audioanswer.FileName}";
+                var textanswer = Path.GetFileNameWithoutExtension(model.audioanswer.FileName);
+                byte[] sourceaudioanswer = null;
+                using (var ms = new MemoryStream())
+                {
+                    await model.audioanswer.CopyToAsync(ms);
+                    sourceaudioanswer = ms.ToArray();
+                }
+
+                data.audioanswer = sourceaudioanswer;
+                data.textanswer = textanswer;
+                data.urlaudioanswer = model.domain + urlaudioanswer;
             }
 
-            var data = new Extraone
+            if (model.audioquestion != null)
             {
-                audioanswer = sourceaudioanswer,
-                audioquestion = sourceaudioquestion,
-                textanswer = textanswer,
-                textquestion = textquestion,
-                urlaudioanswer = urlaudioanswer,
-                urlaudioquestion = urlaudioquestion
+                var urlaudioquestion = $"/{api}/{model.audioquestion.FileName}";
+                var textquestion = Path.GetFileNameWithoutExtension(model.audioquestion.FileName);
+                byte[] sourceaudioquestion = null;
+                using (var ms = new MemoryStream())
+                {
+                    await model.audioquestion.CopyToAsync(ms);
+                    sourceaudioquestion = ms.ToArray();
+                }
+                data.audioquestion = sourceaudioquestion;
+                data.textquestion = textquestion;
+                data.urlaudioquestion = model.domain + urlaudioquestion;
+            }
+            data.categoryfilmid = model.categoryfilmid;
+            data.dataDb = new DataDbJson
+            {
+                createdBy = Int32.Parse(_currentUserService.userId),
+                createdDate = DateTime.Now
             };
-
             _db.Extraone.Add(data);
             await _db.SaveChangesAsync();
             return (data, errors);

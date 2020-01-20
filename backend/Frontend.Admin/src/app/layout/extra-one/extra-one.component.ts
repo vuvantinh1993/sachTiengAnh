@@ -34,6 +34,7 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
   async ngOnInit() {
     this.creatForm();
     await this.getData();
+    console.log('this.item', this.item);
   }
 
   creatForm() {
@@ -94,6 +95,7 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
     this.listOfData = [];
     const form = this.myForm.value;
     this.paging.page = page;
+
     // where theo du lieu dau vao
     const where = { and: [] };
     // tìm kiếm theo trạng thái
@@ -117,8 +119,9 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
     }
     this.isLoading = true;
     const rs = await this.extraoneService.get(this.paging);
+    console.log('Get tai lieu', rs.result);
     this.isLoading = false;
-    if (rs.ok) {
+    if (rs.ok && rs.result) {
       console.log('Get tai lieu', rs.result.data);
       this.data = rs.result.data;
       if (this.data) {

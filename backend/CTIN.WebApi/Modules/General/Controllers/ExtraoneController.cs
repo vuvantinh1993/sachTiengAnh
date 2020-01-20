@@ -39,6 +39,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
             return await BindData();
         }
 
+
         [HttpPost]
         public async Task<object> Add([FromForm] Add_ExtraoneModel model)
         {
@@ -105,6 +106,23 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             return await BindData();
         }
+
+        [HttpGet("Dowload/{url}")]
+        public async Task<IActionResult> Dowload([FromRoute]string url, int w = 0, int h = 0, int q = 100)
+        {
+            if (ModelState.IsValid)
+            {
+                var where = new JObject { new JProperty("data.code", url) }.JsonToString();
+                var result = await _sv.FindOne(new FindOne_ExtraoneServiceModel { where = where });
+                if (result.errors.Count == 0 && result.data != null)
+                {
+                    return File(result.data.source, FileExtension.GetMimeType(result.data.data.extension));
+                }
+            }
+
+            return await BindData();
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<object> Delete(int id)

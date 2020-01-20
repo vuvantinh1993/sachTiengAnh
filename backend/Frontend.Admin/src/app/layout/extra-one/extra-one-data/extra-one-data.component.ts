@@ -7,6 +7,7 @@ import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpRequest, HttpClient, HttpEventType } from '@angular/common/http';
 import { PagingModel } from 'src/app/_base/models/response-model';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-extra-one-data',
@@ -34,6 +35,11 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
   ngOnInit() {
     this.creatForm();
     this.getlistfilm();
+    console.log(this.item);
+
+    if (this.item) {
+      this.myForm.patchValue(this.item);
+    }
   }
 
   creatForm() {
@@ -84,7 +90,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     console.log(this.formData.getAll('audioanswer'));
     console.log(this.formData.getAll('audioquestion'));
 
-
     const rs = ((!this.item) ? await this.extraoneService.add(this.formData)
       : await this.extraoneService.edit(this.item.id as number, this.formData));
     if (rs.ok) {
@@ -94,6 +99,7 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       }
       this.item = rs.result;
     } else {
+      this.formData
       this.message.error('Lỗi! Lưu thất bại');
     }
   }
@@ -113,7 +119,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
         this.myForm.get('audioquestion').setValue(profile2);
         this.formData.append('audioquestion', this.myForm.get('audioquestion').value);
       }
-      // this.extraoneService.add(this.formData);
     }
   }
 
