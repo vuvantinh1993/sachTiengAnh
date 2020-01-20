@@ -7,6 +7,7 @@ using CTIN.WebApi.Modules.General.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using static CTIN.Domain.Models.Add_ExtraoneServiceModel;
 
@@ -112,11 +113,13 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             if (ModelState.IsValid)
             {
-                var where = new JObject { new JProperty("data.code", url) }.JsonToString();
+                var namenotExtention = Path.GetFileNameWithoutExtension(url);
+                var where = new JObject { new JProperty("textquestion", namenotExtention) }.JsonToString();
                 var result = await _sv.FindOne(new FindOne_ExtraoneServiceModel { where = where });
                 if (result.errors.Count == 0 && result.data != null)
                 {
-                    return File(result.data.source, FileExtension.GetMimeType(result.data.data.extension));
+                    var extention = Path.GetExtension(result.data.urlaudioquestion);
+                    return File(result.data.audioquestion, FileExtension.GetMimeType(extention));
                 }
             }
 
