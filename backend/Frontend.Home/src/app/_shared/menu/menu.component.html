@@ -1,31 +1,15 @@
 <!-- Main sidebar -->
 <div class="sidebar sidebar-main sidebar-expand-md">
-
-  <!-- Sidebar mobile toggler -->
-  <div class="sidebar-mobile-toggler text-center">
-    <a href="#" class="sidebar-mobile-main-toggle">
-      <i class="icon-arrow-left8"></i>
-    </a>
-    Navigation
-    <a href="#" class="sidebar-mobile-expand">
-      <i class="icon-screen-full"></i>
-      <i class="icon-screen-normal"></i>
-    </a>
-  </div>
-  <!-- /sidebar mobile toggler -->
-
-
   <!-- Sidebar content -->
   <div class="sidebar-content">
-
     <!-- Main navigation -->
     <div class="card card-sidebar-mobile">
       <ul class="nav nav-sidebar" data-nav-type="accordion">
 
         <!-- Main -->
-        <li class="nav-item-header">
+        <!-- <li class="nav-item-header">
           <div class="text-uppercase font-size-xs line-height-xs">Chức năng</div> <i class="icon-menu" title="Main"></i>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
             <i class="icon-home4"></i><span>Trang chủ</span>
@@ -34,31 +18,45 @@
 
         <li class="nav-item">
           <a [routerLink]="['/category-film']" routerLinkActive="active" class="nav-link"><i class="icon-stack"></i>
-            <span> Danh mục phim</span></a>
+            <span> Phim mới</span></a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/c']" routerLinkActive="active" class="nav-link"><i class="icon-stack"></i>
+            <span> Cấp độ dễ</span></a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/c']" routerLinkActive="active" class="nav-link"><i class="icon-stack"></i>
+            <span> Cấp độ trung bình</span></a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/c']" routerLinkActive="active" class="nav-link"><i class="icon-stack"></i>
+            <span> Cấp độ khó</span></a>
         </li>
 
         <li class="nav-item nav-item-submenu">
-          <a href="#" routerLinkActive="active" class="nav-link"> <i class="icon-coin-dollar"></i><span>Phim</span></a>
+          <a href="#" routerLinkActive="active" class="nav-link"> <i class="icon-graduation"></i><span>Cấp
+              độ</span></a>
           <ul class="nav nav-group-sub">
-            <li class="nav-item"><a [routerLink]="['/extra-one']" routerLinkActive="active" class="nav-link">Extra
-                One</a></li>
+            <li class="nav-item"><a [routerLink]="['/extra-one']" routerLinkActive="active" class="nav-link">Dễ</a></li>
+            <li class="nav-item"><a [routerLink]="['/a']" routerLinkActive="active" class="nav-link">Trung
+                Bình</a></li>
+            <li class="nav-item"><a [routerLink]="['/a']" routerLinkActive="active" class="nav-link">Khó</a>
+            </li>
           </ul>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/user']" routerLinkActive="active" class="nav-link"><i class="icon-city"></i>
-            <span>Người dùng</span></a>
+          <a [routerLink]="['/user']" routerLinkActive="active" class="nav-link"><i class="icon-trophy3"></i>
+            <span>Bảng xếp hạng</span></a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/tips']" routerLinkActive="active" class="nav-link"><i class="icon-city"></i>
+          <a [routerLink]="['/tips']" routerLinkActive="active" class="nav-link"><i class="icon-notebook"></i>
             <span>Lưu ý</span></a>
         </li>
         <!-- /Main -->
       </ul>
     </div>
     <!-- /main navigation -->
-
   </div>
   <!-- /sidebar content -->
-
 </div>
 <!-- /main sidebar -->

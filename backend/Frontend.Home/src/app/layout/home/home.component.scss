@@ -1,0 +1,74 @@
+.page-content{
+  margin-top:10px;
+
+  .menu{
+
+    background-color: #f9f2f4;
+    border-radius: 20px;
+  }
+
+  .film{
+    display: inline-block;
+    margin: 10px 0 0 10px;
+    padding: 0;
+
+    .border1{
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f2f4;
+
+      .border2{
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+
+        .image{
+          padding: 10px;
+          border-radius: 40px;
+          display: inline-block;
+        }
+        .content{
+          padding: 0 20px 0 0px;
+          position: relative;
+
+          h1{
+            margin: 10px 0;
+          }
+
+          .lever{
+            position:absolute;
+            right: 20px;
+            bottom: 10px;
+
+            .rec{
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              margin-right: 3px;
+              border: 1px solid #1890ff;
+            }
+
+            .rechasbg{
+              background-color: #1890ff;
+            }
+
+            .numberuser{
+              padding-right: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.film:hover{
+  border-radius:10px;
+  animation: mymove 0.5s infinite;
+}
+
+@keyframes mymove {
+  from {box-shadow: none;}
+  to {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+}

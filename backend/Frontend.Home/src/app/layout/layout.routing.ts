@@ -5,8 +5,12 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
       {
-        path: 'bidding-model',
-        loadChildren: () => import('./bidding-model/bidding-model.module').then(m => m.BiddingModelModule)
+        path: '',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+      },
+      {
+        path: 'extra-1',
+        loadChildren: () => import('./list-words-film/list-words-film.module').then(m => m.ListWordsFilmModule)
       },
       {
         path: 'category-film',
