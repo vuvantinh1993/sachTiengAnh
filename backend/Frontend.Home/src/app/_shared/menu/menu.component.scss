@@ -1,25 +1,41 @@
-li{
+li:not(:last-child) {
   border-bottom: 1px solid #ccc;
 }
 
-
-.nav-item:not(.nav-item-header):first-child{
-  padding-top:0px;
+::ng-deep.sidebar-light {
+  border-right: none !important;
 }
 
-.sidebar-light .nav-sidebar>.nav-item-open>.nav-link:not(.disabled), .sidebar-light .nav-sidebar>.nav-item>.nav-link.active{
-  background-color:inherit;
-}
+.nav {
+  .nav-link.active {
+    background-color: #3bb5fd80;
 
-.sidebar-light .nav-sidebar .nav-link:not(.disabled):hover{
-  background-color:inherit;
-}
-
-.sidebar-content{
-  .nav-sidebar{
-  margin-right: 10px;
   }
-  .nav-sidebar .nav-item:not(.nav-item-header):last-child{
+
+  overflow: hidden;
+  border-radius: 20px !important;
+  background-color: hsl(343, 37%, 96%);
+}
+
+.nav-item:not(.nav-item-header):first-child {
+  padding-top: 0px;
+}
+
+// .sidebar-light .nav-sidebar>.nav-item-open>.nav-link:not(.disabled),
+// .sidebar-light .nav-sidebar>.nav-item>.nav-link.active {
+//   background-color: inherit;
+// }
+
+// .sidebar-light .nav-sidebar .nav-link:not(.disabled):hover {
+//   background-color: inherit;
+// }
+
+.sidebar-content {
+  .nav-sidebar {
+    margin-right: 10px;
+  }
+
+  .nav-sidebar .nav-item:not(.nav-item-header):last-child {
     padding-bottom: 0;
   }
 }
