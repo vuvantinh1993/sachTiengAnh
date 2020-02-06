@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     ListWordsFilmRouters
-  ],
-  exports: [ListWordsFilmComponent]
+  ]
 })
 export class ListWordsFilmModule { }

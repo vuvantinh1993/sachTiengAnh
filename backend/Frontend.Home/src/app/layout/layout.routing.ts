@@ -11,6 +11,10 @@ const routes: Routes = [
       {
         path: 'extra-1',
         loadChildren: () => import('./list-words-film/list-words-film.module').then(m => m.ListWordsFilmModule)
+      },
+      {
+        path: 'leanning-words',
+        loadChildren: () => import('./leanning-words/leanning-words.module').then(m => m.LeanningWordsModule)
       }
     ]
   }
