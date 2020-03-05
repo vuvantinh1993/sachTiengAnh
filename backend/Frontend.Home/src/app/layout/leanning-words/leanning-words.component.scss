@@ -1,4 +1,13 @@
 .container{
+  .progress{
+    width: 400px;
+
+    .progress-bar{
+      transition: none;
+    }
+  }
+
+
   .question{
     p{
       font-size: 24px;
