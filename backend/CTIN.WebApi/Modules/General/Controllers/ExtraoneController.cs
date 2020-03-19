@@ -114,12 +114,12 @@ namespace CTIN.WebApi.Modules.General.Controllers
             if (ModelState.IsValid)
             {
                 var namenotExtention = Path.GetFileNameWithoutExtension(url);
-                var where = new JObject { new JProperty("textquestion", namenotExtention) }.JsonToString();
+                var where = new JObject { new JProperty("fullName", namenotExtention) }.JsonToString();
                 var result = await _sv.FindOne(new FindOne_ExtraoneServiceModel { where = where });
                 if (result.errors.Count == 0 && result.data != null)
                 {
-                    var extention = Path.GetExtension(result.data.urlaudioquestion);
-                    return File(result.data.audioquestion, FileExtension.GetMimeType(extention));
+                    var extention = Path.GetExtension(result.data.urlaudio);
+                    return File(result.data.audio, FileExtension.GetMimeType(extention));
                 }
             }
 

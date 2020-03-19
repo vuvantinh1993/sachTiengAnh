@@ -94,13 +94,8 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.id).HasColumnName("id");
 
-                entity.Property(e => e.audioanswer)
-                    .HasColumnName("audioanswer");
-
-                entity.Property(e => e.audioquestion)
-                    .HasColumnName("audioquestion");
-
-                entity.Property(e => e.categoryfilmid).HasColumnName("categoryfilmid");
+                entity.Property(e => e.audio)
+                    .HasColumnName("audio");
 
                 entity.Property(e => e.dataDb)
                     .HasColumnName("dataDb")
@@ -112,12 +107,16 @@ namespace CTIN.DataAccess.Contexts
                     .HasMaxLength(70)
                     .IsUnicode(false).IsJson();
 
-                entity.Property(e => e.textanswer)
-                    .HasColumnName("textanswer")
+                entity.Property(e => e.textVn)
+                    .HasColumnName("textVn")
                     .HasMaxLength(500);
 
-                entity.Property(e => e.textquestion)
-                    .HasColumnName("textquestion")
+                entity.Property(e => e.fullName)
+                    .HasColumnName("fullname")
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.textEn)
+                    .HasColumnName("textEn")
                     .HasMaxLength(500);
 
                 entity.Property(e => e.unselectid)
@@ -125,15 +124,14 @@ namespace CTIN.DataAccess.Contexts
                     .HasMaxLength(70)
                     .IsUnicode(false).IsJson();
 
-                entity.Property(e => e.urlaudioanswer)
-                    .HasColumnName("urlaudioanswer")
+                entity.Property(e => e.urlaudio)
+                    .HasColumnName("urlaudio")
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.urlaudioquestion)
-                    .HasColumnName("urlaudioquestion")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                entity.Property(e => e.answerWrongEn).HasColumnName("answerWrongEn");
+
+                entity.Property(e => e.answerWrongVn).HasColumnName("answerWrongVn");
             });
 
             modelBuilder.Entity<Tips>(entity =>

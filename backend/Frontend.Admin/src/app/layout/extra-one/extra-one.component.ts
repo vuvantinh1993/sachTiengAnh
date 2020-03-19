@@ -46,6 +46,8 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
 
 
   openModal(item = null, isView = false) {
+    console.log('iteam', item);
+
     this.item = item;
     this.id = item ? item.id : null;
     this.isView = isView;

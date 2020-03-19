@@ -61,13 +61,11 @@ namespace CTIN.DataAccess.ModelsRender
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Audioanswer)
-                    .HasColumnName("audioanswer")
-                    .HasMaxLength(8000);
+                entity.Property(e => e.AnswerWrongEn).HasColumnName("answerWrongEn");
 
-                entity.Property(e => e.Audioquestion)
-                    .HasColumnName("audioquestion")
-                    .HasMaxLength(8000);
+                entity.Property(e => e.AnswerWrongVn).HasColumnName("answerWrongVn");
+
+                entity.Property(e => e.Audio).HasColumnName("audio");
 
                 entity.Property(e => e.Categoryfilmid).HasColumnName("categoryfilmid");
 
@@ -81,12 +79,16 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasMaxLength(70)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Textanswer)
-                    .HasColumnName("textanswer")
+                entity.Property(e => e.Fullname)
+                    .HasColumnName("fullname")
                     .HasMaxLength(500);
 
-                entity.Property(e => e.Textquestion)
-                    .HasColumnName("textquestion")
+                entity.Property(e => e.TextEn)
+                    .HasColumnName("textEn")
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.TextVn)
+                    .HasColumnName("textVn")
                     .HasMaxLength(500);
 
                 entity.Property(e => e.Unselectid)
@@ -94,13 +96,8 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasMaxLength(70)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Urlaudioanswer)
-                    .HasColumnName("urlaudioanswer")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Urlaudioquestion)
-                    .HasColumnName("urlaudioquestion")
+                entity.Property(e => e.Urlaudio)
+                    .HasColumnName("urlaudio")
                     .HasMaxLength(500)
                     .IsUnicode(false);
             });

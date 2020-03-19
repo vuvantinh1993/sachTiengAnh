@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
+import { BaseListComponent } from './_base/components/base-list-component';
 
 @Component({
   selector: 'app-root',
@@ -6,9 +7,12 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent extends BaseListComponent implements OnInit {
+
+
 
   ngOnInit() {
-
   }
+
+
 }

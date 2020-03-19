@@ -7,13 +7,13 @@ namespace CTIN.DataAccess.Models
     public partial class Extraone
     {
         public int id { get; set; }
-        public byte[] audioquestion { get; set; }
-        public string textquestion { get; set; }
-        public byte[] audioanswer { get; set; }
-        public string textanswer { get; set; }
-        public int? categoryfilmid { get; set; }
-        public string urlaudioanswer { get; set; }
-        public string urlaudioquestion { get; set; }
+        public byte[] audio { get; set; }
+        public string textVn { get; set; }
+        public string fullName { get; set; }
+        public string textEn { get; set; }
+        public string urlaudio { get; set; }
+        public string answerWrongEn { get; set; }
+        public string answerWrongVn { get; set; }
         public List<int> doubtid { get; set; }
         public List<int> unselectid { get; set; }
         public DataDbJson dataDb { get; set; }

@@ -51,7 +51,16 @@ namespace CTIN.Domain.Services
             var errors = new List<ErrorModel>();
             var statusActive = (int)StatusDb.Nomal;
             var statusHide = (int)StatusDb.Hide;
-            var query = _db.Extraone.AsQueryable();
+            var query = _db.Extraone.Select(x => new
+            {
+                x.id,
+                x.textVn,
+                x.textEn,
+                x.dataDb,
+                x.urlaudio,
+                x.answerWrongEn,
+                x.answerWrongVn
+            }).AsQueryable();
 
             if (model.where != null)
             {
@@ -80,37 +89,26 @@ namespace CTIN.Domain.Services
             var errors = new List<ErrorModel>();
             var data = new Extraone();
             var api = "api/Extraone/dowload";
-            if (model.audioanswer != null)
+            if (model.audio != null)
             {
-                var urlaudioanswer = $"/{api}/{model.audioanswer.FileName}";
-                var textanswer = Path.GetFileNameWithoutExtension(model.audioanswer.FileName);
-                byte[] sourceaudioanswer = null;
+                var urlaudio = $"/{api}/{model.fullName}";
+                var text = Path.GetFileNameWithoutExtension(model.audio.FileName);
+                byte[] sourceaudio = null;
                 using (var ms = new MemoryStream())
                 {
-                    await model.audioanswer.CopyToAsync(ms);
-                    sourceaudioanswer = ms.ToArray();
+                    await model.audio.CopyToAsync(ms);
+                    sourceaudio = ms.ToArray();
                 }
 
-                data.audioanswer = sourceaudioanswer;
-                data.textanswer = textanswer;
-                data.urlaudioanswer = model.domain + urlaudioanswer;
+                data.textEn = model.textEn;
+                data.textVn = model.textVn;
+                data.fullName = model.fullName;
+
+                data.audio = sourceaudio;
+
+                data.urlaudio = model.domain + urlaudio;
             }
 
-            if (model.audioquestion != null)
-            {
-                var urlaudioquestion = $"/{api}/{model.audioquestion.FileName}";
-                var textquestion = Path.GetFileNameWithoutExtension(model.audioquestion.FileName);
-                byte[] sourceaudioquestion = null;
-                using (var ms = new MemoryStream())
-                {
-                    await model.audioquestion.CopyToAsync(ms);
-                    sourceaudioquestion = ms.ToArray();
-                }
-                data.audioquestion = sourceaudioquestion;
-                data.textquestion = textquestion;
-                data.urlaudioquestion = model.domain + urlaudioquestion;
-            }
-            data.categoryfilmid = model.categoryfilmid;
             data.dataDb = new DataDbJson
             {
                 createdBy = Int32.Parse(_currentUserService.userId),

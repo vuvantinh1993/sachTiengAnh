@@ -44,11 +44,11 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
 
   creatForm() {
     this.myForm = this.fb.group({
-      audioquestion: [null], // Cấp độ
-      textquestion: [null], // Tên bộ phim
-      audioanswer: [null], // Điểm số cho từng câu hỏi
-      textanswer: [null], // Điểm số cho từng câu hỏi
+      audio: [null], // Điểm số cho từng câu hỏi
+      textVn: [null], // Điểm số cho từng câu hỏi
+      textEn: [null], // Điểm số cho từng câu hỏi
       categoryfilmid: [null], // Điểm số cho từng câu hỏi
+      fullName: [null],
       dataDb: this.fb.group({
         status: [{ value: true }],
       })
@@ -78,17 +78,16 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     if (this.myForm.invalid) { return; }
     this.myForm.value.dataDb.status = this.myForm.value.dataDb.status ? 1 : 0;
 
-    this.formData.append('textquestion', this.myForm.get('textquestion').value);
-    this.formData.append('textanswer', this.myForm.get('textanswer').value);
-    this.formData.append('categoryfilmid', this.myForm.get('categoryfilmid').value);
+    this.formData.append('textVn', this.myForm.get('textVn').value);
+    this.formData.append('textEn', this.myForm.get('textEn').value);
     this.formData.append('status', this.myForm.value.dataDb.status);
+    this.formData.append('fullName', this.myForm.get('fullName').value);
 
 
     console.log(this.formData.getAll('status'));
-    console.log(this.formData.getAll('textquestion'));
-    console.log(this.formData.getAll('textanswer'));
-    console.log(this.formData.getAll('audioanswer'));
-    console.log(this.formData.getAll('audioquestion'));
+    console.log(this.formData.getAll('textVn'));
+    console.log(this.formData.getAll('textEn'));
+    console.log(this.formData.getAll('audio'));
 
     const rs = ((!this.item) ? await this.extraoneService.add(this.formData)
       : await this.extraoneService.edit(this.item.id as number, this.formData));
@@ -99,34 +98,29 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       }
       this.item = rs.result;
     } else {
-      this.formData
       this.message.error('Lỗi! Lưu thất bại');
     }
   }
 
 
-  upload(event, name: string) {
+  upload(event) {
     if (event.target.files.length > 0) {
-      if (name === 'audioanswer') {
-        const profile1 = event.target.files[0];
-        this.myForm.get('audioanswer').setValue(profile1);
-        console.log('aaaasssssss', this.myForm.get('audioanswer').value);
+      const profile1 = event.target.files[0];
+      this.myForm.get('audio').setValue(profile1);
+      this.formData.append('audio', this.myForm.get('audio').value);
 
-        this.formData.append('audioanswer', this.myForm.get('audioanswer').value);
-      }
-      if (name === 'audioquestion') {
-        const profile2 = event.target.files[0];
-        this.myForm.get('audioquestion').setValue(profile2);
-        this.formData.append('audioquestion', this.myForm.get('audioquestion').value);
-      }
+      console.log('aaaasssssss', this.myForm.get('audio').value);
+      const text = this.myForm.get('audio').value.name;
+      const textEn = text.substring(2, text.indexOf('-'));
+      const textVn = text.substring(text.indexOf('-') + 2, text.length - 4);
+      this.myForm.controls.textVn.setValue(textVn);
+      this.myForm.controls.textEn.setValue(textEn);
+
+      // chỉnh sửa đường dẫn cho url
+      let fullName = textEn.replace(/[\.\!\s\,\-\+\?]+/gi, '_'); // nếu có tất cả kí tự trên thì thay bằng '_'
+      fullName = fullName.replace(/_$/gi, ''); // nếu giá trị cuối là '_' thì xóa
+      fullName = fullName.replace(/[\']/gi, ''); // neew chuỗi xuất hiện dấu "'" thì xóa
+      this.myForm.controls.fullName.setValue(fullName);
     }
   }
-
-
-
-
-
-
-
-
 }

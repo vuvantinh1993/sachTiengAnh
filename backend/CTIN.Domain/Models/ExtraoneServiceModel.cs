@@ -16,11 +16,10 @@ namespace CTIN.Domain.Models
 
     public class Add_ExtraoneServiceModel
     {
-        public IFormFile audioquestion { get; set; }
-        public string textquestion { get; set; }
-        public IFormFile audioanswer { get; set; }
-        public string textanswer { get; set; }
-        public int? categoryfilmid { get; set; }
+        public IFormFile audio { get; set; }
+        public string textVn { get; set; }
+        public string textEn { get; set; }
+        public string fullName { get; set; }
         public List<int> doubtid { get; set; }
         public List<int> unselectid { get; set; }
         public Add_ExtraoneModel_DataDbJson dataDb { get; set; }

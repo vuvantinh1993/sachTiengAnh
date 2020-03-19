@@ -49,9 +49,8 @@
         <th nzWidth="62px" nzShowCheckbox [nzChecked]="exTableService.isSelectAll(listOfData)"
           (nzCheckedChange)="exTableService.changeSelected($event, listOfData)"></th>
         <th class="text-center">STT</th>
-        <th class="text-center">Câu hỏi</th>
-        <th class="text-center">Câu trả lời</th>
-        <th class="text-center">Danh mục</th>
+        <th class="text-center">Tiếng Anh</th>
+        <th class="text-center">Tiếng Việt</th>
         <th class="text-center">Nghi vấn</th>
         <th class="text-center">unselect</th>
         <th class="text-center">Ngày tạo</th>
@@ -65,9 +64,8 @@
       <tr *ngFor="let item of listOfData; let i = index">
         <td nzShowCheckbox [(nzChecked)]="item.selected"></td>
         <td class="text-center">{{i+1}}</td>
-        <td class="text-center">{{item.textquestion}}</td>
-        <td class="text-center">{{item.textanswer}}</td>
-        <td class="text-center">{{item.categoryfilmid}}</td>
+        <td>{{item.textEn}}</td>
+        <td>{{item.textVn}}</td>
         <td class="text-center">{{item.doubtid}}</td>
         <td class="text-center">{{item.unselectid}}</td>
         <td class="text-center">{{item.dataDb.createdBy}} : {{item.dataDb.createdDate | dateFormat}}</td>
