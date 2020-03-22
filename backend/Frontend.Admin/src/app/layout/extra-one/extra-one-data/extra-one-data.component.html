@@ -20,6 +20,13 @@
             </legend>
             <div class="row">
               <div class="form-group col-md-12">
+                <label> File tải lên <span class="text-danger"> * </span></label>
+                <input type="file" (change)="upload($event)" multiple="multiple">
+                <render-error [data]="myForm.get('audio')"></render-error>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12">
                 <label>Tiếng Anh <span class="text-danger"><b> *</b></span> </label>
                 <input-text class="form-control" formControlName="textEn" [placeholder]="'Nhập tên phim'">
                 </input-text>
@@ -34,14 +41,6 @@
                 <render-error [data]="myForm.get('textVn')"></render-error>
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-md-12">
-                <label> file tải lên <span class="text-danger"> * </span></label>
-                <input type="file" (change)="upload($event)" multiple="multiple">
-                <render-error [data]="myForm.get('audio')"></render-error>
-              </div>
-            </div>
-
             <video width="320" height="240" autoplay>
               <source src="{{item?.urlaudio}}" type="video/mp4">
             </video>

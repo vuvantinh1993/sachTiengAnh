@@ -17,5 +17,7 @@ namespace CTIN.DataAccess.Models
         public List<int> doubtid { get; set; }
         public List<int> unselectid { get; set; }
         public DataDbJson dataDb { get; set; }
+        public long? size { get; set; }
+        public int stt { get; set; }
     }
 }

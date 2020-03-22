@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CTIN.Domain.Services
@@ -62,6 +63,17 @@ namespace CTIN.Domain.Services
                 x.answerWrongVn
             }).AsQueryable();
 
+            //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
+            //ReadFolderAndThenUploadDBAndCopyFile();
+
+            //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
+            //var listId = _db.Extraone.Select(x => x.id).ToList();
+
+            //foreach (var i in listId)
+            //{
+            //    UpdateAnserWrong(i);
+            //}
+
             if (model.where != null)
             {
                 query = query.WhereLoopback(model.whereLoopback);
@@ -87,26 +99,32 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model)
         {
             var errors = new List<ErrorModel>();
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files", "extraOne");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+
+            var guid = Guid.NewGuid().ToString();
+            var extension = Path.GetExtension(model.audio.FileName);
+            var fileName = $"{guid}_{ model.fullName}" + extension;
+            var filePath = Path.Combine(folderPath, fileName);
+            using (var stream = File.Create(filePath))
+            {
+                await model.audio.CopyToAsync(stream);
+            }
+            model.fullName = $"/files/extraOne/{fileName}";
+
             var data = new Extraone();
-            var api = "api/Extraone/dowload";
             if (model.audio != null)
             {
-                var urlaudio = $"/{api}/{model.fullName}";
-                var text = Path.GetFileNameWithoutExtension(model.audio.FileName);
-                byte[] sourceaudio = null;
-                using (var ms = new MemoryStream())
-                {
-                    await model.audio.CopyToAsync(ms);
-                    sourceaudio = ms.ToArray();
-                }
-
                 data.textEn = model.textEn;
                 data.textVn = model.textVn;
                 data.fullName = model.fullName;
-
-                data.audio = sourceaudio;
-
-                data.urlaudio = model.domain + urlaudio;
+                data.urlaudio = model.domain + model.fullName;
+                data.size = model.audio.Length;
             }
 
             data.dataDb = new DataDbJson
@@ -228,5 +246,113 @@ namespace CTIN.Domain.Services
             return (result, errors);
         }
 
+
+
+        // Đọc toàn bộ thư mục rồi lưu vào database và copy sang thư mục khác
+        public void ReadFolderAndThenUploadDBAndCopyFile(string targetDirectory = "C:\\Users\\TINHVU\\Desktop\\extra2\\filecut")
+        {
+            // Process the list of files found in the directory.
+            string[] fileEntries = Directory.GetFiles(targetDirectory);
+
+            var listFileName = new string[30];
+
+            foreach (string fileName in fileEntries)
+            {
+                var name = fileName.Substring(fileName.IndexOf("t\\") + 2);
+                var stt = name.Substring(0, name.IndexOf('.'));
+                listFileName[Convert.ToInt32(stt)] = fileName;
+            }
+
+
+            foreach (string fileName in listFileName)
+            {
+                if (fileName != null)
+                {
+                    var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files", "extraOne");
+
+                    // cắt chuỗi textVN và TextEN
+                    var name = fileName.Substring(fileName.IndexOf("t\\") + 2);
+                    var stt = name.Substring(0, name.IndexOf('.'));
+                    var textEn = name.Substring(name.IndexOf('.') + 1, name.IndexOf('-') - name.IndexOf('.') - 2);
+                    var textVn = name.Substring(name.IndexOf('-') + 2);
+
+                    // chỉnh sửa đường dẫn cho url
+                    var fullName = Regex.Replace(textEn, @"[\.\!\s\,\-\+\?\`]", "_");
+                    fullName = Regex.Replace(fullName, @"_$", "");
+                    fullName = Regex.Replace(fullName, @"[\']", "");
+
+                    textVn = textVn.Substring(0, textVn.Length - 4);
+
+                    // Kiểm tra nếu cuối câu trả lời có dấu '`' thì nó là câu hỏi, cần thêm dấu '?' vào cuối câu
+                    var checkQuest = textVn[textVn.Length - 1];
+                    if (checkQuest == '`')
+                    {
+                        textEn = textEn + '?';
+                        textVn = textVn.Substring(0, textVn.Length - 1) + '?';
+                    }
+
+                    // fullname, urlaudio
+                    var guid = Guid.NewGuid().ToString();
+                    var fileNameNew = $"{stt}_{guid}_{fullName}" + ".mp4";
+                    fullName = $"/files/extraOne/{fileNameNew}";
+                    var urlaudio = $"http://localhost:5000{fullName}";
+                    var stream = Path.Combine(folderPath, fileNameNew);
+
+                    File.Copy(fileName, stream);
+
+                    var data = new Extraone();
+                    data.textEn = textEn;
+                    data.textVn = textVn;
+                    data.fullName = fullName;
+                    data.urlaudio = urlaudio;
+                    data.stt = Convert.ToInt32(stt);
+                    data.dataDb = new DataDbJson
+                    {
+                        createdBy = Int32.Parse(_currentUserService.userId),
+                        createdDate = DateTime.Now
+                    };
+                    _db.Extraone.Add(data);
+                    _db.SaveChanges();
+
+                }
+            }
+        }
+
+        // Update vào 2 trường answerWrongEn và answerWrongVn trong DB
+        public void UpdateAnserWrong(int Idstt)
+        {
+            List<int> checkId = new List<int>();
+            var listId = _db.Extraone.Where(x => x.id != Idstt).Select(x => x.id).ToList();
+            var data = _db.Extraone.FirstOrDefault(x => x.id == Idstt);
+
+            Random ran = new Random();
+            int mynum = ran.Next(listId.Min(), listId.Max());
+            string listStringEn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textEn;
+            string listStringVn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textVn;
+
+            for (int i = 0; i < 6; i++)
+            {
+                while (checkId.Contains(mynum))
+                {
+                    mynum = ran.Next(listId.Min(), listId.Max());
+                }
+                if (i != 0)
+                {
+                    var textEn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textEn;
+                    var textVn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textVn;
+                    listStringEn = listStringEn + " *** " + textEn;
+                    listStringVn = listStringVn + " *** " + textVn;
+                }
+                checkId.Add(mynum);
+            }
+            var update = new
+            {
+                answerWrongEn = listStringEn,
+                answerWrongVn = listStringVn
+            };
+            var model = data.Patch(update);
+            _db.Entry(data).CurrentValues.SetValues(model);
+            _db.SaveChanges();
+        }
     }
 }

@@ -31,6 +31,8 @@ namespace CTIN.Domain.Models
         }
 
         public string domain { get; set; }
+        public int? size { get; set; }
+        public int? stt { get; set; }
 
     }
 

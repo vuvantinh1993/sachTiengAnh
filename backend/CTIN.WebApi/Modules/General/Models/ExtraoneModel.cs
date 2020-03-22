@@ -4,6 +4,7 @@ using CTIN.Common.Models;
 using CTIN.DataAccess.Contexts;
 using CTIN.Domain.Models;
 using CTIN.WebApi.Bases.Swagger;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace CTIN.WebApi.Modules.General.Models
 
     public class Search_ExtraoneModel : Search_ExtraoneServiceModel
     {
+    }
+
+    public class Add_ExtraoneModelaaaa
+    {
+        public IFormFile audio { get; set; }
     }
 
     public class Add_ExtraoneModel : Add_ExtraoneServiceModel

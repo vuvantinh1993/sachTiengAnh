@@ -70,7 +70,7 @@ namespace CTIN.Common.Models
     {
         public SearchModel()
         {
-            order = "[{\"id\": false}]";
+            order = "[{\"id\": true}]";
             page = 1;
             size = 10;
         }

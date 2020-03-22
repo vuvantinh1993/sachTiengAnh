@@ -111,16 +111,24 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
 
       console.log('aaaasssssss', this.myForm.get('audio').value);
       const text = this.myForm.get('audio').value.name;
-      const textEn = text.substring(2, text.indexOf('-'));
-      const textVn = text.substring(text.indexOf('-') + 2, text.length - 4);
+      let textEn = text.substring(text.indexOf('.') + 1, text.indexOf('-') - 1);
+      let textVn = text.substring(text.indexOf('-') + 2, text.length - 4);
+      const checkQuest = textVn[textVn.length - 1];
+      console.log('checkQuest', checkQuest);
+
+      if (checkQuest === '`') {
+        textEn = textEn + '?';
+        textVn = textVn.substring(0, textVn.length - 1) + '?';
+      }
       this.myForm.controls.textVn.setValue(textVn);
       this.myForm.controls.textEn.setValue(textEn);
 
       // chỉnh sửa đường dẫn cho url
-      let fullName = textEn.replace(/[\.\!\s\,\-\+\?]+/gi, '_'); // nếu có tất cả kí tự trên thì thay bằng '_'
+      let fullName = textEn.replace(/[\.\!\s\,\-\+\?\`]+/gi, '_'); // nếu có tất cả kí tự trên thì thay bằng '_'
       fullName = fullName.replace(/_$/gi, ''); // nếu giá trị cuối là '_' thì xóa
       fullName = fullName.replace(/[\']/gi, ''); // neew chuỗi xuất hiện dấu "'" thì xóa
       this.myForm.controls.fullName.setValue(fullName);
     }
   }
+
 }
