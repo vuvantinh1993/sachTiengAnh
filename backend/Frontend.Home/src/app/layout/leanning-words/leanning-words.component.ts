@@ -20,7 +20,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public finishload = false;
   public totalSentenceRight = 0;
   public SentenceIsTrue = true;
-  public counter = 102;
+  public counter = 100;
   public data: any;
   public datalist: any[];
   public item: any;
@@ -33,7 +33,8 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     { id: 1, name: 'Hiện' }
   ];
   urlSafe: SafeResourceUrl;
-
+  public abs: number = -1;
+  public intervalId = null;
   constructor(
     private extraoneService: ExtraoneService,
     public sanitizer: DomSanitizer,
@@ -44,16 +45,15 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
   ngOnInit() {
     this.getData();
+    this.countdown();
   }
 
   countdown() {
-    const intervalId = setInterval(() => {
-      this.counter = this.counter - 2;
+    this.intervalId = setInterval(() => {
       this.extran = this.counter + '%';
-      console.log(this.extran);
-
-      if (this.counter === 0) { clearInterval(intervalId); }
-    }, 200);
+      this.counter = this.counter - 0.1;
+      if (this.counter === 0) { clearInterval(this.intervalId); }
+    }, 10);
   }
 
 
@@ -125,18 +125,38 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   kiemtraketqua(target, key) {
+    this.abs = target.value;
+    console.log(target);
     if (+target.value === key) {
       console.log('giá trị đúng');
+      clearInterval(this.intervalId);
+      setTimeout(() => {
+        this.counter = 100;
+        this.countdown();
+      }, 1000);
       target.checked = false;
       if (this.SentenceIsTrue) {
         this.totalSentenceRight++;
       }
       this.SentenceIsTrue = true;
       console.log(this.totalSentenceRight);
-      this.wordNumber++;
+      setTimeout(() => { this.wordNumber++ }, 1000);
     } else {
       this.SentenceIsTrue = false;
+
       console.log('giá trị sai');
     }
+    setTimeout(() => { this.abs = -1 }, 1000);
+  }
+
+  isCheck(num, key) {
+    let check = '';
+    if (num === key) {
+      console.log('giá trị đúng');
+      check = 'fa-check  text-success';
+    } else {
+      check = 'fa-times  text-danger';
+    }
+    return check;
   }
 }
