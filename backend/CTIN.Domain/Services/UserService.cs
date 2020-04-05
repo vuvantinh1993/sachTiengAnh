@@ -30,6 +30,8 @@ namespace CTIN.Domain.Services
         Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_UserServiceModel model);
 
         Task<(int data, List<ErrorModel> errors)> Count(Count_UserServiceModel model);
+
+        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight);
     }
 
     public class UserService : IUserService
@@ -189,6 +191,56 @@ namespace CTIN.Domain.Services
 
             var result = await query.CountAsync();
             return (result, errors);
+        }
+
+        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight)
+        {
+            var userId = 100014;
+            var errors = new List<ErrorModel>();
+            var data = await _db.User.FirstOrDefaultAsync(x => x.id == userId);
+            var film = await _db.Categoryfilm.FirstOrDefaultAsync(x => x.id == idfilm);
+            var filmleanning = new List<userfilmleanningDataJson>();
+            if (data == null || film == null)
+            {
+                errors.Add(new ErrorModel { key = "notExist", value = "Không tồn tại tài khoản hoặc film" });
+                return (null, errors);
+            }
+            var update = data.JsonToString().JsonToObject<User>();
+            foreach (var item in data.filmleanning)
+            {
+                if (item.sttWord != sttWord)
+                {
+                    errors.Add(new ErrorModel { key = "sttWordWrong", value = "Có gì đó không đúng! Bạn chưa học từ trước đó" });
+                    return (null, errors);
+                }
+                if (item.filmid == idfilm)
+                {
+                    if (sttWord > 0)
+                    {
+                        var c = new wordleanedDataJson();
+                        c.stt = sttWord;
+                        c.time = DateTime.UtcNow;
+                        c.check = 1;
+                        c.classic = 1;
+                        item.sttWord = sttWord + 1;
+                        item.wordleaned.Add(c);
+                    }
+                    else
+                    {
+                        item.sttWord = sttWord + 1;
+                    }
+                }
+                filmleanning.Add(item);
+            }
+            update.filmleanning = filmleanning;
+            update.point += totalSentenceRight * film.pointword;
+            _db.Entry(data).CurrentValues.SetValues(update);
+            if (await _db.SaveChangesAsync() > 0)
+            {
+                return (update, errors);
+            }
+            errors.Add(new ErrorModel { key = "", value = "update fail" });
+            return (null, errors);
         }
 
     }

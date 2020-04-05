@@ -19,5 +19,8 @@ namespace CTIN.DataAccess.Models
         public DataDbJson dataDb { get; set; }
         public long? size { get; set; }
         public int stt { get; set; }
+        public int categoryfilmid { get; set; }
+
+        public Categoryfilm categoryfilm { get; set; }
     }
 }

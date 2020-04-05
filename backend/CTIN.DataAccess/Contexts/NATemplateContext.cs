@@ -82,10 +82,19 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.pointword).HasColumnName("pointword");
 
+                entity.Property(e => e.discription).HasColumnName("discription");
+
+                entity.Property(e => e.linkImg).HasColumnName("linkImg");
+
+                entity.Property(e => e.totalWord).HasColumnName("totalWord");
+
+                entity.Property(e => e.totalUser).HasColumnName("totalUser").HasDefaultValue(0);
+
                 entity.Property(e => e.name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasMaxLength(50);
+
             });
 
             modelBuilder.Entity<Extraone>(entity =>
@@ -162,39 +171,23 @@ namespace CTIN.DataAccess.Contexts
                     .HasMaxLength(200)
                     .IsUnicode(false).IsJson();
 
-                entity.Property(e => e.email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.filmleanning)
                     .HasColumnName("filmleanning")
                     .IsUnicode(false).IsJson();
+
+                entity.Property(e => e.information)
+                    .HasColumnName("information")
+                    .IsUnicode(true).IsJson();
 
                 entity.Property(e => e.listfrendid)
                     .HasColumnName("listfrendid")
                     .IsUnicode(false).IsJson();
 
-                entity.Property(e => e.name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(50);
+                entity.Property(e => e.point).HasColumnName("point").HasDefaultValue(0);
 
-                entity.Property(e => e.password)
-                    .IsRequired()
-                    .HasColumnName("password")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.phone)
-                    .HasColumnName("phone")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.point).HasColumnName("point");
             });
-
         }
     }
 }

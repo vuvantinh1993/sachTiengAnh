@@ -1,3 +1,5 @@
+import { UserService } from './../../_shared/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 import { ExtensionService } from './../../_base/services/extension.service';
 import { ExtentionTableService } from './../../_base/services/extention-table.service';
 import { ExtraoneService } from './../../_shared/services/extraone.service';
@@ -8,6 +10,7 @@ import { take, map } from 'rxjs/operators';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { debug } from 'util';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-leanning-words',
@@ -28,6 +31,8 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public answerWrongEn: string;
   public answerWrongVn: string;
   public wordNumber = 0;
+  public sttWordLenning: number;
+  public idfilm: number;
   public listStatus: any[] = [
     { id: 0, name: 'Ẩn' },
     { id: 1, name: 'Hiện' }
@@ -37,8 +42,11 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public intervalId = null;
   constructor(
     private extraoneService: ExtraoneService,
+    private route: ActivatedRoute,
     public sanitizer: DomSanitizer,
     public exTableService: ExtentionTableService,
+    private userService: UserService,
+    private message: NzMessageService,
     private ex: ExtensionService, ) {
     super();
   }
@@ -60,49 +68,184 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   async getData(page = 1) {
     this.data = null;
     this.datalist = [null];
+    const datalist2 = null;
     this.listOfData = [];
     this.paging.page = page;
 
     // where theo du lieu dau vao
     const where = { and: [] };
-    // tìm kiếm theo trạng thái
-
     if (where.and.length > 0) {
       this.paging.where = where;
     } else {
       delete this.paging.where;
     }
     this.isLoading = true;
-    const rs = await this.extraoneService.get(this.paging);
+    this.idfilm = +this.route.snapshot.paramMap.get('idfilm');
+    const rs = await this.extraoneService.getWords(this.idfilm);
     console.log('Get tai lieu', rs.result);
     this.isLoading = false;
-    if (rs.ok && rs.result) {
+    if (rs.ok && rs.result && (rs.result.data.length !== 0)) {
       this.data = rs.result.data;
-      let i = 0;
-      this.data.forEach(x => {
-        this.answerWrongEn = x.answerWrongEn.split(' *** ');
-        this.answerWrongVn = x.answerWrongVn.split(' *** ');
-        const listanswerVn = this.getAnswer(this.answerWrongVn, x.textVn);
-        const listanswerEn = this.getAnswer(this.answerWrongEn, x.textEn);
-        const urlaudio = this.sanitizer.bypassSecurityTrustResourceUrl(x.urlaudio);
-        this.datalist[i] = { listanswerVn, listanswerEn, urlaudio };
-        i++;
-      });
+      this.sttWordLenning = this.data.sttWord;
+      this.data = this.data.data;
+      console.log('this.data', this.data);
+      this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
     }
-    console.log('this.listOfData', this.datalist);
-    console.log(this.datalist[0].listanswerVn.result[0]);
-
-
     if (this.data) {
-      this.listOfData = this.data;
-      this.paging = rs.result.paging;
+      this.finishload = true;
     }
-    this.finishload = true;
   }
+
+  // dùng để trộn các câu theo lịch trình
+  tron10Cau(sttWord) {
+    let listda = [];
+
+    if (sttWord > 2) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 0, 3);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 0, 2);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '4') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('listda', listda);
+        }
+      }
+    } else if (sttWord === 2) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 0, 3);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 0, 2);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 1, 1);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '4') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('listda', listda);
+        }
+      }
+    } else if (sttWord === 1) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 0, 3);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 0, 2);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+          console.log('tinh', listda);
+        }
+        if (key === '4') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('listda', listda);
+        }
+      }
+    } else if (sttWord === 0) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 1, 2);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 3, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('tinh', listda);
+        }
+        if (key === '4') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('listda', listda);
+        }
+      }
+    } else if (sttWord === -1) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 4, 0);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 3, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 2, 0);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 1, 0);
+          listda = listda.concat(list);
+          console.log('tinh', listda);
+        }
+      }
+    }
+    console.log('listda', listda);
+    listda = this.tronMang(listda);
+    console.log('listda', this.tronMang(listda));
+    return listda;
+  }
+
+  /// Chuyển câu số x thành n câu đúng (trong đó có n câu tiếng Anh, y câu tiếng việt)
+  /// trả về mảng câu theo ý muốn
+  laySoCauTheoTu(sour: any, numberEn: number, numberVn: number) {
+    const listdata = [];
+    this.answerWrongEn = sour.answerWrongEn.split(' *** ');
+    this.answerWrongVn = sour.answerWrongVn.split(' *** ');
+    for (let i = 0; i < numberEn; i++) {
+      const listanswerEn = this.getAnswer(this.answerWrongEn, sour.textEn, sour.urlaudio);
+      listdata.push(listanswerEn);
+    }
+    for (let i = 0; i < numberVn; i++) {
+      const listanswerVn = this.getAnswer(this.answerWrongVn, sour.textVn, sour.urlaudio);
+      listdata.push(listanswerVn);
+    }
+    return listdata;
+  }
+
 
   // input mảng dữ liệu sai và 1 sting đúng
   // return mảng 4 phần tử và vị trí nhần tử đúng
-  getAnswer(sourceArray, stringRight: string) {
+  getAnswer(sourceArray, stringRight: string, urlaudio: string) {
     const randomInFour = Math.floor(Math.random() * 4);
     const result = [];
     const checkInFour = [];
@@ -121,8 +264,26 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         result[i] = sourceArray[randomInSource];
       }
     }
+    result[5] = this.sanitizer.bypassSecurityTrustResourceUrl(urlaudio);
     return { result, key };
   }
+
+  // trộn 1 mảng bất kì
+  tronMang(arr: any[]) {
+    const arrReturn = [];
+    const leng = arr.length;
+    const check = [];
+    for (let i = 0; i < leng; i++) {
+      let random = Math.floor(Math.random() * leng);
+      while (check.includes(random)) {
+        random = Math.floor(Math.random() * leng);
+      }
+      check.push(random);
+      arrReturn.push(arr[random]);
+    }
+    return arrReturn;
+  }
+
 
   kiemtraketqua(target, key) {
     this.abs = target.value;
@@ -140,23 +301,42 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       }
       this.SentenceIsTrue = true;
       console.log(this.totalSentenceRight);
-      setTimeout(() => { this.wordNumber++ }, 1000);
+      setTimeout(async () => {
+        if (this.wordNumber === 9) {
+          // nếu hoàn thành 10 câu thì sẽ update dữ liệu
+          const rs = await this.userService.updateWordlened(this.idfilm, this.sttWordLenning, this.totalSentenceRight);
+          console.log('tinhrs', rs);
+          if (rs.ok) {
+            this.message.success('Lưu thành công, chuyển bài mới');
+            this.wordNumber = 0;
+            this.finishload = false;
+            this.getData();
+          } else {
+            this.message.error('Lỗi! Lưu thất bại');
+          }
+        } else {
+          this.wordNumber++;
+        }
+      }, 1000);
     } else {
       this.SentenceIsTrue = false;
 
       console.log('giá trị sai');
     }
-    setTimeout(() => { this.abs = -1 }, 1000);
+    setTimeout(() => { this.abs = -1; }, 1000);
   }
 
   isCheck(num, key) {
     let check = '';
     if (num === key) {
-      console.log('giá trị đúng');
       check = 'fa-check  text-success';
     } else {
       check = 'fa-times  text-danger';
     }
     return check;
+  }
+
+  vidEnded(event) {
+    console.log('video ket thuc', event);
   }
 }

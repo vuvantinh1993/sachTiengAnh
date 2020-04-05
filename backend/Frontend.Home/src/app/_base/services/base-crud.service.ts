@@ -33,12 +33,17 @@ export class BaseCrudService<T> {
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 
+  public getWords(idfilm: number) {
+    const api = this.http.get<PagedListModel<T>>(`${this.baseUrl}/word/${idfilm}`);
+    return this.bindDataExtensionService.bindResponseApi(api);
+  }
+
   public add(body: any) {
     const api = this.http.post<T>(`${this.baseUrl}`, body);
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public edit(id: number|string, body: any) {
+  public edit(id: number | string, body: any) {
     const api = this.http.put<T>(`${this.baseUrl}/${id}`, body);
     return this.bindDataExtensionService.bindResponseApi(api);
   }
@@ -63,8 +68,8 @@ export class BaseCrudService<T> {
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public count(params:any=null) {
-    const api = this.http.get<T>(`${this.baseUrl}/Count`,{ params: this.stringifyParams(params) });
+  public count(params: any = null) {
+    const api = this.http.get<T>(`${this.baseUrl}/Count`, { params: this.stringifyParams(params) });
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 

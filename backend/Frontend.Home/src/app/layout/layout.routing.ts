@@ -13,11 +13,11 @@ const routes: Routes = [
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
       },
       {
-        path: 'extra-1',
+        path: 'phim/:id',
         loadChildren: () => import('./list-words-film/list-words-film.module').then(m => m.ListWordsFilmModule)
       },
       {
-        path: 'leanning-words',
+        path: 'leanning-words/:idfilm',
         loadChildren: () => import('./leanning-words/leanning-words.module').then(m => m.LeanningWordsModule)
       }
     ]

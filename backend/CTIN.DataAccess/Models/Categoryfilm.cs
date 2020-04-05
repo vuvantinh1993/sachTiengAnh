@@ -11,5 +11,9 @@ namespace CTIN.DataAccess.Models
         public string name { get; set; }
         public byte pointword { get; set; }
         public DataDbJson dataDb { get; set; }
+        public string discription { get; set; }
+        public string linkImg { get; set; }
+        public int totalWord { get; set; }
+        public int totalUser { get; set; }
     }
 }

@@ -15,4 +15,9 @@ export class UserService extends BaseCrudService<any> {
     super(http, bindDataExtensionService);
     this.baseUrl = 'User';
   }
+
+  public updateWordlened(idfilm: number, sttWord: number, totalSentenceRight: number) {
+    const api = this.http.get<any>(`${this.baseUrl}/updateWordlened/${idfilm}/${sttWord}/${totalSentenceRight}`);
+    return this.bindDataExtensionService.bindResponseApi(api);
+  }
 }

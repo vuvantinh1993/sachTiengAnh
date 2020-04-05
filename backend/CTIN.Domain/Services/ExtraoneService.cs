@@ -20,6 +20,7 @@ namespace CTIN.Domain.Services
 {
     public interface IExtraoneService
     {
+        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(int idfilm, Search_ExtraoneServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_ExtraoneServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model);
 
@@ -47,6 +48,77 @@ namespace CTIN.Domain.Services
             _currentUserService = currentUserService;
         }
 
+        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(int idfilm, Search_ExtraoneServiceModel model)
+        {
+            #region update video vào bảng
+            //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
+            //ReadFolderAndThenUploadDBAndCopyFile();
+
+            //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
+            //var listId = _db.Extraone.Select(x => x.id).ToList();
+
+            //foreach (var i in listId)
+            //{
+            //    UpdateAnserWrong(i);
+            //}
+            #endregion
+            var errors = new List<ErrorModel>();
+            var userId = 100014;
+
+            // trả về vị trí từ đang học của film
+            var rs = positionWordStop(userId, idfilm);
+            if (rs.sttWord == -2)
+            {
+                return (null, rs.errors, new PagingModel { });
+            }
+            else
+            {
+                var statusActive = (int)StatusDb.Nomal;
+                var statusHide = (int)StatusDb.Hide;
+                var stt = rs.sttWord;
+                if (stt < 2)
+                {
+                    if (stt == -1)
+                    {
+                        model.size = 4;
+                    }
+                    stt = 1;
+                }
+                var query = _db.Extraone.Where(x => x.categoryfilmid == idfilm).Where(x => x.stt >= stt).Select(x => new
+                {
+                    x.id,
+                    x.textVn,
+                    x.textEn,
+                    x.dataDb,
+                    x.urlaudio,
+                    x.answerWrongEn,
+                    x.answerWrongVn,
+                    x.categoryfilmid,
+                }).AsQueryable();
+
+                if (model.where != null)
+                {
+                    query = query.WhereLoopback(model.whereLoopback);
+
+                    if (!model.whereLoopback.HaveWhereStatusDb()) //default where statusdb is active
+                    {
+                        query = query.Where(x =>
+                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                    }
+                }
+                else
+                {
+                    query = query.Where(x =>
+                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                }
+
+                query = query.OrderByLoopback(model.orderLoopback);
+                var result = query.ToPaging(model);
+                return (new { result.data, rs.sttWord }, errors, result.paging);
+            }
+        }
+
+
         public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_ExtraoneServiceModel model)
         {
             var errors = new List<ErrorModel>();
@@ -60,19 +132,9 @@ namespace CTIN.Domain.Services
                 x.dataDb,
                 x.urlaudio,
                 x.answerWrongEn,
-                x.answerWrongVn
+                x.answerWrongVn,
+                x.categoryfilmid,
             }).AsQueryable();
-
-            //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
-            //ReadFolderAndThenUploadDBAndCopyFile();
-
-            //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
-            //var listId = _db.Extraone.Select(x => x.id).ToList();
-
-            //foreach (var i in listId)
-            //{
-            //    UpdateAnserWrong(i);
-            //}
 
             if (model.where != null)
             {
@@ -93,8 +155,8 @@ namespace CTIN.Domain.Services
             query = query.OrderByLoopback(model.orderLoopback);
             var result = query.ToPaging(model);
             return (result.data, errors, result.paging);
-        }
 
+        }
 
         public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model)
         {
@@ -244,6 +306,97 @@ namespace CTIN.Domain.Services
 
             var result = await query.CountAsync();
             return (result, errors);
+        }
+
+
+        /// <summary>
+        /// Tìm vị trí đang học của từ đó tương ứng với film cần tìm nếu chưa có thì nó là -1
+        /// </summary>
+        /// <param name="userId">Id của người dùng</param>
+        /// <param name="idFilm">Id của film</param>
+        /// <returns>Trả về vị trí của từu cần học trong phim, nếu chưa có thì tạo mới gán giá trị bằng -1, còn -2 là lỗi</returns>
+        public (int sttWord, List<ErrorModel> errors) positionWordStop(int userId, int idFilm)
+        {
+            var errors = new List<ErrorModel>();
+            var data = _db.User.FirstOrDefault(x => x.id == userId);
+            if (data == null)
+            {
+                errors.Add(new ErrorModel { key = "NotExitUser", value = "Không tồn tại người dùng" });
+                return (-2, errors);
+            }
+            else
+            {
+                // nếu chưa có thì tạo mới 1 object film
+                if (data.filmleanning == null)
+                {
+                    var update = data.JsonToString().JsonToObject<User>();
+                    var filmlean = new userfilmleanningDataJson
+                    {
+                        filmid = idFilm,
+                        sttWord = -1,
+                        wordleaned = new List<wordleanedDataJson> { }
+                    };
+                    update.filmleanning = new List<userfilmleanningDataJson>();
+                    update.filmleanning.Add(filmlean);
+                    _db.Entry(data).CurrentValues.SetValues(update);
+
+
+                    // Them 1 người mới vào category film
+                    var categ = _db.Categoryfilm.FirstOrDefault(x => x.id == idFilm);
+                    if (categ != null)
+                    {
+                        var updatecate = new
+                        {
+                            totalUser = categ.totalUser + 1
+                        };
+                        _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
+                        if (_db.SaveChanges() > 0)
+                        {
+                            return (1, errors);
+                        }
+                    }
+                    errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });
+                    return (-2, errors);
+
+                }
+                else
+                {
+                    //kiểm tra bên trong có film đó chưa
+                    foreach (var item in data.filmleanning)
+                    {
+                        if (item.filmid == idFilm)
+                        {
+                            return (item.sttWord, errors);
+                        }
+                        else
+                        {
+                            var newfilm = new userfilmleanningDataJson();
+                            newfilm.filmid = idFilm;
+                            newfilm.sttWord = -1;
+                            newfilm.wordleaned = new List<wordleanedDataJson> { };
+                            _db.Entry(data).CurrentValues.SetValues(data.Patch(newfilm));
+
+                            // Them 1 người mới vào category film
+                            var categ = _db.Categoryfilm.FirstOrDefault(x => x.id == idFilm);
+                            if (categ != null)
+                            {
+                                var updatecate = new
+                                {
+                                    totalUser = categ.totalUser + 1
+                                };
+                                _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
+                                if (_db.SaveChanges() > 0)
+                                {
+                                    return (newfilm.sttWord, errors);
+                                }
+                            }
+                            errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });
+                            return (-2, errors);
+                        }
+                    }
+                }
+            }
+            return (-2, errors);
         }
 
 

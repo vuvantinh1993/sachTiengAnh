@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4" *ngIf="finishload">
   <div class="row justify-content-end">
     <div class="progress mr-3">
       <div class="progress-bar" [style.width]="extran" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -7,21 +7,21 @@
     <p><b>Câu: {{wordNumber+1}}/10 &nbsp;</b> <span>Tổng: 256/321 đã học</span></p>
   </div>
 
-  <div class="row" *ngIf="finishload">
+
+  <div class="row">
     <div class="col-4 d-flex align-items-center question pb-2">
-      <iframe width="100%" height="100%" [src]="datalist[wordNumber].urlaudio" frameborder="0"
+      <iframe width="100%" height="100%" [src]="datalist[wordNumber].result[5]" frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      <!-- <p> 2) I am hector, i from achentina, I am hector, i from achentina, I am hector, i from achentina</p> -->
     </div>
     <div class="col-8">
       <div class="row">
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="1" name="gender" value="0"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].listanswerEn.key)" hidden>
-            <label for="1"><b>A. </b> {{datalist[wordNumber].listanswerEn.result[0]}} </label><br>
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)" hidden>
+            <label for="1"><b>A. </b> {{datalist[wordNumber].result[0]}} </label><br>
             <div *ngIf="abs == 0">
-              <i class="fas fa-3x" [ngClass]="isCheck(0, datalist[wordNumber].listanswerEn.key)"></i>
+              <i class="fas fa-3x" [ngClass]="isCheck(0, datalist[wordNumber].key)"></i>
             </div>
           </div>
         </div>
@@ -29,10 +29,10 @@
           <div class="answer">
 
             <input type="radio" id="2" name="gender" value="1"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].listanswerEn.key)">
-            <label for="2"><b>B. </b> {{datalist[wordNumber].listanswerEn.result[1]}}</label><br>
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+            <label for="2"><b>B. </b> {{datalist[wordNumber].result[1]}}</label><br>
             <div *ngIf="abs == 1">
-              <i class="fas fa-3x" [ngClass]="isCheck(1, datalist[wordNumber].listanswerEn.key)"></i>
+              <i class="fas fa-3x" [ngClass]="isCheck(1, datalist[wordNumber].key)"></i>
             </div>
           </div>
         </div>
@@ -41,71 +41,24 @@
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="3" name="gender" value="2"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].listanswerEn.key)">
-            <label for="3"><b>C. </b>{{datalist[wordNumber].listanswerEn.result[2]}}</label>
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+            <label for="3"><b>C. </b>{{datalist[wordNumber].result[2]}}</label>
             <div *ngIf="abs == 2">
-              <i class="fas fa-3x" [ngClass]="isCheck(2, datalist[wordNumber].listanswerEn.key)"></i>
+              <i class="fas fa-3x" [ngClass]="isCheck(2, datalist[wordNumber].key)"></i>
             </div>
           </div>
         </div>
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="4" name="gender" value="3"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].listanswerEn.key)">
-            <label for="4"><b>D. </b> {{datalist[wordNumber].listanswerEn.result[3]}}</label>
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+            <label for="4"><b>D. </b> {{datalist[wordNumber].result[3]}}</label>
             <div *ngIf="abs == 3">
-              <i class="fas fa-3x" [ngClass]="isCheck(3, datalist[wordNumber].listanswerEn.key)"></i>
+              <i class="fas fa-3x" [ngClass]="isCheck(3, datalist[wordNumber].key)"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="col-8">
-      <div class="row justify-content-end">
-        <div class="col col-lg-5 answer mr-2 mb-2">
-          <i class="icon-volume-medium"></i>
-          <div class="check">
-            <input type="checkbox" value="None" id="squaredOne" name="check" />
-            <label for="squaredOne"></label>
-          </div>
-          <p> &nbsp; a) Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là
-            Hector Tôi
-            là Hector
-            Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector
-          </p>
-        </div>
-        <div class="col col-lg-5 answer mb-2">
-          <i class="icon-volume-medium"></i>
-          <div class="check">
-            <input type="checkbox" value="None" id="squaredTwo" name="check" />
-            <label for="squaredTwo"></label>
-          </div>
-          <p> &nbsp; b) Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là
-            Hector Tôi là
-            Hector
-          </p>
-        </div>
-      </div>
-      <div class="row justify-content-end">
-        <div class="col col-lg-5 answer mr-2">
-          <i class="icon-volume-medium"></i>
-          <div class="check">
-            <input type="checkbox" value="None" id="squaredThree" name="check" />
-            <label for="squaredThree"></label>
-          </div>
-          <p> &nbsp; c) Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là Hector Tôi là
-          </p>
-        </div>
-        <div class="col col-lg-5 answer">
-          <i class="icon-volume-medium"></i>
-          <div class="check">
-            <input type="checkbox" value="None" id="squaredFour" name="check" />
-            <label for="squaredFour"></label>
-          </div>
-          <p> &nbsp; d) Tôi là Hector Tôi là Hector Tôi là Hector Tôi là
-          </p>
-        </div>
-      </div>
-    </div> -->
   </div>
 </div>

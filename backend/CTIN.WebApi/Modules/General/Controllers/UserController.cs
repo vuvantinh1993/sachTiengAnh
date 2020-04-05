@@ -155,5 +155,23 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             return await BindData();
         }
+
+        [HttpGet("updateWordlened/{idfilm}/{sttWord}/{totalSentenceRight}")]
+        public async Task<object> updateWordlened([FromRoute] int idfilm, [FromRoute] int sttWord, [FromRoute] int totalSentenceRight)
+        {
+            if (sttWord < -2 || totalSentenceRight > 10)
+            {
+                ModelState.AddModelError("", "data not empty");
+            }
+            if (ModelState.IsValid)
+            {
+                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight);
+                if (result.errors.Count == 0)
+                {
+                }
+                return await BindData(result.data, result.errors);
+            }
+            return await BindData();
+        }
     }
 }

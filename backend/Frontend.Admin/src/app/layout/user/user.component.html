@@ -66,11 +66,14 @@
       <tr *ngFor="let item of listOfData; let i = index">
         <td nzShowCheckbox [(nzChecked)]="item.selected"></td>
         <td class="text-center">{{i+1}}</td>
-        <td class="text-center">{{item.name}}</td>
-        <td class="text-center">{{item.email}}</td>
-        <td class="text-center">{{item.phone}}</td>
-        <td class="text-center" *ngIf="item.filmleanning">{{item.filmleanning[0].namefilm}} :
-          {{item.filmleanning[0].positionword}}</td>
+        <td class="text-center">{{item.information?.name}}</td>
+        <td class="text-center">{{item.information?.email}}</td>
+        <td class="text-center">{{item.information?.phone}}</td>
+        <td class="text-center">
+          <span *ngFor="let item2 of item.filmleanning">
+            {{ item2.namefilm}} : {{ item2.sttWord}} <br>
+          </span>
+        </td>
         <td class="text-center" *ngIf="!item.filmleanning">Chưa học</td>
         <td class="text-center">{{item.point}}</td>
         <td class="text-center">{{item.listfrendid}}</td>

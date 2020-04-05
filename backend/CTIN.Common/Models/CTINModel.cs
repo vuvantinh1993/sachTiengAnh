@@ -72,7 +72,7 @@ namespace CTIN.Common.Models
         {
             order = "[{\"id\": true}]";
             page = 1;
-            size = 10;
+            size = 5;
         }
 
         [JsonIgnore]
@@ -139,7 +139,5 @@ namespace CTIN.Common.Models
         public virtual long? modifiedBy { get; set; }
         public virtual DateTime? deletedDate { get; set; }
         public virtual long? deletedBy { get; set; }
-
-        public virtual int officeId { get; set; }
     }
 }
