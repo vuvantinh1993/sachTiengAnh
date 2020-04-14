@@ -1,0 +1,141 @@
+
+
+  .information{
+    min-height: 300px;
+
+    .row{
+      width: 100%;
+
+      .cup{
+
+        z-index: 10;
+
+        .addpoint{
+          position: relative;
+          display: inline-block;
+          top: 1.6em;
+          left: calc(50% - 19px) !important;
+          font-weight: 700;
+          font-size: 1.5em;
+          animation-name: themdiem;
+          animation-duration: 4s;
+          animation-delay: -2s;
+          color:#77f9d5e0;
+          z-index: 0;
+        }
+
+        @keyframes themdiem {
+          50%   {left:calc(50% - 19px) !important; top:-2.5em;transform: rotate(-360deg);}
+          100%  {left:calc(50% - 19px) !important; top:3em;transform: rotate(0deg);}
+        }
+
+        i{
+          font-size: 12em;
+          color: #4188de;
+        }
+
+        .point{
+          position: absolute;
+          left: calc(50% - 29px) !important;
+          top: 3em;
+          font-size: 1.4em;
+          font-weight: 600;
+          color: #fffdf8;
+          // color: #ffb805;
+          margin: 0;
+        }
+
+        .star{
+          span{
+            font-size: 24px;
+          }
+          .checked{
+            color: #e88509d1;
+          }
+        }
+
+        .stage{
+          font-size: 1.4em;
+          font-family: cursive;
+        }
+      }
+
+      .user{
+        .image{
+
+          img{
+            width: 12em;
+            border-radius: 200px;
+          }
+        }
+
+        .text{
+          h2, p{
+            margin: 0px;
+          }
+          p{
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  .hoctiep{
+    a{
+      font-size: 20px;
+      background-color: 1fd446;
+      border-radius: 120px;
+      border: none;
+      background-image: linear-gradient(90deg, #5de424, #3ab307);
+    }
+  }
+
+  .leand{
+    .contenta{
+      background-color: #41fb419e;
+      background-image: linear-gradient(90deg, #41fb419e, #9dff42);
+      border-radius: 100px;
+
+      p{
+        margin: 0;
+        font-size: 1em;
+      }
+
+    }
+    .contentb{
+      background-color: #d9d9d980;
+      border-radius: 100px;
+      height: 61px;
+
+      p{
+        margin: 0;
+        font-size: 1em;
+      }
+    }
+    .question{
+      position: absolute;
+      top: calc(50% - 12px);
+      left: calc(50% - 17px);
+      font-size: 23px;
+      color: #b5b5b5;
+    }
+
+
+    .che1{
+      width: 0%;
+      height: 0%;
+      right: 0;
+      position: absolute;
+      background-color: #fdf8e1;
+      animation-name: chenoidung;
+      animation-duration: 4s;
+      animation-delay: -2s;
+    }
+    @keyframes chenoidung {
+      50%   {width: 100%; height: 100%;}
+      100%  {width: 0%;height: 100%;}
+    }
+  }
+
+

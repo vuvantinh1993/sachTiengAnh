@@ -1,6 +1,6 @@
 .container {
   .progress {
-    width: 400px;
+    width: 800px;
     transform: rotate(180deg);
 
     .progress-bar {
@@ -11,8 +11,41 @@
 
   .question {
     p {
-      font-size: 24px;
+      font-size: 17px;
+      margin: 0;
       font-weight: 400;
+      cursor: pointer;
+      line-height: 13px;
+    }
+    iframe{
+      min-height: 300px;
+      min-width: 485px;
+    }
+
+    .totalSentenceRight{
+      position: absolute;
+      top: 2em;
+      right: 1em;
+      font-size: 20px;
+      font-family: cursive;
+
+      a{
+        font-size: 20px;
+        background-color: 1fd446;
+        border-radius: 120px;
+        border: none;
+        background-image: linear-gradient(90deg, #41fb419e, #9dff42);
+      }
+    }
+    .boqua{
+      position: absolute;
+      bottom: 0em;
+      right: 1em;
+
+      a{
+        font-size: 17px;
+        background-color: #f33a21bd;
+      }
     }
   }
 
@@ -22,10 +55,7 @@
 
 
   .answer {
-
     height: 150px;
-
-
     position: relative;
     cursor: pointer;
     overflow: hidden;
@@ -43,6 +73,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      animation-name: danhdau;
+      animation-duration: 1s;
+      opacity: 0;
+    }
+
+    @keyframes danhdau {
+      1%  { opacity: 1;}
+      90%   { opacity: 1;}
+      100%  { opacity: 0;}
     }
 
     label {
@@ -54,7 +93,7 @@
       cursor: pointer;
       border: 1px solid #ccc;
       border-radius: 5px;
-      padding: 5px 20px;
+      padding: 10px 20px;
     }
   }
 }
@@ -66,4 +105,41 @@ label:hover {
 
   background-color: #85d290 !important;
 
+}
+
+
+.pclass{
+  animation-name: danhdau;
+  animation-duration: 2s;
+  opacity: 0;
+
+  @keyframes danhdau {
+    1%  { opacity: 1;}
+    70%   { opacity: 1;}
+    100%  { opacity: 0;}
+  }
+}
+
+
+
+///tét
+@keyframes my-animation {
+  from {
+    opacity : 0;
+    left : -500px;
+  }
+  to {
+    opacity : 1;
+    left : 0;
+  }
+}
+
+.run-animation {
+  position: relative;
+  animation: my-animation 2s ease;
+}
+
+#logo {
+  text-align: center;
+  font-family : Palatino Linotype, Book Antiqua, Palatino, serif;
 }

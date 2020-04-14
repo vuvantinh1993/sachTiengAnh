@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthorizeService } from 'src/api-authorization/authorize.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-navbar',
@@ -10,8 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
 
+  public usernameA = localStorage.getItem('usernameA');
+  public userimage = localStorage.getItem('userimage');
+  public userpoint = localStorage.getItem('userpoint');
   public userName: Observable<string>;
-
   constructor(
     private authorizeService: AuthorizeService
   ) { }

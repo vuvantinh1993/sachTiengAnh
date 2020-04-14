@@ -32,6 +32,8 @@ namespace CTIN.WebApi.Modules.General.Models
         public string email { get; set; }
         public string phone { get; set; }
         public string password { get; set; }
+        public string image { get; set; }
+        public string address { get; set; }
     }
 
     public class userfilmleanningDataJsonModel
@@ -47,6 +49,7 @@ namespace CTIN.WebApi.Modules.General.Models
         public DateTime time { get; set; }
         public int check { get; set; }
         public int classic { get; set; }
+        public int isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
     }
 
     public class Add_UserModel_DataDbJson

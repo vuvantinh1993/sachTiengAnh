@@ -4,36 +4,41 @@
       <div class="progress-bar" [style.width]="extran" role="progressbar" aria-valuenow="60" aria-valuemin="0"
         aria-valuemax="100"></div>
     </div>
-    <p><b>Câu: {{wordNumber+1}}/10 &nbsp;</b> <span>Tổng: 256/321 đã học</span></p>
+    <p><b>Câu: {{wordNumber+1}}/10 &nbsp;</b> <span>Tổng: {{sttleaned}}/{{totalWord}} đã học</span></p>
   </div>
 
 
   <div class="row">
-    <div class="col-4 d-flex align-items-center question pb-2">
-      <iframe width="100%" height="100%" [src]="datalist[wordNumber].result[5]" frameborder="0"
+    <div class="col-12 d-flex align-items-center flex-column question mb-4">
+      <iframe (load)="daloadxong()" [src]="datalist[wordNumber].result[5]" frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="isshow">{{datalist[wordNumber].texttip}}</p>
+      <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="!isshow">Show</p>
+      <p class="totalSentenceRight">{{totalSentenceRight}} câu</p>
+      <div class="boqua">
+        <a [routerLink]="['/finish-cours', idfilm, sttWordLenning]" class="btn btn-sm justify-content-center">Hủy <i
+            class="fas fa-times"></i>
+        </a>
+      </div>
     </div>
-    <div class="col-8">
+    <div class="col-12">
       <div class="row">
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="1" name="gender" value="0"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)" hidden>
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key, 'check01', 'check02')" hidden>
             <label for="1"><b>A. </b> {{datalist[wordNumber].result[0]}} </label><br>
-            <div *ngIf="abs == 0">
-              <i class="fas fa-3x" [ngClass]="isCheck(0, datalist[wordNumber].key)"></i>
-            </div>
+            <i class="fa-3x fa-check text-success" *ngIf="datalist[wordNumber].key==0" id="check01"></i>
+            <i class="fa-3x fa-times text-danger" *ngIf="datalist[wordNumber].key!=0" id="check02"></i>
           </div>
         </div>
         <div class="col-6">
           <div class="answer">
-
             <input type="radio" id="2" name="gender" value="1"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key, 'check11', 'check12')">
             <label for="2"><b>B. </b> {{datalist[wordNumber].result[1]}}</label><br>
-            <div *ngIf="abs == 1">
-              <i class="fas fa-3x" [ngClass]="isCheck(1, datalist[wordNumber].key)"></i>
-            </div>
+            <i class="fa-3x fa-check text-success" *ngIf="datalist[wordNumber].key==1" id="check11"></i>
+            <i class="fa-3x fa-times text-danger" *ngIf="datalist[wordNumber].key!=1" id="check12"></i>
           </div>
         </div>
       </div>
@@ -41,24 +46,32 @@
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="3" name="gender" value="2"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key,'check21', 'check22')">
             <label for="3"><b>C. </b>{{datalist[wordNumber].result[2]}}</label>
-            <div *ngIf="abs == 2">
-              <i class="fas fa-3x" [ngClass]="isCheck(2, datalist[wordNumber].key)"></i>
-            </div>
+            <i class="fa-3x fa-check text-success" *ngIf="datalist[wordNumber].key==2" id="check21"></i>
+            <i class="fa-3x fa-times text-danger" *ngIf="datalist[wordNumber].key!=2" id="check22"></i>
           </div>
         </div>
         <div class="col-6">
           <div class="answer">
             <input type="radio" id="4" name="gender" value="3"
-              (click)="kiemtraketqua($event.target, datalist[wordNumber].key)">
+              (click)="kiemtraketqua($event.target, datalist[wordNumber].key,'check31', 'check32')">
             <label for="4"><b>D. </b> {{datalist[wordNumber].result[3]}}</label>
-            <div *ngIf="abs == 3">
-              <i class="fas fa-3x" [ngClass]="isCheck(3, datalist[wordNumber].key)"></i>
-            </div>
+            <i class="fa-3x fa-check text-success" *ngIf="datalist[wordNumber].key==3" id="check31"></i>
+            <i class="fa-3x fa-times text-danger" *ngIf="datalist[wordNumber].key!=3" id="check32"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
+<!--
+<h1 (click)="kiemtra(1)">click me</h1>
+
+
+<h1 id="logo" class="run-animation">
+  Fancy Text (click to restart)
+</h1> -->

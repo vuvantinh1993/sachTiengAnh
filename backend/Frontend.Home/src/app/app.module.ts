@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd';
-
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import vi from '@angular/common/locales/vi';

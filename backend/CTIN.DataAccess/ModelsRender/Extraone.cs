@@ -17,5 +17,7 @@ namespace CTIN.DataAccess.ModelsRender
         public string Fullname { get; set; }
         public string AnswerWrongEn { get; set; }
         public string AnswerWrongVn { get; set; }
+        public long? Size { get; set; }
+        public int? Stt { get; set; }
     }
 }

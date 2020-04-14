@@ -157,7 +157,18 @@ namespace CTIN.Domain.Services
             var statusActive = (int)StatusDb.Nomal;
             var statusHide = (int)StatusDb.Hide;
 
-            var query = _db.User.AsQueryable();
+            var query = _db.User
+                .Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3)
+                .Select(x => new
+                {
+                    x.dataDb,
+                    x.id,
+                    x.information.name,
+                    x.information.image,
+                    x.information.address,
+                    x.listfrendid,
+                    x.point
+                }).AsQueryable();
 
             if (model.where != null)
             {
@@ -193,8 +204,16 @@ namespace CTIN.Domain.Services
             return (result, errors);
         }
 
+        /// <summary>
+        /// update từ đã học vào cột filmlearning
+        /// </summary>
+        /// <param name="idfilm">là id phim đang học</param>
+        /// <param name="sttWord">là sst của từ đã học thuộc</param>
+        /// <param name="totalSentenceRight">Tổng số từ làm đúng trong lần học đó</param>
+        /// <returns></returns>
         public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight)
         {
+
             var userId = 100014;
             var errors = new List<ErrorModel>();
             var data = await _db.User.FirstOrDefaultAsync(x => x.id == userId);
@@ -202,7 +221,7 @@ namespace CTIN.Domain.Services
             var filmleanning = new List<userfilmleanningDataJson>();
             if (data == null || film == null)
             {
-                errors.Add(new ErrorModel { key = "notExist", value = "Không tồn tại tài khoản hoặc film" });
+                errors.Add(new ErrorModel { key = "updateWordlened", value = "Không tồn tại tài khoản hoặc film" });
                 return (null, errors);
             }
             var update = data.JsonToString().JsonToObject<User>();
@@ -210,7 +229,7 @@ namespace CTIN.Domain.Services
             {
                 if (item.sttWord != sttWord)
                 {
-                    errors.Add(new ErrorModel { key = "sttWordWrong", value = "Có gì đó không đúng! Bạn chưa học từ trước đó" });
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "Không thể lưu bài học! bạn hãy load lại trang và xin báo với quản trị viên" });
                     return (null, errors);
                 }
                 if (item.filmid == idfilm)
@@ -222,6 +241,7 @@ namespace CTIN.Domain.Services
                         c.time = DateTime.UtcNow;
                         c.check = 1;
                         c.classic = 1;
+                        c.isforget = 0; // từ chưa quên
                         item.sttWord = sttWord + 1;
                         item.wordleaned.Add(c);
                     }
@@ -233,13 +253,14 @@ namespace CTIN.Domain.Services
                 filmleanning.Add(item);
             }
             update.filmleanning = filmleanning;
-            update.point += totalSentenceRight * film.pointword;
+            var totalPointRight = totalSentenceRight * film.pointword;
+            update.point += totalPointRight;
             _db.Entry(data).CurrentValues.SetValues(update);
             if (await _db.SaveChangesAsync() > 0)
             {
-                return (update, errors);
+                return (new { totalSentenceRight, totalPointRight }, errors);
             }
-            errors.Add(new ErrorModel { key = "", value = "update fail" });
+            errors.Add(new ErrorModel { key = "updateWordlened", value = "update lỗi" });
             return (null, errors);
         }
 

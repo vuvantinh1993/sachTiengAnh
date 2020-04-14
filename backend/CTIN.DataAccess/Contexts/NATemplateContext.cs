@@ -171,9 +171,13 @@ namespace CTIN.DataAccess.Contexts
                     .HasMaxLength(200)
                     .IsUnicode(false).IsJson();
 
-                entity.Property(e => e.filmleanning)
-                    .HasColumnName("filmleanning")
-                    .IsUnicode(false).IsJson();
+                entity.Property(e => e.filmforgeted).HasColumnName("filmforgeted").IsJson();
+
+                entity.Property(e => e.filmleanning).HasColumnName("filmleanning").IsJson();
+
+                entity.Property(e => e.filmpunishing).HasColumnName("filmpunishing").IsJson();
+
+                entity.Property(e => e.filmfinish).HasColumnName("filmfinish").IsJson();
 
                 entity.Property(e => e.information)
                     .HasColumnName("information")

@@ -9,6 +9,9 @@ namespace CTIN.DataAccess.Models
         public int id { get; set; }
         public int? point { get; set; }
         public List<userfilmleanningDataJson> filmleanning { get; set; }
+        public List<userfilmleanningDataJson> filmforgeted { get; set; }
+        public List<userfilmleanningDataJson> filmpunishing { get; set; }
+        public List<userfilmleanningDataJson> filmfinish { get; set; }
         public informationDataJson information { get; set; }
         public List<int> listfrendid { get; set; }
         public DataDbJson dataDb { get; set; }
@@ -20,6 +23,8 @@ namespace CTIN.DataAccess.Models
         public string email { get; set; }
         public string phone { get; set; }
         public string password { get; set; }
+        public string image { get; set; }
+        public string address { get; set; }
     }
 
     public class userfilmleanningDataJson
@@ -33,7 +38,8 @@ namespace CTIN.DataAccess.Models
     {
         public int stt { get; set; }
         public DateTime time { get; set; }
-        public int check { get; set; } // là từ đã học được mấy lần rồi ban đầu sẽ là 1 lần
+        public int isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
+        public int check { get; set; } // là từ đã học được mấy lần rồi ban đầu sẽ là 1 lần (là số lần từ đó được học)
         public int classic { get; set; } // là thuộc loại nào trong 5 loại học đúng hạn hay sai hạn
     }
 

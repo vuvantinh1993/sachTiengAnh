@@ -33,8 +33,8 @@ export class BaseCrudService<T> {
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public getWords(idfilm: number) {
-    const api = this.http.get<PagedListModel<T>>(`${this.baseUrl}/word/${idfilm}`);
+  public getWords(idfilm: number, params: any) {
+    const api = this.http.get<PagedListModel<T>>(`${this.baseUrl}/word/${idfilm}`, { params: this.stringifyParams(params) });
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 

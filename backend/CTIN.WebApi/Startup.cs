@@ -3,6 +3,7 @@ using CTIN.Common.Interfaces;
 using CTIN.Common.Models;
 using CTIN.DataAccess.Bases;
 using CTIN.DataAccess.Contexts;
+using CTIN.Domain.BackgroundTasks;
 using CTIN.Domain.Bases;
 using CTIN.WebApi.Bases.Services;
 using CTIN.WebApi.Bases.Swagger;
@@ -65,7 +66,8 @@ namespace CTIN.WebApi
             services.AddModule<DomainModule>();
             services.AddModule<DataAccessModule>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
-
+            services.AddHostedService<ConsumeScopedServiceHostedService>();
+            services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
             services.AddHttpContextAccessor();
 
             services.AddMvc()
@@ -145,7 +147,6 @@ namespace CTIN.WebApi
                 //app.UseHsts();
                 app.UseExceptionHandler("/api/error");
             }
-
             //enable gzip
             app.UseResponseCompression();
 

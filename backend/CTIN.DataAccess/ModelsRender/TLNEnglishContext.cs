@@ -45,7 +45,14 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Discription).HasColumnName("discription");
+
                 entity.Property(e => e.Level).HasColumnName("level");
+
+                entity.Property(e => e.LinkImg)
+                    .HasColumnName("linkImg")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -53,6 +60,10 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Pointword).HasColumnName("pointword");
+
+                entity.Property(e => e.TotalUser).HasColumnName("totalUser");
+
+                entity.Property(e => e.TotalWord).HasColumnName("totalWord");
             });
 
             modelBuilder.Entity<Extraone>(entity =>
@@ -82,6 +93,10 @@ namespace CTIN.DataAccess.ModelsRender
                 entity.Property(e => e.Fullname)
                     .HasColumnName("fullname")
                     .HasMaxLength(500);
+
+                entity.Property(e => e.Size).HasColumnName("size");
+
+                entity.Property(e => e.Stt).HasColumnName("stt");
 
                 entity.Property(e => e.TextEn)
                     .HasColumnName("textEn")
@@ -152,34 +167,18 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Filmforgeted).HasColumnName("filmforgeted");
 
-                entity.Property(e => e.Filmleanning)
-                    .HasColumnName("filmleanning")
-                    .IsUnicode(false);
+                entity.Property(e => e.Filmleanning).HasColumnName("filmleanning");
+
+                entity.Property(e => e.Filmpunishing).HasColumnName("filmpunishing");
+
+                entity.Property(e => e.Information)
+                    .HasColumnName("information")
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Listfrendid)
                     .HasColumnName("listfrendid")
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasColumnName("password")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Phone)
-                    .HasColumnName("phone")
-                    .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Point).HasColumnName("point");

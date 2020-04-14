@@ -1,0 +1,47 @@
+<div class="total mt-2" *ngIf="finishload">
+  <div class="information d-flex align-items-center">
+    <div class="row d-flex align-items-center">
+      <div class="col-6 cup">
+        <span class="addpoint">{{num}}</span>
+        <i class="icon-trophy2 d-flex justify-content-center"></i>
+        <p class="point">{{show}}đ</p>
+        <div class="star d-flex justify-content-center">
+          <span class="fa fa-star checked" style='font-size:24px'></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+        </div>
+        <p class="stage d-flex justify-content-center mt-1">Bạc I</p>
+      </div>
+      <div class="col-6 user d-flex align-items-center">
+        <div class="image">
+          <img [src]="userimage" alt="">
+        </div>
+        <div class="text d-flex flex-column ml-2">
+          <h2>{{usernameA}}</h2>
+          <p>{{useraddress}}</p>
+          <p>Hạng : 12.000+</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hoctiep d-flex justify-content-center mt-3">
+    <a [routerLink]="['/leanning-words', 2]" class="btn btn-sm btn-primary justify-content-center">
+      Học tiếp <i class="fas fa-angle-right next"></i>
+    </a>
+  </div>
+  <div class="leand mb-3 mt-2">
+    <div class="row">
+      <div class="col-md-4 col-12 mb-1" *ngFor="let item of data; let i = index ">
+        <div [ngClass]="che(i+((paging.page-1) * paging.size))"></div>
+        <div class="content" [ngClass]="checkclass(i+((paging.page-1) * paging.size))">
+          <p *ngIf="(i+((paging.page-1) * paging.size))<sttword">{{item.stt}}. {{item.textEn}}</p>
+          <i class="fas fa-question question" *ngIf="i+((paging.page-1) * paging.size)>=sttword"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-paging [data]="paging" (onChange)="getData($event)"></app-paging>
+</div>

@@ -161,7 +161,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             if (sttWord < -2 || totalSentenceRight > 10)
             {
-                ModelState.AddModelError("", "data not empty");
+                ModelState.AddModelError("updateWordlened", "data not empty");
             }
             if (ModelState.IsValid)
             {

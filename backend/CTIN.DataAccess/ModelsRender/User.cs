@@ -6,13 +6,12 @@ namespace CTIN.DataAccess.ModelsRender
     public partial class User
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Password { get; set; }
         public string Filmleanning { get; set; }
-        public int? Point { get; set; }
+        public int Point { get; set; }
         public string Listfrendid { get; set; }
         public string DataDb { get; set; }
+        public string Information { get; set; }
+        public string Filmforgeted { get; set; }
+        public string Filmpunishing { get; set; }
     }
 }

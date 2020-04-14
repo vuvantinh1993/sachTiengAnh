@@ -12,6 +12,7 @@
       color: #fff;
       background-color: #84d584;
       border-radius: 5px;
+      background-image: linear-gradient(90deg, #35c15c, #41fb419e, #47f935);
     }
   }
 }
@@ -36,6 +37,12 @@
         color: #000;
         font-size: 15px;
         font-weight: 400;
+      }
+
+      img{
+        border: none;
+        background-color: #f9f1e2;
+        box-shadow: none;
       }
     }
   }

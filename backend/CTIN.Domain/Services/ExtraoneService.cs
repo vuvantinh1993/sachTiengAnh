@@ -84,17 +84,12 @@ namespace CTIN.Domain.Services
                     }
                     stt = 1;
                 }
-                var query = _db.Extraone.Where(x => x.categoryfilmid == idfilm).Where(x => x.stt >= stt).Select(x => new
-                {
-                    x.id,
-                    x.textVn,
-                    x.textEn,
-                    x.dataDb,
-                    x.urlaudio,
-                    x.answerWrongEn,
-                    x.answerWrongVn,
-                    x.categoryfilmid,
-                }).AsQueryable();
+                var query = _db.Extraone
+                    .Where(x => x.categoryfilmid == idfilm)
+                    .Where(x => x.stt >= stt)
+                    .Include(x => x.categoryfilm)
+                    .Where(x => (int)DbFunction.JsonValue(x.categoryfilm.dataDb, "$.status") == 1)
+                    .AsQueryable();
 
                 if (model.where != null)
                 {
@@ -113,7 +108,21 @@ namespace CTIN.Domain.Services
                 }
 
                 query = query.OrderByLoopback(model.orderLoopback);
-                var result = query.ToPaging(model);
+                var result = query.Select(x => new
+                {
+                    x.id,
+                    x.textVn,
+                    x.textEn,
+                    x.stt,
+                    x.urlaudio,
+                    x.answerWrongEn,
+                    x.answerWrongVn,
+                    x.categoryfilmid,
+                    namefilm = x.categoryfilm.name,
+                    pointfilm = x.categoryfilm.pointword,
+                    x.categoryfilm.level,
+                    x.categoryfilm.totalWord
+                }).ToPaging(model);
                 return (new { result.data, rs.sttWord }, errors, result.paging);
             }
         }
@@ -134,6 +143,7 @@ namespace CTIN.Domain.Services
                 x.answerWrongEn,
                 x.answerWrongVn,
                 x.categoryfilmid,
+                x.stt
             }).AsQueryable();
 
             if (model.where != null)
@@ -337,7 +347,13 @@ namespace CTIN.Domain.Services
                         wordleaned = new List<wordleanedDataJson> { }
                     };
                     update.filmleanning = new List<userfilmleanningDataJson>();
+                    update.filmforgeted = new List<userfilmleanningDataJson>();
+                    update.filmpunishing = new List<userfilmleanningDataJson>();
+                    update.filmfinish = new List<userfilmleanningDataJson>();
                     update.filmleanning.Add(filmlean);
+                    update.filmforgeted.Add(filmlean);
+                    update.filmpunishing.Add(filmlean);
+                    update.filmfinish.Add(filmlean);
                     _db.Entry(data).CurrentValues.SetValues(update);
 
 

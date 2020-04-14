@@ -8,9 +8,6 @@ import { BaseListComponent } from './_base/components/base-list-component';
 })
 
 export class AppComponent extends BaseListComponent implements OnInit {
-
-
-
   ngOnInit() {
   }
 
