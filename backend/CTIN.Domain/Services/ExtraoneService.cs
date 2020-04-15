@@ -20,7 +20,7 @@ namespace CTIN.Domain.Services
 {
     public interface IExtraoneService
     {
-        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(int idfilm, Search_ExtraoneServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_ExtraoneServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_ExtraoneServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors)> Add(Add_ExtraoneServiceModel model);
 
@@ -48,66 +48,116 @@ namespace CTIN.Domain.Services
             _currentUserService = currentUserService;
         }
 
-        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(int idfilm, Search_ExtraoneServiceModel model)
+
+        /// <summary>
+        /// Lấy list câu hỏi về tạo bài học
+        /// </summary>
+        /// <param name="style"> là kiểu học 'new' hay học lại nhận 2 giá trị "new và old"</param>
+        /// <param name="idfilm">id của bộ phim</param>
+        /// <param name="model">điều kiện where</param>
+        /// <returns></returns>
+        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_ExtraoneServiceModel model)
         {
-            #region update video vào bảng
-            //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
-            //ReadFolderAndThenUploadDBAndCopyFile();
-
-            //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
-            //var listId = _db.Extraone.Select(x => x.id).ToList();
-
-            //foreach (var i in listId)
-            //{
-            //    UpdateAnserWrong(i);
-            //}
-            #endregion
-            var errors = new List<ErrorModel>();
-            var userId = 100014;
-
-            // trả về vị trí từ đang học của film
-            var rs = positionWordStop(userId, idfilm);
-            if (rs.sttWord == -2)
+            if (style == "new")
             {
-                return (null, rs.errors, new PagingModel { });
-            }
-            else
-            {
-                var statusActive = (int)StatusDb.Nomal;
-                var statusHide = (int)StatusDb.Hide;
-                var stt = rs.sttWord;
-                if (stt < 2)
+                #region update video vào bảng
+                //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
+                //ReadFolderAndThenUploadDBAndCopyFile();
+
+                //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
+                //var listId = _db.Extraone.Select(x => x.id).ToList();
+
+                //foreach (var i in listId)
+                //{
+                //    UpdateAnserWrong(i);
+                //}
+                #endregion
+                var errors = new List<ErrorModel>();
+                var userId = 100014;
+
+                // trả về vị trí từ đang học của film
+                var rs = positionWordStop(userId, idfilm);
+                if (rs.sttWord == -2)
                 {
-                    if (stt == -1)
-                    {
-                        model.size = 4;
-                    }
-                    stt = 1;
+                    return (null, rs.errors, new PagingModel { });
                 }
+                else
+                {
+                    var statusActive = (int)StatusDb.Nomal;
+                    var statusHide = (int)StatusDb.Hide;
+                    var stt = rs.sttWord;
+                    if (stt < 2)
+                    {
+                        if (stt == -1)
+                        {
+                            model.size = 4;
+                        }
+                        stt = 1;
+                    }
+                    var query = _db.Extraone
+                        .Where(x => x.categoryfilmid == idfilm)
+                        .Where(x => x.stt >= stt)
+                        .Where(x => (int)DbFunction.JsonValue(x.categoryfilm.dataDb, "$.status") != 3)
+                        .AsQueryable();
+
+                    if (model.where != null)
+                    {
+                        query = query.WhereLoopback(model.whereLoopback);
+
+                        if (!model.whereLoopback.HaveWhereStatusDb()) //default where statusdb is active
+                        {
+                            query = query.Where(x =>
+                           (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                        }
+                    }
+                    else
+                    {
+                        query = query.Where(x =>
+                           (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                    }
+
+                    query = query.OrderByLoopback(model.orderLoopback);
+                    var result = query.Select(x => new
+                    {
+                        x.id,
+                        x.textVn,
+                        x.textEn,
+                        x.stt,
+                        x.urlaudio,
+                        x.answerWrongEn,
+                        x.answerWrongVn,
+                        x.categoryfilmid,
+                        namefilm = x.categoryfilm.name,
+                        pointfilm = x.categoryfilm.pointword,
+                        x.categoryfilm.level,
+                        x.categoryfilm.totalWord
+                    }).ToPaging(model);
+                    return (new { result.data, rs.sttWord }, errors, result.paging);
+                }
+            }
+            else if (style == "old")
+            {
+                //giá trị truyền lên là old
+                var errors = new List<ErrorModel>();
+                var userId = 100014;
+                var statusDelete = (int)StatusDb.Delete;
+
+                var data = await _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefaultAsync(x => x.id == userId);
+                var a = data.filmpunishing.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
+                var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
+                var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 0);
+                var d = a.Concat(b).Concat(c).OrderBy(x => x.check).ToList();
+
                 var query = _db.Extraone
-                    .Where(x => x.categoryfilmid == idfilm)
-                    .Where(x => x.stt >= stt)
-                    .Include(x => x.categoryfilm)
-                    .Where(x => (int)DbFunction.JsonValue(x.categoryfilm.dataDb, "$.status") == 1)
-                    .AsQueryable();
+                        .Where(x => x.categoryfilmid == idfilm)
+                        .Where(t => d.Select(x => x.stt).Contains(t.stt));
 
                 if (model.where != null)
                 {
                     query = query.WhereLoopback(model.whereLoopback);
-
-                    if (!model.whereLoopback.HaveWhereStatusDb()) //default where statusdb is active
-                    {
-                        query = query.Where(x =>
-                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
-                    }
                 }
-                else
-                {
-                    query = query.Where(x =>
-                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
-                }
-
                 query = query.OrderByLoopback(model.orderLoopback);
+
                 var result = query.Select(x => new
                 {
                     x.id,
@@ -121,10 +171,15 @@ namespace CTIN.Domain.Services
                     namefilm = x.categoryfilm.name,
                     pointfilm = x.categoryfilm.pointword,
                     x.categoryfilm.level,
-                    x.categoryfilm.totalWord
+                    x.categoryfilm.totalWord,
+                    d.FirstOrDefault(n => n.stt == x.stt).check,
+                    d.FirstOrDefault(n => n.stt == x.stt).classic,
                 }).ToPaging(model);
-                return (new { result.data, rs.sttWord }, errors, result.paging);
+
+                return (new { result.data, sttWord = -3 }, errors, result.paging);
             }
+
+            return (null, null, new PagingModel { });
         }
 
 
@@ -328,7 +383,8 @@ namespace CTIN.Domain.Services
         public (int sttWord, List<ErrorModel> errors) positionWordStop(int userId, int idFilm)
         {
             var errors = new List<ErrorModel>();
-            var data = _db.User.FirstOrDefault(x => x.id == userId);
+            var statusDelete = (int)StatusDb.Delete;
+            var data = _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefault(x => x.id == userId);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "NotExitUser", value = "Không tồn tại người dùng" });

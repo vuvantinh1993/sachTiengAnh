@@ -13,6 +13,16 @@ namespace CTIN.Domain.Models
 
     }
 
+    public class Updatepoint_UserServiceModel
+    {
+        public int stt1 { get; set; }
+        public int check1 { get; set; }
+        public int classic1 { get; set; }
+        public int stt2 { get; set; }
+        public int check2 { get; set; }
+        public int classic2 { get; set; }
+    }
+
     public class Add_UserServiceModel : User
     {
 

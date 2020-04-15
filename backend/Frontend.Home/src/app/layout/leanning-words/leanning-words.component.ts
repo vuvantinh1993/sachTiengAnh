@@ -9,7 +9,6 @@ import { Observable, timer } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { debug } from 'util';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
@@ -20,7 +19,6 @@ import { NzMessageService } from 'ng-zorro-antd';
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
 
   public extran: string;
-  public finishload = false;
   public totalSentenceRight = 0;
   public SentenceIsTrue = true;
   public counter = 100;
@@ -36,8 +34,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public idfilm: number;
   public isshow = false;
   public loadxongchohoctiep = false;
+  private stypelean: string;
   urlSafe: SafeResourceUrl;
   public intervalId = null;
+  public lengthlistword: number; // là tổng số các câu trong 1 lượt học
   constructor(
     private extraoneService: ExtraoneService,
     private route: ActivatedRoute,
@@ -66,8 +66,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
   async getData(page = 1) {
     this.data = null;
-    this.datalist = [null];
-    const datalist2 = null;
+    this.datalist = [];
     this.listOfData = [];
     this.paging.page = page;
 
@@ -79,7 +78,11 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       delete this.paging.where;
     }
     this.idfilm = +this.route.snapshot.paramMap.get('idfilm');
-    const rs = await this.extraoneService.getWords(this.idfilm, {});
+    this.stypelean = this.route.snapshot.paramMap.get('style');
+    if (this.stypelean === 'old') {
+      this.paging.size = 2;
+    }
+    const rs = await this.extraoneService.getWords(this.stypelean, this.idfilm, this.paging);
     console.log('Get tai lieu', rs.result);
     if (rs.ok && rs.result && (rs.result.data.length !== 0)) {
       this.data = rs.result.data;
@@ -90,16 +93,15 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       this.data = this.data.data;
       console.log('this.data', this.data);
       this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
-    }
-    if (this.data) {
-      this.finishload = true;
+      this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
     }
   }
 
   // dùng để trộn các câu theo lịch trình
+  // nếu sttWord == -2 là ko thể lấy được film
+  // nếu sttWord == -3 là học từ đã quên
   tron10Cau(sttWord) {
     let listda = [];
-
     if (sttWord > 2) {
       for (const [key, value] of Object.entries(this.data)) {
         if (key === '0') {
@@ -218,10 +220,21 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
           console.log('tinh', listda);
         }
       }
+    } else if (sttWord === -3) {
+      for (const [key, value] of Object.entries(this.data)) {
+        if (key === '0') {
+          const list = this.laySoCauTheoTu(value, 2, 2);
+          listda = list;
+        }
+        if (key === '1') {
+          const list = this.laySoCauTheoTu(value, 2, 2);
+          listda = listda.concat(list);
+        }
+      }
     }
-    console.log('listda', listda);
+    console.log('listdachuatron', listda);
     listda = this.tronMang(listda);
-    console.log('listda', this.tronMang(listda));
+    console.log('listda đã trộn', this.tronMang(listda));
     return listda;
   }
 
@@ -306,10 +319,24 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         }
         this.SentenceIsTrue = true;
         setTimeout(async () => {
-          if (this.wordNumber === 9) {
-            const rs = await this.userService.updateWordlened(this.idfilm, this.sttWordLenning, this.totalSentenceRight);
+          if (this.wordNumber === (this.lengthlistword - 1)) {
+            let data = {};
+            // kiểm tra stt=3 nghĩa là từu đó học lại
+            // kiểm tra tiếp có mấy từ học lại rồi gọi lên api truyền nó lên
+            if (this.sttWordLenning === -3) {
+              if (this.data.length === 1) {
+                data = { stt1: this.data[0].stt, check1: this.data[0].check, classic1: this.data[0].classic };
+              } else {
+                data = {
+                  stt1: this.data[0].stt, check1: this.data[0].check, classic1: this.data[0].classic,
+                  stt2: this.data[0].stt, check2: this.data[0].check, classic2: this.data[0].classic
+                };
+              }
+            }
+            console.log('tinh', this.sttWordLenning, this.data.length, data);
+            const rs = await this.userService.updateWordlened(this.idfilm, this.sttWordLenning, this.totalSentenceRight, data);
             if (rs.ok) {
-              this.router.navigate(['/finish-cours', this.idfilm, this.sttWordLenning]);
+              this.router.navigate(['/finish-cours', this.idfilm, this.sttWordLenning, rs.result.totalPointRight]);
             } else {
               this.message.error('Lỗi! Lưu thất bại', { nzDuration: 5000 });
               setTimeout(() => {

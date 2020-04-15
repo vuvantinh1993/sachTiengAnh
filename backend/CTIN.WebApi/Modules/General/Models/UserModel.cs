@@ -15,6 +15,16 @@ namespace CTIN.WebApi.Modules.General.Models
 
     public class Search_UserModel : Search_UserServiceModel
     {
+        //public Search_UserModel()
+        //{
+        //    order = "[{\"id\": true}]";
+        //}
+        //public override string order { get => base.order; set => base.order = value; }
+    }
+
+    public class Updatepoint_UserModel : Updatepoint_UserServiceModel
+    {
+
     }
 
     public class Add_UserModel

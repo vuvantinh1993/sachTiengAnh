@@ -6,7 +6,7 @@
     <div class="col-9 content">
       <h1>{{dataCate[0].name}} (English)</h1>
       <p>{{dataCate[0].discription}}</p>
-      <a [routerLink]="['/leanning-words', dataCate[0].id]" class="button" *ngIf="isView">Bắt đầu thôi</a>
+      <a [routerLink]="['/leanning-words', 'new', dataCate[0].id]" class="button" *ngIf="isView">Bắt đầu thôi</a>
     </div>
   </div>
 </div>

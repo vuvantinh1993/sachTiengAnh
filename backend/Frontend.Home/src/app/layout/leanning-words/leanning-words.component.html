@@ -1,4 +1,4 @@
-<div class="container mt-4" *ngIf="finishload">
+<div class="container mt-4" *ngIf="datalist.length > 0">
   <div class="row justify-content-end">
     <div class="progress mr-3">
       <div class="progress-bar" [style.width]="extran" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -16,7 +16,7 @@
       <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="!isshow">Show</p>
       <p class="totalSentenceRight">{{totalSentenceRight}} câu</p>
       <div class="boqua">
-        <a [routerLink]="['/finish-cours', idfilm, sttWordLenning]" class="btn btn-sm justify-content-center">Hủy <i
+        <a [routerLink]="['/finish-cours', idfilm, sttWordLenning, 0]" class="btn btn-sm justify-content-center">Hủy <i
             class="fas fa-times"></i>
         </a>
       </div>

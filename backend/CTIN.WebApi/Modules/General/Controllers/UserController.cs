@@ -7,6 +7,7 @@ using CTIN.WebApi.Modules.General.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Controllers
@@ -157,15 +158,15 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpGet("updateWordlened/{idfilm}/{sttWord}/{totalSentenceRight}")]
-        public async Task<object> updateWordlened([FromRoute] int idfilm, [FromRoute] int sttWord, [FromRoute] int totalSentenceRight)
+        public async Task<object> updateWordlened([FromRoute] int idfilm, [FromRoute] int sttWord, [FromRoute] int totalSentenceRight, [FromQuery] Updatepoint_UserModel model)
         {
-            if (sttWord < -2 || totalSentenceRight > 10)
+            if (sttWord < -3 || totalSentenceRight > 10)
             {
                 ModelState.AddModelError("updateWordlened", "data not empty");
             }
             if (ModelState.IsValid)
             {
-                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight);
+                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, model);
                 if (result.errors.Count == 0)
                 {
                 }

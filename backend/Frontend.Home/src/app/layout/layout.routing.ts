@@ -17,11 +17,11 @@ const routes: Routes = [
         loadChildren: () => import('./list-words-film/list-words-film.module').then(m => m.ListWordsFilmModule)
       },
       {
-        path: 'leanning-words/:idfilm',
+        path: 'leanning-words/:style/:idfilm',
         loadChildren: () => import('./leanning-words/leanning-words.module').then(m => m.LeanningWordsModule)
       },
       {
-        path: 'finish-cours/:idfilm/:sttword',
+        path: 'finish-cours/:idfilm/:sttword/:point',
         loadChildren: () => import('./finish-cours/finish-cours.module').then(m => m.FinishCoursModule)
       }
     ]

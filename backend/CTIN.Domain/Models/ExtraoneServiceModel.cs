@@ -11,7 +11,7 @@ namespace CTIN.Domain.Models
 {
     public class Search_ExtraoneServiceModel : SearchModel
     {
-        public int beforeWord { get; set; }
+
     }
 
     public class Add_ExtraoneServiceModel

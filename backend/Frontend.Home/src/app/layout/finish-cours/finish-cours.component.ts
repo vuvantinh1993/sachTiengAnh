@@ -21,10 +21,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public data: any;
   public datalist: any[];
   public idfilm = +this.route.snapshot.paramMap.get('idfilm');
+  public totalPointRight = +this.route.snapshot.paramMap.get('point');
   public sttword: number;
   public intervalId = null;
-  public num = 78;
-  public show = +this.userpoint;
+  public num = +this.totalPointRight;
+  public show = +this.userpoint - this.num;
   constructor(
     private route: ActivatedRoute,
     private extraoneService: ExtraoneService,
@@ -35,7 +36,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   ngOnInit() {
     this.getData();
     setTimeout(() => {
-      this.countdown();
+      if (this.num !== 0) {
+        this.countdown();
+        const widthpoint = document.getElementById('point').offsetWidth;
+        document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
+      }
     }, 900);
   }
 
@@ -43,7 +48,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     this.intervalId = setInterval(() => {
       this.num = this.num - 1;
       this.show = this.show + 1;
-      if (this.num === 0) { clearInterval(this.intervalId); }
+      if (this.num <= 0) { clearInterval(this.intervalId); }
     }, 1);
   }
 
@@ -56,7 +61,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
     this.sttword = +this.route.snapshot.paramMap.get('sttword');
     if (!page) {
-      this.paging.page = Math.floor(this.sttword / 12) + 1;
+      this.paging.page = Math.floor((this.sttword - 1) / 12) + 1;
     } else {
       this.paging.page = page;
     }

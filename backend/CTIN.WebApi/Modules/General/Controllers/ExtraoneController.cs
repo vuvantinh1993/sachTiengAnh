@@ -26,12 +26,12 @@ namespace CTIN.WebApi.Modules.General.Controllers
             _currentUserService = currentUserService;
         }
 
-        [HttpGet("word/{idfilm}")]
-        public async Task<IActionResult> GetWord([FromRoute]int idfilm, [FromQuery] Search_ExtraoneModel model)
+        [HttpGet("GetWord/{style}/{idfilm}")]
+        public async Task<IActionResult> GetWord([FromRoute]string style, [FromRoute]int idfilm, [FromQuery] Search_ExtraoneModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _sv.GetWord(idfilm, model);
+                var result = await _sv.GetWord(style, idfilm, model);
                 if (result.errors.Count == 0)
                 {
                     //new task  sent mail

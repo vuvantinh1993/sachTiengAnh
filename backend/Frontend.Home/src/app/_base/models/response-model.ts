@@ -15,6 +15,7 @@ export interface PagingModel {
   where?: any;
   order?: any[];
   total?: number;
+  data?: any;
 }
 
 export interface PagedListModel<T> {

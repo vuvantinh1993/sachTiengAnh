@@ -1,10 +1,10 @@
-<div class="total mt-2" *ngIf="finishload">
+<div class="total mt-4" *ngIf="finishload">
   <div class="information d-flex align-items-center">
     <div class="row d-flex align-items-center">
       <div class="col-6 cup">
-        <span class="addpoint">{{num}}</span>
+        <span class="addpoint" id="addpoint" *ngIf="totalPointRight>0">{{num}}</span>
         <i class="icon-trophy2 d-flex justify-content-center"></i>
-        <p class="point">{{show}}đ</p>
+        <p class="point" id="point">{{show}}đ</p>
         <div class="star d-flex justify-content-center">
           <span class="fa fa-star checked" style='font-size:24px'></span>
           <span class="fa fa-star"></span>
@@ -27,8 +27,11 @@
     </div>
   </div>
   <div class="hoctiep d-flex justify-content-center mt-3">
-    <a [routerLink]="['/leanning-words', 2]" class="btn btn-sm btn-primary justify-content-center">
+    <a [routerLink]="['/leanning-words','new', 2]" class="btn btn-sm btn-primary justify-content-center">
       Học tiếp <i class="fas fa-angle-right next"></i>
+    </a>
+    <a [routerLink]="['/leanning-words','old', 2]" class="btn btn-sm btn-primary ml-3 justify-content-center forget">
+      Học từ đã quên <i class="fas fa-angle-right next"></i>
     </a>
   </div>
   <div class="leand mb-3 mt-2">

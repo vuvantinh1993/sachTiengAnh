@@ -31,7 +31,7 @@ namespace CTIN.Domain.Services
 
         Task<(int data, List<ErrorModel> errors)> Count(Count_UserServiceModel model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight);
+        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserServiceModel model);
     }
 
     public class UserService : IUserService
@@ -211,57 +211,72 @@ namespace CTIN.Domain.Services
         /// <param name="sttWord">là sst của từ đã học thuộc</param>
         /// <param name="totalSentenceRight">Tổng số từ làm đúng trong lần học đó</param>
         /// <returns></returns>
-        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight)
+        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserServiceModel model)
         {
 
             var userId = 100014;
             var errors = new List<ErrorModel>();
             var data = await _db.User.FirstOrDefaultAsync(x => x.id == userId);
             var film = await _db.Categoryfilm.FirstOrDefaultAsync(x => x.id == idfilm);
-            var filmleanning = new List<userfilmleanningDataJson>();
             if (data == null || film == null)
             {
                 errors.Add(new ErrorModel { key = "updateWordlened", value = "Không tồn tại tài khoản hoặc film" });
                 return (null, errors);
             }
             var update = data.JsonToString().JsonToObject<User>();
-            foreach (var item in data.filmleanning)
+
+            //đây là từ học lại
+            if (sttWord == -3)
             {
-                if (item.sttWord != sttWord)
+                if (model.classic1 == 1 || model.classic1 == 2)
                 {
-                    errors.Add(new ErrorModel { key = "updateWordlened", value = "Không thể lưu bài học! bạn hãy load lại trang và xin báo với quản trị viên" });
-                    return (null, errors);
+                    // từ này mới học lần 1(1ngày), lần 2(7nagỳ) chuyển về cột leanning
                 }
-                if (item.filmid == idfilm)
+                else if (model.classic1 == 3)
                 {
-                    if (sttWord > 0)
-                    {
-                        var c = new wordleanedDataJson();
-                        c.stt = sttWord;
-                        c.time = DateTime.UtcNow;
-                        c.check = 1;
-                        c.classic = 1;
-                        c.isforget = 0; // từ chưa quên
-                        item.sttWord = sttWord + 1;
-                        item.wordleaned.Add(c);
-                    }
-                    else
-                    {
-                        item.sttWord = sttWord + 1;
-                    }
+                    // từ này mới học lần 3(1 tháng) chuyển về cột finish
                 }
-                filmleanning.Add(item);
             }
-            update.filmleanning = filmleanning;
-            var totalPointRight = totalSentenceRight * film.pointword;
-            update.point += totalPointRight;
-            _db.Entry(data).CurrentValues.SetValues(update);
-            if (await _db.SaveChangesAsync() > 0)
+            else if (sttWord > -2) //đây là từ học mới
             {
-                return (new { totalSentenceRight, totalPointRight }, errors);
+                var filmleanning = new List<userfilmleanningDataJson>();
+                foreach (var item in data.filmleanning)
+                {
+                    if (item.filmid == idfilm)
+                    {
+                        if (sttWord > 0)
+                        {
+                            var c = new wordleanedDataJson();
+                            c.stt = sttWord;
+                            c.time = DateTime.UtcNow;
+                            c.check = 1;
+                            c.classic = 1;
+                            c.isforget = 0; // từ chưa quên
+                            item.sttWord = sttWord + 1;
+                            item.wordleaned.Add(c);
+                        }
+                        else
+                        {
+                            item.sttWord = sttWord + 1;
+                        }
+                    }
+                    filmleanning.Add(item);
+                }
+                update.filmleanning = filmleanning;
+                var totalPointRight = totalSentenceRight * film.pointword;
+                update.point += totalPointRight;
+                _db.Entry(data).CurrentValues.SetValues(update);
+                if (await _db.SaveChangesAsync() > 0)
+                {
+                    return (new { totalSentenceRight, totalPointRight }, errors);
+                }
+                errors.Add(new ErrorModel { key = "updateWordlened", value = "update lỗi" });
+                return (null, errors);
+
             }
-            errors.Add(new ErrorModel { key = "updateWordlened", value = "update lỗi" });
+
             return (null, errors);
+
         }
 
     }
