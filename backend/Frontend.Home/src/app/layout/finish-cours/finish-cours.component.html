@@ -37,10 +37,10 @@
   <div class="leand mb-3 mt-2">
     <div class="row">
       <div class="col-md-4 col-12 mb-1" *ngFor="let item of data; let i = index ">
-        <div [ngClass]="che(i+((paging.page-1) * paging.size))"></div>
-        <div class="content" [ngClass]="checkclass(i+((paging.page-1) * paging.size))">
-          <p *ngIf="(i+((paging.page-1) * paging.size))<sttword">{{item.stt}}. {{item.textEn}}</p>
-          <i class="fas fa-question question" *ngIf="i+((paging.page-1) * paging.size)>=sttword"></i>
+        <div [ngClass]="che(i+1+((paging.page-1) * paging.size))"></div>
+        <div class="content" [ngClass]="checkclass(i+((paging.page-1) * paging.size)+1)">
+          <p *ngIf="(i+((paging.page-1) * paging.size)) < (sttWordLenning)">{{item.stt}}. {{item.textEn}}</p>
+          <i class="fas fa-question question" *ngIf="i+((paging.page-1) * paging.size) > (sttWordLenning-1)"></i>
         </div>
       </div>
     </div>

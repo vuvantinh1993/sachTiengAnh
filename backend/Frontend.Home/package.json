@@ -27,6 +27,7 @@
     "@types/uuid": "^3.4.6",
     "angular-sortablejs": "^2.6.0",
     "angular2-text-mask": "9.0.0",
+    "crypto-js": "^4.0.0",
     "dhtmlx-gantt": "^6.3.4",
     "moment": "^2.24.0",
     "ng-zorro-antd": "^8.5.0",

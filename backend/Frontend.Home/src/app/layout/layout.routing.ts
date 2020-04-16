@@ -21,7 +21,7 @@ const routes: Routes = [
         loadChildren: () => import('./leanning-words/leanning-words.module').then(m => m.LeanningWordsModule)
       },
       {
-        path: 'finish-cours/:idfilm/:sttword/:point',
+        path: 'finish-cours/:idfilm/:point',
         loadChildren: () => import('./finish-cours/finish-cours.module').then(m => m.FinishCoursModule)
       }
     ]

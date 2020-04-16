@@ -1,3 +1,4 @@
+import { ExtensionService } from './../../_base/services/extension.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
@@ -20,15 +21,16 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public finishload = false;
   public data: any;
   public datalist: any[];
+  public sttWordLenning: number;
   public idfilm = +this.route.snapshot.paramMap.get('idfilm');
   public totalPointRight = +this.route.snapshot.paramMap.get('point');
-  public sttword: number;
   public intervalId = null;
   public num = +this.totalPointRight;
   public show = +this.userpoint - this.num;
   constructor(
     private route: ActivatedRoute,
     private extraoneService: ExtraoneService,
+    public ex: ExtensionService,
   ) {
     super();
   }
@@ -59,9 +61,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     this.datalist = [null];
     this.listOfData = [];
 
-    this.sttword = +this.route.snapshot.paramMap.get('sttword');
+    this.sttWordLenning = +localStorage.getItem('sttWordLenning') - 1;
+    console.log('this.sttWordLenning', this.sttWordLenning);
+
     if (!page) {
-      this.paging.page = Math.floor((this.sttword - 1) / 12) + 1;
+      this.paging.page = (Math.floor((this.sttWordLenning - 1) / 12) + 1) > 1 ? (Math.floor((this.sttWordLenning - 1) / 12) + 1) : 1;
     } else {
       this.paging.page = page;
     }
@@ -92,7 +96,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   checkclass(i: number) {
-    if (i >= this.sttword) {
+    if (i >= this.sttWordLenning + 1) {
       return 'contentb';
     } else {
       return 'contenta';
@@ -100,9 +104,9 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   che(i: number) {
-    if (i > this.sttword - 1) {
+    if (i > this.sttWordLenning) {
       return 'che2';
-    } else if (i === this.sttword - 1) {
+    } else if (i === this.sttWordLenning) {
       return 'che1';
     } else {
       return '';

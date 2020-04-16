@@ -4,7 +4,7 @@
       <div class="progress-bar" [style.width]="extran" role="progressbar" aria-valuenow="60" aria-valuemin="0"
         aria-valuemax="100"></div>
     </div>
-    <p><b>Câu: {{wordNumber+1}}/10 &nbsp;</b> <span>Tổng: {{sttleaned}}/{{totalWord}} đã học</span></p>
+    <p><b>Câu: {{wordNumber+1}}/{{datalist.length}} &nbsp;</b> <span>Tổng: {{sttleaned}}/{{totalWord}} đã học</span></p>
   </div>
 
 
@@ -16,8 +16,8 @@
       <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="!isshow">Show</p>
       <p class="totalSentenceRight">{{totalSentenceRight}} câu</p>
       <div class="boqua">
-        <a [routerLink]="['/finish-cours', idfilm, sttWordLenning, 0]" class="btn btn-sm justify-content-center">Hủy <i
-            class="fas fa-times"></i>
+        <a [routerLink]="['/finish-cours', idfilm, 0]" class="btn btn-sm justify-content-center">Hủy
+          <i class="fas fa-times"></i>
         </a>
       </div>
     </div>

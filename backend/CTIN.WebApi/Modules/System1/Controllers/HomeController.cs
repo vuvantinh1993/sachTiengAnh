@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CTIN.WebApi.Modules.System.Controlles
 {

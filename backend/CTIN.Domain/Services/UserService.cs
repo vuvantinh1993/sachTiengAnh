@@ -213,7 +213,6 @@ namespace CTIN.Domain.Services
         /// <returns></returns>
         public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserServiceModel model)
         {
-
             var userId = 100014;
             var errors = new List<ErrorModel>();
             var data = await _db.User.FirstOrDefaultAsync(x => x.id == userId);
@@ -225,16 +224,57 @@ namespace CTIN.Domain.Services
             }
             var update = data.JsonToString().JsonToObject<User>();
 
+
             //đây là từ học lại
             if (sttWord == -3)
             {
-                if (model.classic1 == 1 || model.classic1 == 2)
+                OneWordUpate_UserServiceModel tuso1 = new OneWordUpate_UserServiceModel();
+                tuso1.stt = model.stt1;
+                tuso1.check = model.check1;
+                tuso1.classic = model.classic1;
+                var user1 = xulycactuhoclai(data, tuso1, idfilm);
+                if (user1.errors.Count() != 0)
                 {
-                    // từ này mới học lần 1(1ngày), lần 2(7nagỳ) chuyển về cột leanning
+                    errors = user1.errors;
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 3" });
+                    return (null, errors);
                 }
-                else if (model.classic1 == 3)
+                if (model.stt2 != null)
                 {
-                    // từ này mới học lần 3(1 tháng) chuyển về cột finish
+                    OneWordUpate_UserServiceModel tuso2 = new OneWordUpate_UserServiceModel();
+                    tuso2.stt = model.stt2;
+                    tuso2.check = model.check2;
+                    tuso2.classic = model.classic2;
+                    var user2 = xulycactuhoclai(user1.userdata, tuso2, idfilm);
+                    if (user2.errors.Count() != 0)
+                    {
+                        errors = user1.errors;
+                        errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 4" });
+                        return (null, errors);
+                    }
+                    // update usser vaf coongj ddieemr cho USER2
+                    var totalPointRight = totalSentenceRight * film.pointword;
+                    user2.userdata.point += totalPointRight;
+                    _db.Entry(data).CurrentValues.SetValues(user2);
+                    if (await _db.SaveChangesAsync() > 0)
+                    {
+                        return (new { totalSentenceRight, totalPointRight }, errors);
+                    }
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 1" });
+                    return (null, errors);
+                }
+                else
+                {
+                    // update usser vaf coongj ddieemr cho USER1
+                    var totalPointRight = totalSentenceRight * film.pointword;
+                    user1.userdata.point += totalPointRight;
+                    _db.Entry(data).CurrentValues.SetValues(user1);
+                    if (await _db.SaveChangesAsync() > 0)
+                    {
+                        return (new { totalSentenceRight, totalPointRight }, errors);
+                    }
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 2" });
+                    return (null, errors);
                 }
             }
             else if (sttWord > -2) //đây là từ học mới
@@ -275,8 +315,183 @@ namespace CTIN.Domain.Services
 
             }
 
+            errors.Add(new ErrorModel { key = "updateWordlened", value = "Không tồn tại  từ update" });
             return (null, errors);
 
+        }
+
+        public (User userdata, List<ErrorModel> errors) xulycactuhoclai(User data, OneWordUpate_UserServiceModel model, int idfilm)
+        {
+            var errors = new List<ErrorModel>();
+            var userJson1 = data.JsonToString().JsonToObject<User>();
+            if (model.classic == 2)
+            {
+                // nó đang ở cột thứ 2 filmforget ta cần kiểm tra xem đưa về leanning hay fisnish
+                if (userJson1.filmforgeted != null)
+                {
+                    foreach (userfilmleanningDataJson filma in userJson1.filmforgeted)
+                    {
+                        var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
+                        List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
+                        if (filma.filmid == idfilm)
+                        {
+                            var findWord1 = filma.wordleaned.Find(x => x.stt == model.stt);
+                            if (findWord1 != null)
+                            {
+                                if (findWord1.check == 1 || findWord1.check == 2)
+                                {
+                                    //từ này vừa mới học lần 2 và lần 3 chuyển về cột leanning
+                                    wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                    iteamWordLeaned.stt = findWord1.stt;
+                                    iteamWordLeaned.time = DateTime.UtcNow;
+                                    iteamWordLeaned.isforget = 0;
+                                    iteamWordLeaned.check = findWord1.check + 1;
+                                    iteamWordLeaned.classic = 1; // chuyển về cột leanning
+
+                                    foreach (var a in userJson1.filmleanning)
+                                    {
+                                        if (a.filmid == idfilm)
+                                        {
+                                            a.wordleaned.Add(iteamWordLeaned);
+                                        }
+                                    }
+
+                                    filma.wordleaned.Remove(findWord1);
+                                }
+                                else
+                                {
+                                    //từ này vừa mới học lần 4 fisnish
+                                    wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                    iteamWordLeaned.stt = findWord1.stt;
+                                    iteamWordLeaned.time = DateTime.UtcNow;
+                                    iteamWordLeaned.isforget = 0;
+                                    iteamWordLeaned.check = findWord1.check + 1;
+                                    iteamWordLeaned.classic = 3; // chuyển về cột fisnish
+                                    foreach (var a in userJson1.filmfinish)
+                                    {
+                                        if (a.filmid == idfilm)
+                                        {
+                                            a.wordleaned.Add(iteamWordLeaned);
+                                        }
+                                    }
+                                    filma.wordleaned.Remove(findWord1);
+                                }
+                            }
+                            else
+                            {
+                                errors.Add(new ErrorModel { key = "updateWordlened", value = "Từ vừa học đã lưu vào CSDL rồi" });
+                                return (null, errors);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (model.classic == 3)
+            {
+                // nó đang ở cột thứ 3 filmpunish ta cần kiểm tra xem đưa về leanning hay fisnish
+                if (userJson1.filmpunishing != null)
+                {
+                    foreach (userfilmleanningDataJson filma in userJson1.filmpunishing)
+                    {
+                        var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
+                        List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
+                        if (filma.filmid == idfilm)
+                        {
+                            var findWord1 = filma.wordleaned.Find(x => x.stt == model.stt);
+                            if (findWord1 != null)
+                            {
+                                if (findWord1.check == 1 || findWord1.check == 2)
+                                {
+                                    //từ này vừa mới học lần 2 và lần 3 chuyển về cột leanning
+                                    wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                    iteamWordLeaned.stt = findWord1.stt;
+                                    iteamWordLeaned.time = DateTime.UtcNow;
+                                    iteamWordLeaned.isforget = 0;
+                                    iteamWordLeaned.check = findWord1.check + 1;
+                                    iteamWordLeaned.classic = 1; // chuyển về cột leanning
+
+                                    foreach (var a in userJson1.filmleanning)
+                                    {
+                                        if (a.filmid == idfilm)
+                                        {
+                                            a.wordleaned.Add(iteamWordLeaned);
+                                        }
+                                    }
+
+                                    filma.wordleaned.Remove(findWord1);
+                                }
+                                else
+                                {
+                                    //từ này vừa mới học lần 4 fisnish
+                                    wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                    iteamWordLeaned.stt = findWord1.stt;
+                                    iteamWordLeaned.time = DateTime.UtcNow;
+                                    iteamWordLeaned.isforget = 0;
+                                    iteamWordLeaned.check = findWord1.check + 1;
+                                    iteamWordLeaned.classic = 3; // chuyển về cột fisnish
+                                    foreach (var a in userJson1.filmfinish)
+                                    {
+                                        if (a.filmid == idfilm)
+                                        {
+                                            a.wordleaned.Add(iteamWordLeaned);
+                                        }
+                                    }
+                                    filma.wordleaned.Remove(findWord1);
+                                }
+
+                            }
+                            else
+                            {
+                                errors.Add(new ErrorModel { key = "updateWordlened", value = "Từ vừa học đã lưu vào CSDL rồi" });
+                                return (null, errors);
+                            }
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                // nó đang ở cột thứ 4 filmfinish không cần chuyển cột
+                if (userJson1.filmfinish != null)
+                {
+                    foreach (userfilmleanningDataJson filma in userJson1.filmfinish)
+                    {
+                        var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
+                        List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
+                        if (filma.filmid == idfilm)
+                        {
+                            var findWord1 = filma.wordleaned.Find(x => x.stt == model.stt);
+                            if (findWord1 != null)
+                            {
+                                if (findWord1.check >= 4)
+                                {
+                                    //từ này vừa mới học lần 4 và lần 3 giữ nguyên ở cột fisnnish
+                                    wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                    iteamWordLeaned.stt = findWord1.stt;
+                                    iteamWordLeaned.time = DateTime.UtcNow;
+                                    iteamWordLeaned.isforget = 0;
+                                    iteamWordLeaned.check = findWord1.check + 1;
+                                    iteamWordLeaned.classic = 3; // chuyển về cột leanning
+
+                                    filma.wordleaned.Remove(findWord1);
+                                    filma.wordleaned.Add(iteamWordLeaned);
+                                }
+                            }
+                            else
+                            {
+                                errors.Add(new ErrorModel { key = "updateWordlened", value = "Từ vừa học đã lưu vào CSDL rồi" });
+                                return (null, errors);
+                            }
+                        }
+                    }
+
+                }
+            }
+            return (userJson1, errors); ;
         }
 
     }

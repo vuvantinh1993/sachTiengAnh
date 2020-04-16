@@ -1,15 +1,15 @@
+import { DialogService } from './../../_base/services/dialog.service';
+import { AESService } from './../../_base/services/aes.service';
 import { UserService } from './../../_shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExtensionService } from './../../_base/services/extension.service';
 import { ExtentionTableService } from './../../_base/services/extention-table.service';
 import { ExtraoneService } from './../../_shared/services/extraone.service';
 import { Component, OnInit } from '@angular/core';
-import { async } from '@angular/core/testing';
-import { Observable, timer } from 'rxjs';
-import { take, map } from 'rxjs/operators';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-leanning-words',
@@ -45,7 +45,9 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     public exTableService: ExtentionTableService,
     private userService: UserService,
     private message: NzMessageService,
-    private ex: ExtensionService,
+    public ex: ExtensionService,
+    private aesservice: AESService,
+    private dl: DialogService,
     public router: Router) {
     super();
   }
@@ -84,16 +86,27 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     }
     const rs = await this.extraoneService.getWords(this.stypelean, this.idfilm, this.paging);
     console.log('Get tai lieu', rs.result);
-    if (rs.ok && rs.result && (rs.result.data.length !== 0)) {
+    if (rs.ok && rs.result) {
       this.data = rs.result.data;
-      // lấy số từ đã hoc
-      this.sttWordLenning = this.data.sttWord;
-      this.sttleaned = this.sttWordLenning > 1 ? this.sttWordLenning - 1 : 0; // hiện từ đã học html
-      this.totalWord = this.data.data[0].totalWord;
-      this.data = this.data.data;
-      console.log('this.data', this.data);
-      this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
-      this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
+      if ((this.data.data.length !== 0)) {
+        if (this.data.sttWord !== -3) {
+          localStorage.setItem('sttWordLenning', this.data.sttWord); // lưu dữ liệu từ đang học của bộ phim lên localstagare
+        }
+        this.sttWordLenning = this.data.sttWord;
+        console.log('this.sttWordLenningservice', this.sttWordLenning);
+        console.log('this.sttWordLenning', this.sttWordLenning);
+
+        // lấy số từ đã hoc
+        this.sttleaned = this.sttWordLenning > 1 ? this.sttWordLenning - 1 : 0; // hiện từ đã học html
+        this.totalWord = this.data.data[0].totalWord;
+        this.data = this.data.data;
+        console.log('this.data', this.data);
+        this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
+        this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
+      } else {
+        const result = await this.dl.confirm(`Không có từ cần học lại, quay về trang chủ`, ' ');
+        this.router.navigate(['/']);
+      }
     }
   }
 
@@ -301,7 +314,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   async kiemtraketqua(target, key, check1, check2) {
-    // kiểm tra dom load xong mới cho thao tác tiếp tránh trường hợp click nhiều nhần 1 câu
+    // kiểm tra thẻ dom load xong mới cho thao tác tiếp tránh trường hợp click nhiều nhần 1 câu
     if (this.loadxongchohoctiep === true) {
       if (+target.value === key) {
         console.log('trả lời đúng');
@@ -320,23 +333,32 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.SentenceIsTrue = true;
         setTimeout(async () => {
           if (this.wordNumber === (this.lengthlistword - 1)) {
+
+            // tao chuoi ma hoa khi cong diem
+            const congchuoi = this.idfilm.toString() + ':' + (this.sttWordLenning) + ':' + this.totalSentenceRight;
+            console.log('ban dau', congchuoi, this.sttWordLenning);
+            const chuoimahoa = this.aesservice.encrypt(congchuoi);
+
             let data = {};
             // kiểm tra stt=3 nghĩa là từu đó học lại
             // kiểm tra tiếp có mấy từ học lại rồi gọi lên api truyền nó lên
             if (this.sttWordLenning === -3) {
               if (this.data.length === 1) {
-                data = { stt1: this.data[0].stt, check1: this.data[0].check, classic1: this.data[0].classic };
+                data = { chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic };
               } else {
                 data = {
-                  stt1: this.data[0].stt, check1: this.data[0].check, classic1: this.data[0].classic,
-                  stt2: this.data[0].stt, check2: this.data[0].check, classic2: this.data[0].classic
+                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic
                 };
               }
+            } else {
+              data = { chuoimahoa };
             }
-            console.log('tinh', this.sttWordLenning, this.data.length, data);
-            const rs = await this.userService.updateWordlened(this.idfilm, this.sttWordLenning, this.totalSentenceRight, data);
+
+            const rs = await this.userService.updateWordlened(data);
             if (rs.ok) {
-              this.router.navigate(['/finish-cours', this.idfilm, this.sttWordLenning, rs.result.totalPointRight]);
+              localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
+              this.router.navigate(['/finish-cours', this.idfilm, rs.result.totalPointRight]);
             } else {
               this.message.error('Lỗi! Lưu thất bại', { nzDuration: 5000 });
               setTimeout(() => {
@@ -371,7 +393,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       }
     }
   }
-
 
   vidEnded(event) {
     console.log('video ket thuc', event);

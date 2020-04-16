@@ -86,13 +86,16 @@ namespace CTIN.Domain.Services
                     var statusActive = (int)StatusDb.Nomal;
                     var statusHide = (int)StatusDb.Hide;
                     var stt = rs.sttWord;
-                    if (stt < 2)
+                    if (stt <= 1)
                     {
                         if (stt == -1)
                         {
                             model.size = 4;
                         }
-                        stt = 1;
+                        else
+                        {
+                            stt = 1;
+                        }
                     }
                     var query = _db.Extraone
                         .Where(x => x.categoryfilmid == idfilm)
@@ -145,7 +148,7 @@ namespace CTIN.Domain.Services
                 var data = await _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefaultAsync(x => x.id == userId);
                 var a = data.filmpunishing.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
                 var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
-                var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 0);
+                var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 1);
                 var d = a.Concat(b).Concat(c).OrderBy(x => x.check).ToList();
 
                 var query = _db.Extraone
@@ -172,8 +175,8 @@ namespace CTIN.Domain.Services
                     pointfilm = x.categoryfilm.pointword,
                     x.categoryfilm.level,
                     x.categoryfilm.totalWord,
-                    d.FirstOrDefault(n => n.stt == x.stt).check,
-                    d.FirstOrDefault(n => n.stt == x.stt).classic,
+                    iteam = d.FirstOrDefault(n => n.stt == x.stt)
+
                 }).ToPaging(model);
 
                 return (new { result.data, sttWord = -3 }, errors, result.paging);
@@ -424,7 +427,7 @@ namespace CTIN.Domain.Services
                         _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
                         if (_db.SaveChanges() > 0)
                         {
-                            return (1, errors);
+                            return (-1, errors);
                         }
                     }
                     errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });

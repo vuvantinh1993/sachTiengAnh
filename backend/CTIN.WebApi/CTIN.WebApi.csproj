@@ -34,8 +34,7 @@
   <ItemGroup>
     <Folder Include="Bases\ValidationAttributes\" />
     <Folder Include="Modules\Auth\" />
-    <Folder Include="Modules\System\Models\" />
-    <Folder Include="Modules\System\Views\" />
+    <Folder Include="Modules\System1\Views\" />
   </ItemGroup>
 
   <ItemGroup>

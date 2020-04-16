@@ -18,9 +18,17 @@ namespace CTIN.Domain.Models
         public int stt1 { get; set; }
         public int check1 { get; set; }
         public int classic1 { get; set; }
-        public int stt2 { get; set; }
-        public int check2 { get; set; }
-        public int classic2 { get; set; }
+        public int? stt2 { get; set; }
+        public int? check2 { get; set; }
+        public int? classic2 { get; set; }
+        public string chuoimahoa { get; set; }
+    }
+
+    public class OneWordUpate_UserServiceModel
+    {
+        public int? stt { get; set; }
+        public int? check { get; set; }
+        public int? classic { get; set; }
     }
 
     public class Add_UserServiceModel : User

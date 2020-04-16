@@ -3,11 +3,15 @@ using CTIN.Common.Interfaces;
 using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
+using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.General.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Controllers
@@ -157,9 +161,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
             return await BindData();
         }
 
-        [HttpGet("updateWordlened/{idfilm}/{sttWord}/{totalSentenceRight}")]
-        public async Task<object> updateWordlened([FromRoute] int idfilm, [FromRoute] int sttWord, [FromRoute] int totalSentenceRight, [FromQuery] Updatepoint_UserModel model)
+        [HttpGet("updateWordlened")]
+        public async Task<object> updateWordlened([FromQuery] Updatepoint_UserModel model)
         {
+            var value = EncryptionHelper.DecryptStringAES(model.chuoimahoa).Split(":");
+            int idfilm = Convert.ToInt32(value[0]);
+            int sttWord = Convert.ToInt32(value[1]); ;
+            int totalSentenceRight = Convert.ToInt32(value[2]);
+
             if (sttWord < -3 || totalSentenceRight > 10)
             {
                 ModelState.AddModelError("updateWordlened", "data not empty");

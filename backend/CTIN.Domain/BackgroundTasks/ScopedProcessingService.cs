@@ -79,7 +79,23 @@ namespace CTIN.Domain.BackgroundTasks
                                     }
                                     if (word.check == 2)
                                     {
-                                        if ((DateTime.UtcNow - word.time).TotalDays > 8)
+                                        if ((DateTime.UtcNow - word.time).TotalDays > 7)
+                                        {
+                                            iteamWordLeaned.stt = word.stt;
+                                            iteamWordLeaned.time = word.time;
+                                            iteamWordLeaned.isforget = 1;
+                                            iteamWordLeaned.check = word.check;
+                                            iteamWordLeaned.classic = 3;
+                                            listWordPunishing.Add(iteamWordLeaned);
+                                        }
+                                        else
+                                        {
+                                            listWordForgeted.Add(word);
+                                        }
+                                    }
+                                    if (word.check == 3)
+                                    {
+                                        if ((DateTime.UtcNow - word.time).TotalDays > 23)
                                         {
                                             iteamWordLeaned.stt = word.stt;
                                             iteamWordLeaned.time = word.time;
@@ -155,7 +171,23 @@ namespace CTIN.Domain.BackgroundTasks
                                     }
                                     if (word.check == 2)
                                     {
-                                        if ((DateTime.UtcNow - word.time).TotalDays > 6)
+                                        if ((DateTime.UtcNow - word.time).TotalDays > 5)
+                                        {
+                                            iteamWordLeaned.stt = word.stt;
+                                            iteamWordLeaned.time = word.time;
+                                            iteamWordLeaned.isforget = 1;
+                                            iteamWordLeaned.check = word.check;
+                                            iteamWordLeaned.classic = 2;
+                                            listWordForgeted.Add(iteamWordLeaned);
+                                        }
+                                        else
+                                        {
+                                            listWordLeanning.Add(word);
+                                        }
+                                    }
+                                    if (word.check == 3)
+                                    {
+                                        if ((DateTime.UtcNow - word.time).TotalDays > 18)
                                         {
                                             iteamWordLeaned.stt = word.stt;
                                             iteamWordLeaned.time = word.time;
