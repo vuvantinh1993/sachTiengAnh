@@ -163,9 +163,6 @@ namespace CTIN.Domain.Services
                 {
                     x.dataDb,
                     x.id,
-                    x.information.name,
-                    x.information.image,
-                    x.information.address,
                     x.listfrendid,
                     x.point
                 }).AsQueryable();

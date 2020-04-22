@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    [Migration("20200422085415_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200422165238_innita")]
+    partial class innita
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,6 +99,10 @@ namespace CTIN.DataAccess.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("address");
+
+                    b.Property<string>("avatar");
 
                     b.HasKey("Id");
 
@@ -215,6 +219,34 @@ namespace CTIN.DataAccess.Migrations
                     b.ToTable("extraone");
                 });
 
+            modelBuilder.Entity("CTIN.DataAccess.Models.Rank", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("dataDb")
+                        .HasColumnName("dataDb")
+                        .HasMaxLength(200)
+                        .IsUnicode(false);
+
+                    b.Property<short?>("dataDbstatus");
+
+                    b.Property<string>("name")
+                        .HasColumnName("name")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("pointStage")
+                        .HasColumnName("pointStage");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("dataDbstatus");
+
+                    b.ToTable("Rank");
+                });
+
             modelBuilder.Entity("CTIN.DataAccess.Models.Tips", b =>
                 {
                     b.Property<int>("id")
@@ -261,10 +293,6 @@ namespace CTIN.DataAccess.Migrations
                     b.Property<string>("filmpunishing")
                         .HasColumnName("filmpunishing");
 
-                    b.Property<string>("information")
-                        .HasColumnName("information")
-                        .IsUnicode(true);
-
                     b.Property<string>("listfrendid")
                         .HasColumnName("listfrendid")
                         .IsUnicode(false);
@@ -274,7 +302,15 @@ namespace CTIN.DataAccess.Migrations
                         .HasColumnName("point")
                         .HasDefaultValue(0);
 
+                    b.Property<int?>("rankid");
+
+                    b.Property<string>("userIdId");
+
                     b.HasKey("id");
+
+                    b.HasIndex("rankid");
+
+                    b.HasIndex("userIdId");
 
                     b.ToTable("userLeanning");
                 });
@@ -399,6 +435,17 @@ namespace CTIN.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("categoryfilmid")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CTIN.DataAccess.Models.UserLeanning", b =>
+                {
+                    b.HasOne("CTIN.DataAccess.Models.Rank", "rank")
+                        .WithMany()
+                        .HasForeignKey("rankid");
+
+                    b.HasOne("CTIN.DataAccess.Models.ApplicationUser", "userId")
+                        .WithMany()
+                        .HasForeignKey("userIdId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

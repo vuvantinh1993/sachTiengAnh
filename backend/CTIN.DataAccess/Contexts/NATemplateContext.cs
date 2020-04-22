@@ -2,6 +2,7 @@
 using CTIN.DataAccess.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query.Expressions;
 
 namespace CTIN.DataAccess.Contexts
@@ -19,6 +20,7 @@ namespace CTIN.DataAccess.Contexts
         public virtual DbSet<Tips> Tips { get; set; }
         public virtual DbSet<UserLeanning> UserLeanning { get; set; }
         public virtual DbSet<Extraone> Extraone { get; set; }
+        public virtual DbSet<Rank> Rank { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -171,18 +173,48 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.filmfinish).HasColumnName("filmfinish").IsJson();
 
-                entity.Property(e => e.information)
-                    .HasColumnName("information")
-                    .IsUnicode(true).IsJson();
-
                 entity.Property(e => e.listfrendid)
                     .HasColumnName("listfrendid")
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.point).HasColumnName("point").HasDefaultValue(0);
 
+            });
 
+            modelBuilder.Entity<Rank>(entity =>
+            {
+                entity.ToTable("userLeanning");
 
+                entity.Property(e => e.id).HasColumnName("id");
+
+                entity.Property(e => e.dataDb)
+                    .HasColumnName("dataDb")
+                    .HasMaxLength(200)
+                    .IsUnicode(false).IsJson();
+
+                entity.Property(e => e.name).HasColumnName("name");
+
+                entity.Property(e => e.pointStage).HasColumnName("pointStage");
+            });
+
+            modelBuilder.Entity("CTIN.DataAccess.Models.Rank", b =>
+            {
+                b.Property<int>("id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                b.Property<short?>("dataDbstatus");
+
+                b.Property<string>("name")
+                    .HasMaxLength(50);
+
+                b.Property<int>("pointStage");
+
+                b.HasKey("id");
+
+                b.HasIndex("dataDbstatus");
+
+                b.ToTable("Rank");
             });
         }
     }

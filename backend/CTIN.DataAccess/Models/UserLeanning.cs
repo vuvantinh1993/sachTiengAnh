@@ -7,24 +7,15 @@ namespace CTIN.DataAccess.Models
     public partial class UserLeanning
     {
         public int id { get; set; }
+        public ApplicationUser userId { get; set; }
         public int? point { get; set; }
+        public Rank rank { get; set; }
         public List<userfilmleanningDataJson> filmleanning { get; set; }
         public List<userfilmleanningDataJson> filmforgeted { get; set; }
         public List<userfilmleanningDataJson> filmpunishing { get; set; }
         public List<userfilmleanningDataJson> filmfinish { get; set; }
-        public informationDataJson information { get; set; }
         public List<int> listfrendid { get; set; }
         public DataDbJson dataDb { get; set; }
-    }
-
-    public class informationDataJson
-    {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
-        public string password { get; set; }
-        public string image { get; set; }
-        public string address { get; set; }
     }
 
     public class userfilmleanningDataJson

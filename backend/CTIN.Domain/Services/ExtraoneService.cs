@@ -466,11 +466,11 @@ namespace CTIN.Domain.Services
 
         public void updatedanhsachtuvaoDB()
         {
-            // Hàm chuyReadFolderAndThenUploadDBAndCopyFile
-            ReadFolderAndThenUploadDBAndCopyFile();
+            //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
+            //ReadFolderAndThenUploadDBAndCopyFile();
 
             // Update vào 2 trường answerWrongEn và answerWrongVn trong DB
-            var listId = _db.Extraone.Select(x => x.id).ToList();
+            var listId = _db.Extraone.Where(x => x.categoryfilmid == 1).Select(x => x.id).ToList();
 
             foreach (var i in listId)
             {
@@ -481,47 +481,49 @@ namespace CTIN.Domain.Services
 
 
         // Đọc toàn bộ thư mục rồi lưu vào database và copy sang thư mục khác
-        public void ReadFolderAndThenUploadDBAndCopyFile(string targetDirectory = "C:\\Users\\TINHVU\\Desktop\\extra2\\filecut")
+        public void ReadFolderAndThenUploadDBAndCopyFile(string targetDirectory = "C:\\Users\\TINHVU\\Desktop\\extra1\\filecut2")
         {
             // Process the list of files found in the directory.
-            string[] fileEntries = Directory.GetFiles(targetDirectory);
+            DirectoryInfo di = new DirectoryInfo("C:\\Users\\TINHVU\\Desktop\\extra1\\filecut2");
+            var a = di.GetFiles();
+            FileInfo[] fileEntries = di.GetFiles();
+            //string[] fileEntries = Directory.GetFiles(targetDirectory);
+            int stt = 1;
 
-            var listFileName = new string[30];
-
-            foreach (string fileName in fileEntries)
+            foreach (var file in fileEntries)
             {
-                var name = fileName.Substring(fileName.IndexOf("t\\") + 2);
-                var stt = name.Substring(0, name.IndexOf('.'));
-                listFileName[Convert.ToInt32(stt)] = fileName;
-            }
-
-
-            foreach (string fileName in listFileName)
-            {
-                if (fileName != null)
+                if (file != null)
                 {
+                    var fileName = file.FullName;
+                    var size = file.Length;
                     var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files", "extraOne");
 
                     // cắt chuỗi textVN và TextEN
-                    var name = fileName.Substring(fileName.IndexOf("t\\") + 2);
-                    var stt = name.Substring(0, name.IndexOf('.'));
+                    var name = Regex.Replace(fileName, ".*\\\\", "");
                     var textEn = name.Substring(name.IndexOf('.') + 1, name.IndexOf('-') - name.IndexOf('.') - 2);
                     var textVn = name.Substring(name.IndexOf('-') + 2);
 
+
                     // chỉnh sửa đường dẫn cho url
-                    var fullName = Regex.Replace(textEn, @"[\.\!\s\,\-\+\?\`]", "_");
-                    fullName = Regex.Replace(fullName, @"_$", "");
+                    //var fullName = Regex.Replace(textEn, @"[\.\!\s\,\-\+\?\`]", "_");
+                    var fullName = Regex.Replace(textEn, @"_$", "");
                     fullName = Regex.Replace(fullName, @"[\']", "");
 
                     textVn = textVn.Substring(0, textVn.Length - 4);
+                    textEn = Regex.Replace(textEn, @"_$", "");
+                    textEn = Regex.Replace(textEn, "_", " ");
+                    textEn = Regex.Replace(textEn, "`", "?");
+                    textVn = Regex.Replace(textVn, @"_$", "");
+                    textVn = Regex.Replace(textVn, "_", " ");
+                    textVn = Regex.Replace(textVn, "`", "?");
 
-                    // Kiểm tra nếu cuối câu trả lời có dấu '`' thì nó là câu hỏi, cần thêm dấu '?' vào cuối câu
-                    var checkQuest = textVn[textVn.Length - 1];
-                    if (checkQuest == '`')
-                    {
-                        textEn = textEn + '?';
-                        textVn = textVn.Substring(0, textVn.Length - 1) + '?';
-                    }
+                    //// Kiểm tra nếu cuối câu trả lời có dấu '`' thì nó là câu hỏi, cần thêm dấu '?' vào cuối câu
+                    //var checkQuest = textVn[textVn.Length - 1];
+                    //if (checkQuest == '`')
+                    //{
+                    //    textEn = textEn + '?';
+                    //    textVn = textVn.Substring(0, textVn.Length - 1) + '?';
+                    //}
 
                     // fullname, urlaudio
                     var guid = Guid.NewGuid().ToString();
@@ -533,6 +535,8 @@ namespace CTIN.Domain.Services
                     File.Copy(fileName, stream);
 
                     var data = new Extraone();
+                    data.categoryfilmid = 1;
+                    data.size = size;
                     data.textEn = textEn;
                     data.textVn = textVn;
                     data.fullName = fullName;
@@ -545,7 +549,7 @@ namespace CTIN.Domain.Services
                     };
                     _db.Extraone.Add(data);
                     _db.SaveChanges();
-
+                    stt = stt + 1;
                 }
             }
         }
@@ -557,25 +561,26 @@ namespace CTIN.Domain.Services
             var listId = _db.Extraone.Where(x => x.id != Idstt).Select(x => x.id).ToList();
             var data = _db.Extraone.FirstOrDefault(x => x.id == Idstt);
 
-            Random ran = new Random();
-            int mynum = ran.Next(listId.Min(), listId.Max());
-            string listStringEn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textEn;
-            string listStringVn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textVn;
+            var random = new Random();
+            int index = random.Next(listId.Count);
+
+            string listStringEn = _db.Extraone.Where(x => x.id == listId[index]).FirstOrDefault().textEn;
+            string listStringVn = _db.Extraone.Where(x => x.id == listId[index]).FirstOrDefault().textVn;
 
             for (int i = 0; i < 6; i++)
             {
-                while (checkId.Contains(mynum))
+                while (checkId.Contains(listId[index]))
                 {
-                    mynum = ran.Next(listId.Min(), listId.Max());
+                    index = random.Next(listId.Count);
                 }
                 if (i != 0)
                 {
-                    var textEn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textEn;
-                    var textVn = _db.Extraone.Where(x => x.id == mynum).FirstOrDefault().textVn;
+                    var textEn = _db.Extraone.Where(x => x.id == listId[index]).FirstOrDefault().textEn;
+                    var textVn = _db.Extraone.Where(x => x.id == listId[index]).FirstOrDefault().textVn;
                     listStringEn = listStringEn + " *** " + textEn;
                     listStringVn = listStringVn + " *** " + textVn;
                 }
-                checkId.Add(mynum);
+                checkId.Add(listId[index]);
             }
             var update = new
             {

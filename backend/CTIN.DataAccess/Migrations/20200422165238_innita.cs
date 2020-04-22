@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CTIN.DataAccess.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class innita : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,9 @@ namespace CTIN.DataAccess.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FullName = table.Column<string>(nullable: true)
+                    FullName = table.Column<string>(nullable: true),
+                    address = table.Column<string>(nullable: true),
+                    avatar = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,6 +77,22 @@ namespace CTIN.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Rank",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(maxLength: 50, nullable: true),
+                    pointStage = table.Column<int>(nullable: false),
+                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true),
+                    dataDbstatus = table.Column<short>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rank", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tips",
                 columns: table => new
                 {
@@ -86,26 +104,6 @@ namespace CTIN.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tips", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "userLeanning",
-                columns: table => new
-                {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    point = table.Column<int>(nullable: true, defaultValue: 0),
-                    filmleanning = table.Column<string>(nullable: true),
-                    filmforgeted = table.Column<string>(nullable: true),
-                    filmpunishing = table.Column<string>(nullable: true),
-                    filmfinish = table.Column<string>(nullable: true),
-                    information = table.Column<string>(nullable: true),
-                    listfrendid = table.Column<string>(unicode: false, nullable: true),
-                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_userLeanning", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,6 +274,39 @@ namespace CTIN.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "userLeanning",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    userIdId = table.Column<string>(nullable: true),
+                    point = table.Column<int>(nullable: true, defaultValue: 0),
+                    rankid = table.Column<int>(nullable: true),
+                    filmleanning = table.Column<string>(nullable: true),
+                    filmforgeted = table.Column<string>(nullable: true),
+                    filmpunishing = table.Column<string>(nullable: true),
+                    filmfinish = table.Column<string>(nullable: true),
+                    listfrendid = table.Column<string>(unicode: false, nullable: true),
+                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userLeanning", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_userLeanning_Rank_rankid",
+                        column: x => x.rankid,
+                        principalTable: "Rank",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_userLeanning_AspNetUsers_userIdId",
+                        column: x => x.userIdId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -319,6 +350,21 @@ namespace CTIN.DataAccess.Migrations
                 name: "IX_extraone_categoryfilmid",
                 table: "extraone",
                 column: "categoryfilmid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rank_dataDbstatus",
+                table: "Rank",
+                column: "dataDbstatus");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userLeanning_rankid",
+                table: "userLeanning",
+                column: "rankid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userLeanning_userIdId",
+                table: "userLeanning",
+                column: "userIdId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -359,10 +405,13 @@ namespace CTIN.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "categoryfilm");
 
             migrationBuilder.DropTable(
-                name: "categoryfilm");
+                name: "Rank");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
