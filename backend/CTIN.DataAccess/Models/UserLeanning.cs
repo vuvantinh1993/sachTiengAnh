@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CTIN.DataAccess.Models
 {
-    public partial class User
+    public partial class UserLeanning
     {
         public int id { get; set; }
         public int? point { get; set; }

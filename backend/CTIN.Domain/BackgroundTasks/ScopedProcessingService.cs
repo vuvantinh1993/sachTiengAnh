@@ -39,12 +39,12 @@ namespace CTIN.Domain.BackgroundTasks
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var listUser = _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3).ToList();
+                var listUser = _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3).ToList();
                 if (listUser != null)
                 {
-                    foreach (User userOld in listUser)
+                    foreach (UserLeanning userOld in listUser)
                     {
-                        var userNew1 = userOld.JsonToString().JsonToObject<User>();
+                        var userNew1 = userOld.JsonToString().JsonToObject<UserLeanning>();
                         List<userfilmleanningDataJson> listfilmLeanning = new List<userfilmleanningDataJson>();
                         List<userfilmleanningDataJson> listfilmForgeted1 = new List<userfilmleanningDataJson>();
                         List<userfilmleanningDataJson> listfilmForgeted2 = new List<userfilmleanningDataJson>();
@@ -140,7 +140,7 @@ namespace CTIN.Domain.BackgroundTasks
                             userNew1 = userNew1.Patch(update1);
                         }
 
-                        var userNew2 = userNew1.JsonToString().JsonToObject<User>();
+                        var userNew2 = userNew1.JsonToString().JsonToObject<UserLeanning>();
 
                         if (userNew2.filmleanning != null)
                         {

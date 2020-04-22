@@ -3,13 +3,17 @@ using CTIN.Common.Interfaces;
 using CTIN.Common.Models;
 using CTIN.DataAccess.Bases;
 using CTIN.DataAccess.Contexts;
+using CTIN.DataAccess.Models;
 using CTIN.Domain.BackgroundTasks;
 using CTIN.Domain.Bases;
 using CTIN.WebApi.Bases.Services;
 using CTIN.WebApi.Bases.Swagger;
+using CTIN.WebApi.Modules.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +21,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
+using System.Text;
 
 namespace CTIN.WebApi
 {
@@ -68,6 +74,8 @@ namespace CTIN.WebApi
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
+            //Inject AppSettings
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
             services.AddHttpContextAccessor();
 
             services.AddMvc()
@@ -94,19 +102,19 @@ namespace CTIN.WebApi
                             "https://httpstatuses.com/404";
                     });
 
-            //apply all cors call api        
+            //apply all cors call api
             services.AddCors(options => options.AddPolicy("Cors",
             builder =>
             {
                 builder.
                 AllowAnyOrigin().
+                WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString()).
                 AllowAnyMethod().
                 AllowAnyHeader().
                 AllowCredentials();
             }));
 
             //gzip
-            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression(options =>
             {
                 options.MimeTypes = new[]
@@ -127,8 +135,40 @@ namespace CTIN.WebApi
                 };
                 options.EnableForHttps = true;
             });
-
             services.AddDistributedMemoryCache();
+
+            // Identity
+            services.AddDefaultIdentity<ApplicationUser>()
+              .AddEntityFrameworkStores<NATemplateContext>();
+            // setup identity
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+            });
+
+            //JWT
+            var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = false;
+                x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
 
@@ -149,6 +189,9 @@ namespace CTIN.WebApi
             }
             //enable gzip
             app.UseResponseCompression();
+
+            // identity
+            app.UseAuthentication();
 
             app.UseCors("Cors");
 

@@ -6,28 +6,30 @@
   </div>
   <div class="col-9 listfilm">
     <div class="row">
-      <div class="film" *ngFor="let item of data">
-        <a [routerLink]="['/phim', item.id]">
-          <div class="border1">
-            <div class="border2">
-              <div class="row ">
-                <div class="col-4 anh align-items-center">
-                  <img src="{{item.linkImg}}" alt="" width="100%" class="image">
-                </div>
-                <div class="col-8 content">
-                  <h1>{{item.name}} (English)</h1>
-                  <p>{{item.discription}}</p>
-                  <div class="lever align-items-end">
-                    <span class="numberuser"><i>{{item.totalUser | number}} ng dùng</i></span>
-                    <span class="numberuser"><b><i>{{item.totalWord}} câu</i></b></span>
-                    <div class="rec rechasbg" *ngFor="let i of Arr(item.level).fill(1)"></div>
-                    <div class="rec recnohasbg" *ngFor="let i of Arr(5-item.level).fill(1)"></div>
+      <div class="col-12">
+        <div class="film" *ngFor="let item of data">
+          <a [routerLink]="['/phim', item.id]">
+            <div class="border1">
+              <div class="border2">
+                <div class="row ">
+                  <div class="col-4 anh align-items-center">
+                    <img src="{{item.linkImg}}" alt="" width="100%" class="image">
+                  </div>
+                  <div class="col-8 content">
+                    <h1>{{item.name}} (English)</h1>
+                    <p>{{item.discription}}</p>
+                    <div class="lever align-items-end">
+                      <span class="numberuser"><i>{{item.totalUser | number}} ng dùng</i></span>
+                      <span class="numberuser"><b><i>{{item.totalWord}} câu</i></b></span>
+                      <div class="rec rechasbg" *ngFor="let i of Arr(item.level).fill(1)"></div>
+                      <div class="rec recnohasbg" *ngFor="let i of Arr(5-item.level).fill(1)"></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </div>
     </div>
   </div>

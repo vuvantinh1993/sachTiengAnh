@@ -1,38 +1,28 @@
 ﻿using CTIN.DataAccess.Bases;
 using CTIN.DataAccess.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Expressions;
 
 namespace CTIN.DataAccess.Contexts
 {
-    public partial class NATemplateContext : DbContext
+    public partial class NATemplateContext : IdentityDbContext<ApplicationUser>
     {
-        public NATemplateContext()
-        {
-        }
-
         public NATemplateContext(DbContextOptions<NATemplateContext> options)
             : base(options)
         {
         }
+
         public virtual DbSet<Acttachments> Acttachments { get; set; }
         public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserLeanning> UserLeanning { get; set; }
         public virtual DbSet<Extraone> Extraone { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=TINHVV_DES\\SQLEXPRESS;Database=TLNEnglish;user id=sa;password=123456;Trusted_Connection=False;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             var jsonValueMethod = typeof(DbFunction).GetMethod(nameof(DbFunction.JsonValue));
             modelBuilder.HasDbFunction(jsonValueMethod)
             .HasTranslation(args =>
@@ -40,7 +30,9 @@ namespace CTIN.DataAccess.Contexts
                 return new SqlFunctionExpression("JSON_VALUE", jsonValueMethod.ReturnType, args);
             });
 
+
             modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+
 
             modelBuilder.Entity<Acttachments>(entity =>
             {
@@ -160,9 +152,9 @@ namespace CTIN.DataAccess.Contexts
                    .IsUnicode(false).IsJson();
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<UserLeanning>(entity =>
             {
-                entity.ToTable("user");
+                entity.ToTable("userLeanning");
 
                 entity.Property(e => e.id).HasColumnName("id");
 

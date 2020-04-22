@@ -8,32 +8,31 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static CTIN.DataAccess.Models.User;
 
 namespace CTIN.WebApi.Modules.General.Models
 {
 
-    public class Search_UserModel : Search_UserServiceModel
+    public class Search_UserLeanningModel : Search_UserLeanningServiceModel
     {
-        //public Search_UserModel()
+        //public Search_UserLeanningModel()
         //{
         //    order = "[{\"id\": true}]";
         //}
         //public override string order { get => base.order; set => base.order = value; }
     }
 
-    public class Updatepoint_UserModel : Updatepoint_UserServiceModel
+    public class Updatepoint_UserLeanningModel : Updatepoint_UserLeanningServiceModel
     {
 
     }
 
-    public class Add_UserModel
+    public class Add_UserLeanningModel
     {
         public int? point { get; set; }
         public List<userfilmleanningDataJsonModel> filmleanning { get; set; }
         public informationDataJsonModel information { get; set; }
         public List<int> listfrendid { get; set; }
-        public Add_UserModel_DataDbJson dataDb { get; set; }
+        public Add_UserLeanningModel_DataDbJson dataDb { get; set; }
     }
 
     public class informationDataJsonModel
@@ -62,24 +61,29 @@ namespace CTIN.WebApi.Modules.General.Models
         public int isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
     }
 
-    public class Add_UserModel_DataDbJson
+    public class Add_UserLeanningModel_DataDbJson
     {
         public int status { get; set; }
     }
 
-    public class Edit_UserModel : Add_UserModel
+    public class Edit_UserLeanningModel : Add_UserLeanningModel
     {
     }
 
-    public class FindOne_UserModel : FindOne_UserServiceModel
-    {
-
-    }
-
-    public class Count_UserModel : Count_UserServiceModel
+    public class FindOne_UserLeanningModel : FindOne_UserLeanningServiceModel
     {
 
     }
 
+    public class Count_UserLeanningModel : Count_UserLeanningServiceModel
+    {
+
+    }
+
+    public class LoginModel
+    {
+        public string userName { get; set; }
+        public string passWord { get; set; }
+    }
 
 }

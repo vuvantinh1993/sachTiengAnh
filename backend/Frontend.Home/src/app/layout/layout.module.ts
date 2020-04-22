@@ -7,7 +7,6 @@ import { FooterModule } from '../_shared/footer/footer.module';
 import { NavbarModule } from '../_shared/navbar/navbar.module';
 import { BreadcrumbModule } from '../_shared/breadcrumb/breadcrumb.module';
 
-
 @NgModule({
   imports: [
     CommonModule,

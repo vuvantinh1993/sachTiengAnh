@@ -48,5 +48,4 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       localStorage.setItem('useraddress', rs.result.address);
     }
   }
-
 }

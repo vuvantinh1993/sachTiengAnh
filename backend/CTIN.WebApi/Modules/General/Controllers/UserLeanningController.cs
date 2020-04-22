@@ -1,34 +1,49 @@
 ﻿using CTIN.Common.Extentions;
 using CTIN.Common.Interfaces;
+using CTIN.DataAccess.Models;
 using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.General.Models;
+using CTIN.WebApi.Modules.JWT;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Controllers
 {
-    public class UserController : ApiController
+    public class UserLeanningController : ApiController
     {
         private readonly IUserService _sv;
         public readonly ICurrentUserService _currentUserService;
+        private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _singInManager;
+        private readonly ApplicationSettings _appSettings;
 
-        public UserController(IUserService sv, ICurrentUserService currentUserService)
+        public UserLeanningController(IUserService sv, ICurrentUserService currentUserService,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings)
         {
             _sv = sv;
             _currentUserService = currentUserService;
+            _userManager = userManager;
+            _singInManager = signInManager;
+            _appSettings = appSettings.Value;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] Search_UserModel model)
+        public async Task<IActionResult> Get([FromQuery] Search_UserLeanningModel model)
         {
             if (ModelState.IsValid)
             {
@@ -43,12 +58,39 @@ namespace CTIN.WebApi.Modules.General.Controllers
             return await BindData();
         }
 
+        [HttpPost("Login")]
+        //Post : /api/login
+        public async Task<object> Login([FromBody] LoginModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.userName);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.passWord))
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID",user.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(5),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { token });
+            }
+            else
+            {
+                return BadRequest(new { message = "Username or password is incorrect." });
+            }
+        }
+
         [HttpPost]
-        public async Task<object> Add([FromBody] Add_UserModel model)
+        public async Task<object> Add([FromBody] Add_UserLeanningModel model)
         {
             if (ModelState.IsValid)
             {
-                var modelService = model.MapToObject<Add_UserServiceModel>();
+                var modelService = model.MapToObject<Add_UserLeanningServiceModel>();
                 //set value default
                 modelService.dataDb.createdDate = DateTime.Now;
                 modelService.dataDb.createdBy = Int32.Parse(_currentUserService.userId);
@@ -63,14 +105,12 @@ namespace CTIN.WebApi.Modules.General.Controllers
             return await BindData();
         }
 
-
-
         [HttpPut("{id}")]
-        public async Task<object> Edit(int id, [FromBody] Edit_UserModel model)
+        public async Task<object> Edit(int id, [FromBody] Edit_UserLeanningModel model)
         {
             if (ModelState.IsValid)
             {
-                var modelService = model.MapToObject<Edit_UserServiceModel>();
+                var modelService = model.MapToObject<Edit_UserLeanningServiceModel>();
                 //set value default
                 modelService.id = id;
                 modelService.dataDb.modifiedDate = DateTime.Now;
@@ -112,7 +152,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             if (ModelState.IsValid)
             {
-                var modelService = new Delete_UserServiceModel { id = id };
+                var modelService = new Delete_UserLeanningServiceModel { id = id };
                 //set value default
                 modelService.delectationTime = DateTime.Now;
                 modelService.delectationBy = Int32.Parse(_currentUserService.userId);
@@ -128,7 +168,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpGet("FindOne")]
-        public async Task<object> FindOne([FromQuery] FindOne_UserModel model)
+        public async Task<object> FindOne([FromQuery] FindOne_UserLeanningModel model)
         {
             if (ModelState.IsValid)
             {
@@ -144,14 +184,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
             if (ModelState.IsValid)
             {
                 var where = JObject.FromObject(new { id }).JsonToString();
-                var result = await _sv.FindOne(new FindOne_UserServiceModel { where = where });
+                var result = await _sv.FindOne(new FindOne_UserLeanningServiceModel { where = where });
                 return await BindData(result.data, result.errors);
             }
             return await BindData();
         }
 
         [HttpGet("Count")]
-        public async Task<object> Count([FromQuery] Count_UserModel model)
+        public async Task<object> Count([FromQuery] Count_UserLeanningModel model)
         {
             if (ModelState.IsValid)
             {
@@ -162,11 +202,11 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpGet("updateWordlened")]
-        public async Task<object> updateWordlened([FromQuery] Updatepoint_UserModel model)
+        public async Task<object> updateWordlened([FromQuery] Updatepoint_UserLeanningModel model)
         {
             var value = EncryptionHelper.DecryptStringAES(model.chuoimahoa).Split(":");
             int idfilm = Convert.ToInt32(value[0]);
-            int sttWord = Convert.ToInt32(value[1]); ;
+            int sttWord = Convert.ToInt32(value[1]);
             int totalSentenceRight = Convert.ToInt32(value[2]);
 
             if (sttWord < -3 || totalSentenceRight > 10)

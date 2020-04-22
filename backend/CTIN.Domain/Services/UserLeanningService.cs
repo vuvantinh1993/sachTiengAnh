@@ -18,41 +18,41 @@ namespace CTIN.Domain.Services
 {
     public interface IUserService
     {
-        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_UserServiceModel model);
-        Task<(dynamic data, List<ErrorModel> errors)> Add(Add_UserServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_UserLeanningServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> Add(Add_UserLeanningServiceModel model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_UserServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_UserLeanningServiceModel model);
 
         Task<(dynamic data, List<ErrorModel> errors)> Patch(int id, JObject model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> Delete(Delete_UserServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> Delete(Delete_UserLeanningServiceModel model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_UserServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_UserLeanningServiceModel model);
 
-        Task<(int data, List<ErrorModel> errors)> Count(Count_UserServiceModel model);
+        Task<(int data, List<ErrorModel> errors)> Count(Count_UserLeanningServiceModel model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserLeanningServiceModel model);
     }
 
-    public class UserService : IUserService
+    public class UserLeanningService : IUserService
     {
-        private readonly ILogger<UserService> _log;
+        private readonly ILogger<UserLeanningService> _log;
         private readonly NATemplateContext _db;
         public readonly ICurrentUserService _currentUserService;
 
-        public UserService(ILogger<UserService> log, NATemplateContext db, ICurrentUserService currentUserService)
+        public UserLeanningService(ILogger<UserLeanningService> log, NATemplateContext db, ICurrentUserService currentUserService)
         {
             _log = log;
             _db = db;
             _currentUserService = currentUserService;
         }
 
-        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
             var statusActive = (int)StatusDb.Nomal;
             var statusHide = (int)StatusDb.Hide;
-            var query = _db.User.AsQueryable();
+            var query = _db.UserLeanning.AsQueryable();
 
             if (model.where != null)
             {
@@ -76,18 +76,18 @@ namespace CTIN.Domain.Services
         }
 
 
-        public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> Add(Add_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            _db.User.Add(model);
+            _db.UserLeanning.Add(model);
             await _db.SaveChangesAsync();
             return (model, errors);
         }
 
-        public async Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            var data = await _db.User.FirstOrDefaultAsync(x => x.id == id);
+            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.id == id);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "", value = "share.notExist" });
@@ -106,7 +106,7 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Patch(int id, JObject model)
         {
             var errors = new List<ErrorModel>();
-            var data = await _db.User.FirstOrDefaultAsync(x => x.id == id);
+            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.id == id);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "", value = "share.notExist" });
@@ -123,10 +123,10 @@ namespace CTIN.Domain.Services
             return (null, errors);
         }
 
-        public async Task<(dynamic data, List<ErrorModel> errors)> Delete(Delete_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> Delete(Delete_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            var data = await _db.User.FirstOrDefaultAsync(x => x.id == model.id);
+            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.id == model.id);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "", value = "share.notExist" });
@@ -151,13 +151,13 @@ namespace CTIN.Domain.Services
             return (null, errors);
         }
 
-        public async Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
             var statusActive = (int)StatusDb.Nomal;
             var statusHide = (int)StatusDb.Hide;
 
-            var query = _db.User
+            var query = _db.UserLeanning
                 .Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3)
                 .Select(x => new
                 {
@@ -189,11 +189,11 @@ namespace CTIN.Domain.Services
             return (result, errors);
         }
 
-        public async Task<(int data, List<ErrorModel> errors)> Count(Count_UserServiceModel model)
+        public async Task<(int data, List<ErrorModel> errors)> Count(Count_UserLeanningServiceModel model)
         {
             var errors = new List<ErrorModel>();
 
-            var query = _db.User.AsQueryable();
+            var query = _db.UserLeanning.AsQueryable();
 
             if (model.where != null)
             {
@@ -211,24 +211,24 @@ namespace CTIN.Domain.Services
         /// <param name="sttWord">là sst của từ đã học thuộc</param>
         /// <param name="totalSentenceRight">Tổng số từ làm đúng trong lần học đó</param>
         /// <returns></returns>
-        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserLeanningServiceModel model)
         {
             var userId = 100014;
             var errors = new List<ErrorModel>();
-            var data = await _db.User.FirstOrDefaultAsync(x => x.id == userId);
+            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.id == userId);
             var film = await _db.Categoryfilm.FirstOrDefaultAsync(x => x.id == idfilm);
             if (data == null || film == null)
             {
                 errors.Add(new ErrorModel { key = "updateWordlened", value = "Không tồn tại tài khoản hoặc film" });
                 return (null, errors);
             }
-            var update = data.JsonToString().JsonToObject<User>();
+            var update = data.JsonToString().JsonToObject<UserLeanning>();
 
 
             //đây là từ học lại
             if (sttWord == -3)
             {
-                OneWordUpate_UserServiceModel tuso1 = new OneWordUpate_UserServiceModel();
+                OneWordUpate_UserLeanningServiceModel tuso1 = new OneWordUpate_UserLeanningServiceModel();
                 tuso1.stt = model.stt1;
                 tuso1.check = model.check1;
                 tuso1.classic = model.classic1;
@@ -236,12 +236,12 @@ namespace CTIN.Domain.Services
                 if (user1.errors.Count() != 0)
                 {
                     errors = user1.errors;
-                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 3" });
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 1 không thành công" });
                     return (null, errors);
                 }
                 if (model.stt2 != null)
                 {
-                    OneWordUpate_UserServiceModel tuso2 = new OneWordUpate_UserServiceModel();
+                    OneWordUpate_UserLeanningServiceModel tuso2 = new OneWordUpate_UserLeanningServiceModel();
                     tuso2.stt = model.stt2;
                     tuso2.check = model.check2;
                     tuso2.classic = model.classic2;
@@ -249,19 +249,72 @@ namespace CTIN.Domain.Services
                     if (user2.errors.Count() != 0)
                     {
                         errors = user1.errors;
-                        errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 4" });
+                        errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 2 không thành công 4" });
                         return (null, errors);
                     }
-                    // update usser vaf coongj ddieemr cho USER2
-                    var totalPointRight = totalSentenceRight * film.pointword;
-                    user2.userdata.point += totalPointRight;
-                    _db.Entry(data).CurrentValues.SetValues(user2);
-                    if (await _db.SaveChangesAsync() > 0)
+                    if (model.stt3 != null)
                     {
-                        return (new { totalSentenceRight, totalPointRight }, errors);
+                        OneWordUpate_UserLeanningServiceModel tuso3 = new OneWordUpate_UserLeanningServiceModel();
+                        tuso3.stt = model.stt3;
+                        tuso3.check = model.check3;
+                        tuso3.classic = model.classic3;
+                        var user3 = xulycactuhoclai(user2.userdata, tuso3, idfilm);
+                        if (user3.errors.Count() != 0)
+                        {
+                            errors = user2.errors;
+                            errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 3 không thành công 4" });
+                            return (null, errors);
+                        }
+                        if (model.stt4 != null)
+                        {
+                            OneWordUpate_UserLeanningServiceModel tuso4 = new OneWordUpate_UserLeanningServiceModel();
+                            tuso4.stt = model.stt4;
+                            tuso4.check = model.check4;
+                            tuso4.classic = model.classic4;
+                            var user4 = xulycactuhoclai(user2.userdata, tuso4, idfilm);
+                            if (user4.errors.Count() != 0)
+                            {
+                                errors = user3.errors;
+                                errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 4 không thành công 4" });
+                                return (null, errors);
+                            }
+                            // update usser vaf coongj ddieemr cho USER4
+                            var totalPointRight = totalSentenceRight * film.pointword;
+                            user4.userdata.point += totalPointRight;
+                            _db.Entry(data).CurrentValues.SetValues(user4.userdata);
+                            if (await _db.SaveChangesAsync() > 0)
+                            {
+                                return (new { totalSentenceRight, totalPointRight }, errors);
+                            }
+                            errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 4 không thành công 1" });
+                        }
+                        else
+                        {
+                            // update usser vaf coongj ddieemr cho USER3
+                            var totalPointRight = totalSentenceRight * film.pointword;
+                            user3.userdata.point += totalPointRight;
+                            _db.Entry(data).CurrentValues.SetValues(user3.userdata);
+                            if (await _db.SaveChangesAsync() > 0)
+                            {
+                                return (new { totalSentenceRight, totalPointRight }, errors);
+                            }
+                            errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 3 không thành công 1" });
+                            return (null, errors);
+                        }
                     }
-                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 1" });
-                    return (null, errors);
+                    else
+                    {
+                        // update usser vaf coongj ddieemr cho USER2
+                        var totalPointRight = totalSentenceRight * film.pointword;
+                        user2.userdata.point += totalPointRight;
+                        _db.Entry(data).CurrentValues.SetValues(user2.userdata);
+                        if (await _db.SaveChangesAsync() > 0)
+                        {
+                            return (new { totalSentenceRight, totalPointRight }, errors);
+                        }
+                        errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 2 không thành công 1" });
+                        return (null, errors);
+                    }
                 }
                 else
                 {
@@ -273,7 +326,7 @@ namespace CTIN.Domain.Services
                     {
                         return (new { totalSentenceRight, totalPointRight }, errors);
                     }
-                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại không thành công 2" });
+                    errors.Add(new ErrorModel { key = "updateWordlened", value = "update từ học lại số 1 không thành công 2" });
                     return (null, errors);
                 }
             }
@@ -320,10 +373,10 @@ namespace CTIN.Domain.Services
 
         }
 
-        public (User userdata, List<ErrorModel> errors) xulycactuhoclai(User data, OneWordUpate_UserServiceModel model, int idfilm)
+        public (UserLeanning userdata, List<ErrorModel> errors) xulycactuhoclai(UserLeanning data, OneWordUpate_UserLeanningServiceModel model, int idfilm)
         {
             var errors = new List<ErrorModel>();
-            var userJson1 = data.JsonToString().JsonToObject<User>();
+            var userJson1 = data.JsonToString().JsonToObject<UserLeanning>();
             if (model.classic == 2)
             {
                 // nó đang ở cột thứ 2 filmforget ta cần kiểm tra xem đưa về leanning hay fisnish

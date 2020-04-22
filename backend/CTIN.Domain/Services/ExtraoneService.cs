@@ -33,6 +33,7 @@ namespace CTIN.Domain.Services
         Task<(dynamic data, List<ErrorModel> errors)> FindOne(FindOne_ExtraoneServiceModel model);
 
         Task<(int data, List<ErrorModel> errors)> Count(Count_ExtraoneServiceModel model);
+        void updatedanhsachtuvaoDB();
     }
 
     public class ExtraoneService : IExtraoneService
@@ -60,18 +61,6 @@ namespace CTIN.Domain.Services
         {
             if (style == "new")
             {
-                #region update video vào bảng
-                //// Hàm chuyReadFolderAndThenUploadDBAndCopyFile
-                //ReadFolderAndThenUploadDBAndCopyFile();
-
-                //// Update vào 2 trường answerWrongEn và answerWrongVn trong DB
-                //var listId = _db.Extraone.Select(x => x.id).ToList();
-
-                //foreach (var i in listId)
-                //{
-                //    UpdateAnserWrong(i);
-                //}
-                #endregion
                 var errors = new List<ErrorModel>();
                 var userId = 100014;
 
@@ -145,7 +134,7 @@ namespace CTIN.Domain.Services
                 var userId = 100014;
                 var statusDelete = (int)StatusDb.Delete;
 
-                var data = await _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefaultAsync(x => x.id == userId);
+                var data = await _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefaultAsync(x => x.id == userId);
                 var a = data.filmpunishing.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
                 var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
                 var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 1);
@@ -387,7 +376,7 @@ namespace CTIN.Domain.Services
         {
             var errors = new List<ErrorModel>();
             var statusDelete = (int)StatusDb.Delete;
-            var data = _db.User.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefault(x => x.id == userId);
+            var data = _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefault(x => x.id == userId);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "NotExitUser", value = "Không tồn tại người dùng" });
@@ -398,7 +387,7 @@ namespace CTIN.Domain.Services
                 // nếu chưa có thì tạo mới 1 object film
                 if (data.filmleanning == null)
                 {
-                    var update = data.JsonToString().JsonToObject<User>();
+                    var update = data.JsonToString().JsonToObject<UserLeanning>();
                     var filmlean = new userfilmleanningDataJson
                     {
                         filmid = idFilm,
@@ -472,6 +461,21 @@ namespace CTIN.Domain.Services
                 }
             }
             return (-2, errors);
+        }
+
+
+        public void updatedanhsachtuvaoDB()
+        {
+            // Hàm chuyReadFolderAndThenUploadDBAndCopyFile
+            ReadFolderAndThenUploadDBAndCopyFile();
+
+            // Update vào 2 trường answerWrongEn và answerWrongVn trong DB
+            var listId = _db.Extraone.Select(x => x.id).ToList();
+
+            foreach (var i in listId)
+            {
+                UpdateAnserWrong(i);
+            }
         }
 
 

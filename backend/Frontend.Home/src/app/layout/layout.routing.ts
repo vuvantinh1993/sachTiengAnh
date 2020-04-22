@@ -1,3 +1,6 @@
+import { LoginTLNComponent } from './user/login-tln/login-tln.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { UserComponent } from './user/user.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 
@@ -6,11 +9,11 @@ const routes: Routes = [
     path: '', component: LayoutComponent, children: [
       {
         path: '',
-        loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
       },
       {
-        path: 'login',
-        loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
+        path: 'home',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'phim/:id',

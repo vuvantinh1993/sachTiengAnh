@@ -82,7 +82,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     this.idfilm = +this.route.snapshot.paramMap.get('idfilm');
     this.stypelean = this.route.snapshot.paramMap.get('style');
     if (this.stypelean === 'old') {
-      this.paging.size = 2;
+      this.paging.size = 4;
     }
     const rs = await this.extraoneService.getWords(this.stypelean, this.idfilm, this.paging);
     console.log('Get tai lieu', rs.result);
@@ -236,11 +236,19 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     } else if (sttWord === -3) {
       for (const [key, value] of Object.entries(this.data)) {
         if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 2, 2);
+          const list = this.laySoCauTheoTu(value, 1, 2);
           listda = list;
         }
         if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 2, 2);
+          const list = this.laySoCauTheoTu(value, 1, 2);
+          listda = listda.concat(list);
+        }
+        if (key === '2') {
+          const list = this.laySoCauTheoTu(value, 1, 2);
+          listda = listda.concat(list);
+        }
+        if (key === '3') {
+          const list = this.laySoCauTheoTu(value, 1, 2);
           listda = listda.concat(list);
         }
       }
@@ -345,10 +353,23 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
             if (this.sttWordLenning === -3) {
               if (this.data.length === 1) {
                 data = { chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic };
-              } else {
+              } else if (this.data.length === 2) {
                 data = {
                   chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
                   stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic
+                };
+              } else if (this.data.length === 3) {
+                data = {
+                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
+                  stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic
+                };
+              } else {
+                data = {
+                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
+                  stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic,
+                  stt4: this.data[3].iteam.stt, check4: this.data[3].iteam.check, classic4: this.data[3].iteam.classic
                 };
               }
             } else {
@@ -357,13 +378,15 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
             const rs = await this.userService.updateWordlened(data);
             if (rs.ok) {
-              localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
+              if (this.sttWordLenning !== -3) {
+                localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
+              }
               this.router.navigate(['/finish-cours', this.idfilm, rs.result.totalPointRight]);
             } else {
-              this.message.error('Lỗi! Lưu thất bại', { nzDuration: 5000 });
+              this.message.error('Lỗi! Lưu thất bại', { nzDuration: 40000 });
               setTimeout(() => {
                 rs.errors.error.updateWordlened.forEach(ele => {
-                  this.message.error(ele, { nzDuration: 5000 });
+                  this.message.error(ele, { nzDuration: 50000 });
                 });
               }, 300);
             }

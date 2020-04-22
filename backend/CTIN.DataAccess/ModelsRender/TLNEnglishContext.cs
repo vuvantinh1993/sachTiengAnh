@@ -15,11 +15,19 @@ namespace CTIN.DataAccess.ModelsRender
         {
         }
 
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
         public virtual DbSet<Extraone> Extraone { get; set; }
         public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserLeanning> UserLeanning { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +41,112 @@ namespace CTIN.DataAccess.ModelsRender
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+
+            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId);
+
+                entity.Property(e => e.RoleId).IsRequired();
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName)
+                    .HasName("RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
+            {
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.LoginProvider).HasMaxLength(128);
+
+                entity.Property(e => e.ProviderKey).HasMaxLength(128);
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.Property(e => e.LoginProvider).HasMaxLength(128);
+
+                entity.Property(e => e.Name).HasMaxLength(128);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Discriminator).IsRequired();
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.FullName).HasMaxLength(150);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
 
             modelBuilder.Entity<Categoryfilm>(entity =>
             {
@@ -156,9 +270,9 @@ namespace CTIN.DataAccess.ModelsRender
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<UserLeanning>(entity =>
             {
-                entity.ToTable("user");
+                entity.ToTable("userLeanning");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -166,6 +280,8 @@ namespace CTIN.DataAccess.ModelsRender
                     .HasColumnName("dataDb")
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Filmfinish).HasColumnName("filmfinish");
 
                 entity.Property(e => e.Filmforgeted).HasColumnName("filmforgeted");
 
@@ -182,6 +298,36 @@ namespace CTIN.DataAccess.ModelsRender
                     .IsUnicode(false);
 
                 entity.Property(e => e.Point).HasColumnName("point");
+            });
+
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Birthday).HasColumnName("birthday");
+
+                entity.Property(e => e.DataDb).HasColumnName("dataDB");
+
+                entity.Property(e => e.Description)
+                    .HasColumnName("description")
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.LatestLogin).HasColumnName("latestLogin");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.NickName)
+                    .IsRequired()
+                    .HasColumnName("nickName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserPassword)
+                    .IsRequired()
+                    .HasColumnName("userPassword")
+                    .HasMaxLength(50);
             });
         }
     }

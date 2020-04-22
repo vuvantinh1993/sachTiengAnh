@@ -1,0 +1,11 @@
+button[type=submit].btn{
+  border-radius: 20px;
+  background-color: #04c582;
+  color: #fff;
+}
+
+div.form-group label:first-child{
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: #ccc;
+}

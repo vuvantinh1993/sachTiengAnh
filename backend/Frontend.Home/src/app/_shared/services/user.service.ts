@@ -13,7 +13,7 @@ export class UserService extends BaseCrudService<any> {
     bindDataExtensionService: BindDataExtensionService
   ) {
     super(http, bindDataExtensionService);
-    this.baseUrl = 'User';
+    this.baseUrl = 'UserLeanning';
   }
 
   public updateWordlened(params: any) {

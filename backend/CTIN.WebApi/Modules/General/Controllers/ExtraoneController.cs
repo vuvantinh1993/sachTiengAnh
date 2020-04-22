@@ -198,5 +198,11 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             return await BindData();
         }
+
+        [HttpGet("themcaovaodb")]
+        public void updatedanhsachtuvaoDB()
+        {
+            _sv.updatedanhsachtuvaoDB();
+        }
     }
 }
