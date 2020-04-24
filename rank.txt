@@ -1,0 +1,126 @@
+Đồng V|1|0
+Đồng V|2|670
+Đồng V|3|690
+Đồng V|4|710
+Đồng V|5|730
+Đồng IV|1|750
+Đồng IV|2|770
+Đồng IV|3|790
+Đồng IV|4|810
+Đồng IV|5|830
+Đồng III|1|850
+Đồng III|2|870
+Đồng III|3|890
+Đồng III|4|910
+Đồng III|5|930
+Đồng II|1|950
+Đồng II|2|970
+Đồng II|3|990
+Đồng II|4|1010
+Đồng II|5|1030
+Đồng I|1|1050
+Đồng I|2|1070
+Đồng I|3|1090
+Đồng I|4|1110
+Đồng I|5|1130
+Bạc V|1|1250
+Bạc V|2|1300
+Bạc V|3|1350
+Bạc V|4|1400
+Bạc V|5|1450
+Bạc IV|1|1500
+Bạc IV|2|1550
+Bạc IV|3|1600
+Bạc IV|4|1650
+Bạc IV|5|1700
+Bạc III|1|1750
+Bạc III|2|1800
+Bạc III|3|1850
+Bạc III|4|1900
+Bạc III|5|1950
+Bạc II|1|2000
+Bạc II|2|2150
+Bạc II|3|2100
+Bạc II|4|2250
+Bạc II|5|2200
+Bạc I|1|2250
+Bạc I|2|2300
+Bạc I|3|2350
+Bạc I|4|2400
+Bạc I|5|2450
+Vàng V|1|2590
+Vàng V|2|2670
+Vàng V|3|2750
+Vàng V|4|2830
+Vàng V|5|2910
+Vàng IV|1|2990
+Vàng IV|2|3070
+Vàng IV|3|3150
+Vàng IV|4|3230
+Vàng IV|5|3310
+Vàng III|1|3390
+Vàng III|2|3470
+Vàng III|3|3550
+Vàng III|4|3630
+Vàng III|5|3710
+Vàng II|1|3790
+Vàng II|2|3870
+Vàng II|3|3950
+Vàng II|4|4030
+Vàng II|5|4110
+Vàng I|1|4190
+Vàng I|2|4270
+Vàng I|3|4350
+Vàng I|4|4430
+Vàng I|5|4510
+Bạch Kim V|1|4770
+Bạch Kim V|2|4910
+Bạch Kim V|3|5050
+Bạch Kim V|4|5190
+Bạch Kim V|5|5330
+Bạch Kim IV|1|5470
+Bạch Kim IV|2|5610
+Bạch Kim IV|3|5750
+Bạch Kim IV|4|5890
+Bạch Kim IV|5|6030
+Bạch Kim III|1|6170
+Bạch Kim III|2|6310
+Bạch Kim III|3|6450
+Bạch Kim III|4|6590
+Bạch Kim III|5|6730
+Bạch Kim II|1|6870
+Bạch Kim II|2|7010
+Bạch Kim II|3|7150
+Bạch Kim II|4|7290
+Bạch Kim II|5|7430
+Bạch Kim I|1|7570
+Bạch Kim I|2|7710
+Bạch Kim I|3|7850
+Bạch Kim I|4|7990
+Bạch Kim I|5|8130
+Kim Cương V|1|8570
+Kim Cương V|2|8810
+Kim Cương V|3|9050
+Kim Cương V|4|9290
+Kim Cương V|5|9530
+Kim Cương IV|1|9770
+Kim Cương IV|2|10010
+Kim Cương IV|3|10250
+Kim Cương IV|4|10490
+Kim Cương IV|5|10730
+Kim Cương III|1|10970
+Kim Cương III|2|11210
+Kim Cương III|3|11450
+Kim Cương III|4|11690
+Kim Cương III|5|11930
+Kim Cương II|1|12170
+Kim Cương II|2|12410
+Kim Cương II|3|12650
+Kim Cương II|4|12890
+Kim Cương II|5|13130
+Kim Cương I|1|13370
+Kim Cương I|2|13610
+Kim Cương I|3|13850
+Kim Cương I|4|14090
+Kim Cương I|5|14330
+Cao Thủ V|1|20000

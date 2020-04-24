@@ -41,6 +41,7 @@ export class CategoryFilmDataComponent extends BaseDataComponent implements OnIn
       level: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Cấp độ
       name: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
       pointword: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
+      discription: [null, GlobalValidate.required({ error: 'Không được để trống' })],
       dataDb: this.fb.group({
         status: [{ value: true }],
       })

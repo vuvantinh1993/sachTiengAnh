@@ -1,15 +1,13 @@
-﻿using System;
+﻿using CTIN.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Models
 {
-    public class ApplicationUserModel
+    public class ApplicationUserModel : ApplicationUserServiceModel
     {
-        public string userName { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public string fullName { get; set; }
+
     }
 }

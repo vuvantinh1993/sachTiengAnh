@@ -7,15 +7,21 @@ using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.General.Models;
 using CTIN.WebApi.Modules.JWT;
+using CTIN.WebApi.Modules.System1.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.DataProtection;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,21 +31,23 @@ namespace CTIN.WebApi.Modules.General.Controllers
 {
     public class ApplicationUserController : ApiController
     {
-        private readonly IUserService _sv;
+        private readonly IApplicationUserService _sv;
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _singInManager;
         private readonly ApplicationSettings _appSettings;
         public readonly ICurrentUserService _currentUserService;
 
-        public ApplicationUserController(IUserService sv, ICurrentUserService currentUserService,
+        public ApplicationUserController(IApplicationUserService sv, ICurrentUserService currentUserService,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, IOptions<ApplicationSettings> appSettings)
+            SignInManager<ApplicationUser> signInManager,
+            IOptions<ApplicationSettings> appSettings)
         {
             _sv = sv;
             _currentUserService = currentUserService;
             _userManager = userManager;
             _singInManager = signInManager;
             _appSettings = appSettings.Value;
+
         }
 
 
@@ -47,23 +55,29 @@ namespace CTIN.WebApi.Modules.General.Controllers
         //POST : /api/Register
         public async Task<Object> PostApplicationUser(ApplicationUserModel model)
         {
-            var applicationUser = new ApplicationUser()
+            if (ModelState.IsValid)
             {
-                UserName = model.userName,
-                Email = model.email,
-                FullName = model.fullName
-            };
+                var result = await _sv.register(model);
+                if (result.errors.Count == 0)
+                {
+                    // xác thực mail 
+                    string code = _userManager.GenerateEmailConfirmationTokenAsync(result.data);
+                    //var callbackUrl = Url.Action(
+                    //  "ConfirmEmail", "Account",
+                    //  new { userId = result.data.Id, code = code },
+                    //  protocol: Request.Url.Scheme);
+                    //await _userManager.SendEmailAsync(user.Id,
+                    //  "Confirm your account",
+                    //  "Please confirm your account by clicking this link: <a href=\""
+                    //                                  + callbackUrl + "\">link</a>");
+                    if (_singInManager.IsSignedIn(result.data) && User.IsInRole("Admin"))
+                    {
 
-            try
-            {
-                var result = await _userManager.CreateAsync(applicationUser, model.password);
-                return Ok(result);
+                    }
+                }
+                return await BindData(result.data, result.errors);
             }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            return await BindData();
         }
 
 
@@ -90,8 +104,25 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             else
             {
-                return BadRequest(new { message = "Username or password is incorrect." });
+                return BadRequest(new { message = "Username or password không đúng." });
             }
+        }
+
+        [HttpGet("GetProfile")]
+        [Authorize]
+        //GET : /api/UserProfile
+        public async Task<Object> GetUserProfile()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            return new
+            {
+                user.FullName,
+                user.Email,
+                user.UserName,
+                user.address,
+                user.avatar,
+            };
         }
     }
 }

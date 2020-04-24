@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    [Migration("20200422165238_innita")]
-    partial class innita
+    [Migration("20200423115943_khoitao")]
+    partial class khoitao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -231,8 +231,6 @@ namespace CTIN.DataAccess.Migrations
                         .HasMaxLength(200)
                         .IsUnicode(false);
 
-                    b.Property<short?>("dataDbstatus");
-
                     b.Property<string>("name")
                         .HasColumnName("name")
                         .HasMaxLength(50);
@@ -240,11 +238,11 @@ namespace CTIN.DataAccess.Migrations
                     b.Property<int>("pointStage")
                         .HasColumnName("pointStage");
 
+                    b.Property<int>("star");
+
                     b.HasKey("id");
 
-                    b.HasIndex("dataDbstatus");
-
-                    b.ToTable("Rank");
+                    b.ToTable("rank");
                 });
 
             modelBuilder.Entity("CTIN.DataAccess.Models.Tips", b =>
@@ -302,15 +300,15 @@ namespace CTIN.DataAccess.Migrations
                         .HasColumnName("point")
                         .HasDefaultValue(0);
 
-                    b.Property<int?>("rankid");
+                    b.Property<int>("rankId");
 
-                    b.Property<string>("userIdId");
+                    b.Property<string>("userId");
 
                     b.HasKey("id");
 
-                    b.HasIndex("rankid");
+                    b.HasIndex("rankId");
 
-                    b.HasIndex("userIdId");
+                    b.HasIndex("userId");
 
                     b.ToTable("userLeanning");
                 });
@@ -441,11 +439,12 @@ namespace CTIN.DataAccess.Migrations
                 {
                     b.HasOne("CTIN.DataAccess.Models.Rank", "rank")
                         .WithMany()
-                        .HasForeignKey("rankid");
+                        .HasForeignKey("rankId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CTIN.DataAccess.Models.ApplicationUser", "userId")
+                    b.HasOne("CTIN.DataAccess.Models.ApplicationUser", "user")
                         .WithMany()
-                        .HasForeignKey("userIdId");
+                        .HasForeignKey("userId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

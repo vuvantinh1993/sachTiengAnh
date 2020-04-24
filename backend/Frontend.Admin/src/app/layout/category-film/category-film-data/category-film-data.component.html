@@ -45,6 +45,15 @@
                 <input-switch class="control-content" formControlName="status"></input-switch>
               </div>
             </div>
+
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label>Điểm số <span class="text-danger"><b> *</b></span> </label>
+                <input-textarea class="form-control" formControlName="discription" [placeholder]="'Nhập nội dung'">
+                </input-textarea>
+                <render-error [data]="myForm.get('discription')"></render-error>
+              </div>
+            </div>
           </fieldset>
           <!-- /content area -->
           <div class="text-right mt-4">

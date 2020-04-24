@@ -1,21 +1,25 @@
 ﻿using CTIN.Common.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CTIN.DataAccess.Models
 {
+    [Table("UserLeanning")]
     public partial class UserLeanning
     {
         public int id { get; set; }
-        public ApplicationUser userId { get; set; }
+        public string userId { get; set; }
+        public ApplicationUser user { get; set; }
         public int? point { get; set; }
-        public Rank rank { get; set; }
         public List<userfilmleanningDataJson> filmleanning { get; set; }
         public List<userfilmleanningDataJson> filmforgeted { get; set; }
         public List<userfilmleanningDataJson> filmpunishing { get; set; }
         public List<userfilmleanningDataJson> filmfinish { get; set; }
         public List<int> listfrendid { get; set; }
         public DataDbJson dataDb { get; set; }
+        public int rankId { get; set; }
+        public Rank rank { get; set; }
     }
 
     public class userfilmleanningDataJson

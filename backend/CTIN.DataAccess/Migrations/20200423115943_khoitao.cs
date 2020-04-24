@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CTIN.DataAccess.Migrations
 {
-    public partial class innita : Migration
+    public partial class khoitao : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,19 +77,19 @@ namespace CTIN.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rank",
+                name: "rank",
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(maxLength: 50, nullable: true),
+                    star = table.Column<int>(nullable: false),
                     pointStage = table.Column<int>(nullable: false),
-                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true),
-                    dataDbstatus = table.Column<short>(nullable: true)
+                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rank", x => x.id);
+                    table.PrimaryKey("PK_rank", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,28 +280,28 @@ namespace CTIN.DataAccess.Migrations
                 {
                     id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    userIdId = table.Column<string>(nullable: true),
+                    userId = table.Column<string>(nullable: true),
                     point = table.Column<int>(nullable: true, defaultValue: 0),
-                    rankid = table.Column<int>(nullable: true),
                     filmleanning = table.Column<string>(nullable: true),
                     filmforgeted = table.Column<string>(nullable: true),
                     filmpunishing = table.Column<string>(nullable: true),
                     filmfinish = table.Column<string>(nullable: true),
                     listfrendid = table.Column<string>(unicode: false, nullable: true),
-                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true)
+                    dataDb = table.Column<string>(unicode: false, maxLength: 200, nullable: true),
+                    rankId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_userLeanning", x => x.id);
                     table.ForeignKey(
-                        name: "FK_userLeanning_Rank_rankid",
-                        column: x => x.rankid,
-                        principalTable: "Rank",
+                        name: "FK_userLeanning_rank_rankId",
+                        column: x => x.rankId,
+                        principalTable: "rank",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_userLeanning_AspNetUsers_userIdId",
-                        column: x => x.userIdId,
+                        name: "FK_userLeanning_AspNetUsers_userId",
+                        column: x => x.userId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -352,19 +352,14 @@ namespace CTIN.DataAccess.Migrations
                 column: "categoryfilmid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rank_dataDbstatus",
-                table: "Rank",
-                column: "dataDbstatus");
+                name: "IX_userLeanning_rankId",
+                table: "userLeanning",
+                column: "rankId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_userLeanning_rankid",
+                name: "IX_userLeanning_userId",
                 table: "userLeanning",
-                column: "rankid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_userLeanning_userIdId",
-                table: "userLeanning",
-                column: "userIdId");
+                column: "userId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -408,7 +403,7 @@ namespace CTIN.DataAccess.Migrations
                 name: "categoryfilm");
 
             migrationBuilder.DropTable(
-                name: "Rank");
+                name: "rank");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

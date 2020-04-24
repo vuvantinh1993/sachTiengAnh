@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'tips',
         loadChildren: () => import('./tips/tips.module').then(m => m.TipsModule)
+      },
+      {
+        path: 'rank',
+        loadChildren: () => import('./rank/rank.module').then(m => m.RankModule)
       }
     ]
   }

@@ -13,11 +13,17 @@ export class UserService extends BaseCrudService<any> {
     bindDataExtensionService: BindDataExtensionService
   ) {
     super(http, bindDataExtensionService);
-    this.baseUrl = 'UserLeanning';
+    this.baseUrl = 'ApplicationUser';
   }
 
-  public updateWordlened(params: any) {
-    const api = this.http.get<any>(`${this.baseUrl}/updateWordlened`, { params: this.stringifyParams(params) });
+  public register(body: any) {
+    const api = this.http.post<any>(`${this.baseUrl}/register`, body);
     return this.bindDataExtensionService.bindResponseApi(api);
   }
+
+  public login(body: any) {
+    return this.http.post<any>(`${this.baseUrl}/login`, body);
+    // return this.bindDataExtensionService.bindResponseApi(api);
+  }
+
 }

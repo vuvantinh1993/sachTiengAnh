@@ -8,12 +8,15 @@ using CTIN.Domain.BackgroundTasks;
 using CTIN.Domain.Bases;
 using CTIN.WebApi.Bases.Services;
 using CTIN.WebApi.Bases.Swagger;
+using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.JWT;
+using CTIN.WebApi.Modules.System1.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -108,7 +111,8 @@ namespace CTIN.WebApi
             {
                 builder.
                 AllowAnyOrigin().
-                WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString()).
+                WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString(),
+                            Configuration["ApplicationSettings:Client_URL2"].ToString()).
                 AllowAnyMethod().
                 AllowAnyHeader().
                 AllowCredentials();
@@ -138,8 +142,20 @@ namespace CTIN.WebApi
             services.AddDistributedMemoryCache();
 
             // Identity
-            services.AddDefaultIdentity<ApplicationUser>()
-              .AddEntityFrameworkStores<NATemplateContext>();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<ApplicationUser>(
+                config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = true;
+                    config.Tokens.ProviderMap.Add("CustomEmailConfirmation",
+                    new TokenProviderDescriptor(
+                    typeof(DataProtectorTokenProvider<IdentityUser>)));
+                    config.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                })
+             .AddEntityFrameworkStores<NATemplateContext>().AddDefaultTokenProviders();
+            services.AddTransient<DataProtectorTokenProvider<IdentityUser>>();
             // setup identity
             services.Configure<IdentityOptions>(options =>
             {
@@ -169,6 +185,14 @@ namespace CTIN.WebApi
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            // Sendmail
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            // using WebPWrecover.Services;
+            services.Configure<DataProtectionTokenProviderOptions>(o =>
+                o.TokenLifespan = TimeSpan.FromHours(3));
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
 

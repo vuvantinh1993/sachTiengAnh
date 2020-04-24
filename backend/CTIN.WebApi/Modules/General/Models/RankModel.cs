@@ -13,6 +13,7 @@ namespace CTIN.WebApi.Modules.General.Models
         [StringLength(50)]
         public string name { get; set; }
         public int pointStage { get; set; }
+        public int star { get; set; }
         public Add_RankModel_DataDbJson dataDb { get; set; }
         public class Add_RankModel_DataDbJson
         {

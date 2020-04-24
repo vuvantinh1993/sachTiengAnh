@@ -23,4 +23,8 @@ export class NavbarComponent implements OnInit {
     this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
   }
 
+  logout() {
+    localStorage.removeItem('token');
+  }
+
 }

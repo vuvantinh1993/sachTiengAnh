@@ -1,3 +1,4 @@
+import { UserLeanningService } from './../../_shared/services/UserLeanning.service';
 import { DialogService } from './../../_base/services/dialog.service';
 import { AESService } from './../../_base/services/aes.service';
 import { UserService } from './../../_shared/services/user.service';
@@ -9,7 +10,6 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
-import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-leanning-words',
@@ -43,7 +43,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     private route: ActivatedRoute,
     public sanitizer: DomSanitizer,
     public exTableService: ExtentionTableService,
-    private userService: UserService,
+    private userLeanningService: UserLeanningService,
     private message: NzMessageService,
     public ex: ExtensionService,
     private aesservice: AESService,
@@ -376,7 +376,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
               data = { chuoimahoa };
             }
 
-            const rs = await this.userService.updateWordlened(data);
+            const rs = await this.userLeanningService.updateWordlened(data);
             if (rs.ok) {
               if (this.sttWordLenning !== -3) {
                 localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());

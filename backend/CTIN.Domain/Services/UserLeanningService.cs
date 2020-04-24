@@ -210,9 +210,9 @@ namespace CTIN.Domain.Services
         /// <returns></returns>
         public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserLeanningServiceModel model)
         {
-            var userId = 100014;
+            var userId = "be26f6c3-9942-4cb8-bd03-c117e33d4283";
             var errors = new List<ErrorModel>();
-            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.id == userId);
+            var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.userId == userId);
             var film = await _db.Categoryfilm.FirstOrDefaultAsync(x => x.id == idfilm);
             if (data == null || film == null)
             {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CTIN.DataAccess.Models
 {
+    [Table("Acttachments")]
     public partial class Acttachments
     {
         public int id { get; set; }

@@ -1,9 +1,11 @@
 ﻿using CTIN.Common.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CTIN.DataAccess.Models
 {
+    [Table("Wordfilm")]
     public partial class Extraone
     {
         public int id { get; set; }

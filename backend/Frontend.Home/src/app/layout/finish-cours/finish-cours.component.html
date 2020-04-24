@@ -27,10 +27,11 @@
     </div>
   </div>
   <div class="hoctiep d-flex justify-content-center mt-3">
-    <a [routerLink]="['/leanning-words','new', 2]" class="btn btn-sm btn-primary justify-content-center">
+    <a [routerLink]="['/leanning-words','new', idfilm]" class="btn btn-sm btn-primary justify-content-center">
       Học tiếp <i class="fas fa-angle-right next"></i>
     </a>
-    <a [routerLink]="['/leanning-words','old', 2]" class="btn btn-sm btn-primary ml-3 justify-content-center forget">
+    <a [routerLink]="['/leanning-words','old', idfilm]"
+      class="btn btn-sm btn-primary ml-3 justify-content-center forget">
       Học từ đã quên <i class="fas fa-angle-right next"></i>
     </a>
   </div>

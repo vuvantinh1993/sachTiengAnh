@@ -183,7 +183,7 @@ namespace CTIN.DataAccess.Contexts
 
             modelBuilder.Entity<Rank>(entity =>
             {
-                entity.ToTable("userLeanning");
+                entity.ToTable("rank");
 
                 entity.Property(e => e.id).HasColumnName("id");
 
@@ -195,26 +195,6 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.name).HasColumnName("name");
 
                 entity.Property(e => e.pointStage).HasColumnName("pointStage");
-            });
-
-            modelBuilder.Entity("CTIN.DataAccess.Models.Rank", b =>
-            {
-                b.Property<int>("id")
-                    .ValueGeneratedOnAdd()
-                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                b.Property<short?>("dataDbstatus");
-
-                b.Property<string>("name")
-                    .HasMaxLength(50);
-
-                b.Property<int>("pointStage");
-
-                b.HasKey("id");
-
-                b.HasIndex("dataDbstatus");
-
-                b.ToTable("Rank");
             });
         }
     }

@@ -96,8 +96,8 @@
             Tin nhắn
           </a>
           <div class="dropdown-divider"></div>
-          <a [routerLink]='["/authentication/logout"]' [state]='{ local: true }' routerLinkActive="router-link-active"
-            class="dropdown-item"><i class="icon-switch2"></i> Đăng xuất</a>
+          <a [routerLink]='["/login"]' (click)="logout()" [state]='{ local: true }'
+            routerLinkActive="router-link-active" class="dropdown-item"><i class="icon-switch2"></i> Đăng xuất</a>
         </div>
       </li>
     </ul>

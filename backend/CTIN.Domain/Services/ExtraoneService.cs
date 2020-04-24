@@ -41,12 +41,14 @@ namespace CTIN.Domain.Services
         private readonly ILogger<ExtraoneService> _log;
         private readonly NATemplateContext _db;
         public readonly ICurrentUserService _currentUserService;
+        public readonly IRankService _rankService;
 
-        public ExtraoneService(ILogger<ExtraoneService> log, NATemplateContext db, ICurrentUserService currentUserService)
+        public ExtraoneService(ILogger<ExtraoneService> log, NATemplateContext db, ICurrentUserService currentUserService, IRankService rankService)
         {
             _log = log;
             _db = db;
             _currentUserService = currentUserService;
+            _rankService = rankService;
         }
 
 
@@ -59,10 +61,10 @@ namespace CTIN.Domain.Services
         /// <returns></returns>
         public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_ExtraoneServiceModel model)
         {
+            var userId = "be26f6c3-9942-4cb8-bd03-c117e33d4283";
             if (style == "new")
             {
                 var errors = new List<ErrorModel>();
-                var userId = 100014;
 
                 // trả về vị trí từ đang học của film
                 var rs = positionWordStop(userId, idfilm);
@@ -131,10 +133,7 @@ namespace CTIN.Domain.Services
             {
                 //giá trị truyền lên là old
                 var errors = new List<ErrorModel>();
-                var userId = 100014;
-                var statusDelete = (int)StatusDb.Delete;
-
-                var data = await _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefaultAsync(x => x.id == userId);
+                var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.userId == userId);
                 var a = data.filmpunishing.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
                 var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
                 var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 1);
@@ -372,11 +371,10 @@ namespace CTIN.Domain.Services
         /// <param name="userId">Id của người dùng</param>
         /// <param name="idFilm">Id của film</param>
         /// <returns>Trả về vị trí của từu cần học trong phim, nếu chưa có thì tạo mới gán giá trị bằng -1, còn -2 là lỗi</returns>
-        public (int sttWord, List<ErrorModel> errors) positionWordStop(int userId, int idFilm)
+        public (int sttWord, List<ErrorModel> errors) positionWordStop(string userId, int idFilm)
         {
             var errors = new List<ErrorModel>();
-            var statusDelete = (int)StatusDb.Delete;
-            var data = _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != statusDelete).FirstOrDefault(x => x.id == userId);
+            var data = _db.UserLeanning.FirstOrDefault(x => x.userId == userId);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "NotExitUser", value = "Không tồn tại người dùng" });
@@ -471,16 +469,19 @@ namespace CTIN.Domain.Services
 
             // Update vào 2 trường answerWrongEn và answerWrongVn trong DB
             var listId = _db.Extraone.Where(x => x.categoryfilmid == 1).Select(x => x.id).ToList();
-
             foreach (var i in listId)
             {
                 UpdateAnserWrong(i);
             }
+
+            //// Update table Rank
+            //updateTableRank("C:\\Users\\TINHVU\\Desktop\\extra1\\rank.txt");
+
         }
 
 
 
-        // Đọc toàn bộ thư mục rồi lưu vào database và copy sang thư mục khác
+        // Đọc toàn bộ thư mục video rồi lưu vào database và copy sang thư mục khác
         public void ReadFolderAndThenUploadDBAndCopyFile(string targetDirectory = "C:\\Users\\TINHVU\\Desktop\\extra1\\filecut2")
         {
             // Process the list of files found in the directory.
@@ -591,5 +592,37 @@ namespace CTIN.Domain.Services
             _db.Entry(data).CurrentValues.SetValues(model);
             _db.SaveChanges();
         }
+
+        public void updateTableRank(string path)
+        {
+            string stringFile = File.ReadAllText(path);
+            List<string> arrlinetext = new List<string>(stringFile.Split(new string[] { "\r\n" }, StringSplitOptions.None));
+            if (arrlinetext.Count() > 0)
+            {
+                for (int i = 0; i < arrlinetext.Count(); i++)
+                {
+                    var m = i;
+                    var item = arrlinetext[m].Split('|');
+                    if (item.Count() == 3)
+                    {
+                        var data = new Rank();
+                        data.dataDb = new DataDbJson()
+                        {
+                            status = 1,
+                            createdBy = Int32.Parse(_currentUserService.userId),
+                            createdDate = DateTime.Now
+                        };
+                        //var b = a.Patch(update);
+                        data.name = item[0];
+                        data.star = Convert.ToInt32(item[1]);
+                        data.pointStage = Convert.ToInt32(item[2]);
+                        _db.Rank.Add(data);
+                        _db.SaveChanges();
+                    }
+                }
+
+            }
+        }
+
     }
 }

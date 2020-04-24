@@ -22,6 +22,8 @@ namespace CTIN.WebApi.Modules.General.Models
         public int level { get; set; }
         public string name { get; set; }
         public byte pointword { get; set; }
+        public string discription { get; set; }
+        public string linkImg { get; set; }
         public Add_CategoryfilmModel_DataDbJson dataDb { get; set; }
         public class Add_CategoryfilmModel_DataDbJson
         {
