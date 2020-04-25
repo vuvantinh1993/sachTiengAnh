@@ -154,6 +154,7 @@ namespace CTIN.WebApi
                     typeof(DataProtectorTokenProvider<IdentityUser>)));
                     config.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
                 })
+             .AddRoles<IdentityRole>()
              .AddEntityFrameworkStores<NATemplateContext>().AddDefaultTokenProviders();
             services.AddTransient<DataProtectorTokenProvider<IdentityUser>>();
             // setup identity

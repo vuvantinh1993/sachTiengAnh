@@ -1,11 +1,11 @@
+import { LayoutComponent } from './layout/layout.component';
+import { UserComponent } from './layout/user/user.component';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
-    // canActivate: [AuthorizeGuard]
+    path: '', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
   },
   { path: '**', redirectTo: '' },
 ];

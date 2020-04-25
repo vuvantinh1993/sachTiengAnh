@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseCrudService } from '../../_base/services/base-crud.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BindDataExtensionService } from '../extensions/bind-data-extension.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseCrudService<any> {
+export class UsersService extends BaseCrudService<any> {
   baseUrl: string;
 
   constructor(
@@ -26,4 +26,17 @@ export class UserService extends BaseCrudService<any> {
     // return this.bindDataExtensionService.bindResponseApi(api);
   }
 
+  public getprofile() {
+    console.log('token', localStorage.getItem('token'));
+    this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(
+      res => {
+        console.log('res', res);
+        localStorage.setItem('fullName', res.fullName);
+        localStorage.setItem('email', res.email);
+      },
+      err => {
+        console.log('err', err);
+      }
+    );
+  }
 }

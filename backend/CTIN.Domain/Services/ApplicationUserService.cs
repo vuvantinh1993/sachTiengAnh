@@ -47,6 +47,7 @@ namespace CTIN.Domain.Services
             bool checkerors = false;
             //var da = _db.use.AsQueryable();
 
+            model.role = "Customer";
             var applicationUser = new ApplicationUser()
             {
                 UserName = model.userName,
@@ -70,6 +71,7 @@ namespace CTIN.Domain.Services
                 try
                 {
                     var result = await _userManager.CreateAsync(applicationUser, model.password);
+                    await _userManager.AddToRoleAsync(applicationUser, model.role);
                     if (result.Succeeded)
                     {
                         return (applicationUser, errors);

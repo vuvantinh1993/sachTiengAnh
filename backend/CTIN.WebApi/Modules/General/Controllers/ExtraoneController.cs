@@ -4,6 +4,7 @@ using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.General.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -15,6 +16,7 @@ using static CTIN.Domain.Models.Add_ExtraoneServiceModel;
 
 namespace CTIN.WebApi.Modules.General.Controllers
 {
+    [Authorize]
     public class ExtraoneController : ApiController
     {
         private readonly IExtraoneService _sv;

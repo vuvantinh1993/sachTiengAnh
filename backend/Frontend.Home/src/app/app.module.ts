@@ -1,3 +1,5 @@
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthGuard } from './auth/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -8,8 +10,7 @@ import { NgZorroAntdModule, NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import vi from '@angular/common/locales/vi';
-import { ErrorInterceptor } from './_base/interceptors/error.interceptor';
-import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
+
 registerLocaleData(vi);
 
 @NgModule({
@@ -25,11 +26,12 @@ registerLocaleData(vi);
     AppRoutes,
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: ErrorInterceptor,
-    //   multi: true
-    // },
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     { provide: NZ_I18N, useValue: vi_VN }
   ],
   bootstrap: [AppComponent]

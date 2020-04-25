@@ -4,6 +4,7 @@ using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.General.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Controllers
 {
+    [Authorize]
     public class RankController : ApiController
     {
         private readonly IRankService _sv;

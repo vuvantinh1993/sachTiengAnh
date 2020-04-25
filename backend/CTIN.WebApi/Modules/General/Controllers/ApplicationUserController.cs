@@ -88,11 +88,15 @@ namespace CTIN.WebApi.Modules.General.Controllers
             var user = await _userManager.FindByNameAsync(model.userName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.passWord))
             {
+                var role = await _userManager.GetRolesAsync(user);
+                IdentityOptions _option = new IdentityOptions();
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserID",user.Id.ToString())
+                        new Claim("UserID",user.Id.ToString()),
+                        new Claim(_option.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
                     }),
                     Expires = DateTime.UtcNow.AddDays(5),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
@@ -123,6 +127,30 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 user.address,
                 user.avatar,
             };
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("ForAdmin")]
+        public string GetForAdmin()
+        {
+            return "Web for admin";
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Customer")]
+        [Route("ForCustomer")]
+        public string GetForCustomer()
+        {
+            return "Web for Customer";
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Customer,Admin")]
+        [Route("ForAdminOrCustomer")]
+        public string GetForAdminOrCustomer()
+        {
+            return "Web for ForAdminOrCustomer";
         }
     }
 }

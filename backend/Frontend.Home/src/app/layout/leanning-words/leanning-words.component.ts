@@ -1,7 +1,6 @@
 import { UserLeanningService } from './../../_shared/services/UserLeanning.service';
 import { DialogService } from './../../_base/services/dialog.service';
 import { AESService } from './../../_base/services/aes.service';
-import { UserService } from './../../_shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExtensionService } from './../../_base/services/extension.service';
 import { ExtentionTableService } from './../../_base/services/extention-table.service';

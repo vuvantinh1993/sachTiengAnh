@@ -1,16 +1,13 @@
-import { LoginTLNComponent } from './user/login-tln/login-tln.component';
-import { RegistrationComponent } from './user/registration/registration.component';
+import { AuthGuard } from './../auth/auth.guard';
 import { UserComponent } from './user/user.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 
 const routes: Routes = [
+  { path: 'user', component: UserComponent },
   {
-    path: '', component: LayoutComponent, children: [
-      {
-        path: '',
-        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
-      },
+    path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
+      { path: '', redirectTo: '/home', pathMatch: 'full' }, // redirect to `first-component`
       {
         path: 'home',
         loadChildren: () => import('./home/home.module').then(m => m.HomeModule)

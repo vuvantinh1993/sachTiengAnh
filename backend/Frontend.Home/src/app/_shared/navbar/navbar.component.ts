@@ -1,5 +1,6 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthorizeService } from 'src/api-authorization/authorize.service';
+// import { AuthorizeService } from 'src/api-authorization/authorize.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,20 +12,21 @@ import { map } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
 
-  public usernameA = localStorage.getItem('usernameA');
+  public usernameA = localStorage.getItem('fullName');
   public userimage = localStorage.getItem('userimage');
   public userpoint = localStorage.getItem('userpoint');
   public userName: Observable<string>;
   constructor(
-    private authorizeService: AuthorizeService
+    private router: Router,
   ) { }
 
   ngOnInit() {
-    this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
+    // this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.clear();
+    this.router.navigate(['/user']);
   }
 
 }

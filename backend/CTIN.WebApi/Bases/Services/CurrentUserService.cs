@@ -8,20 +8,19 @@ namespace CTIN.WebApi.Bases.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            user = httpContextAccessor.HttpContext?.User;
-            userId = "0";
-            isAuthenticated = userId != null;
-            roles = isAuthenticated ? user.FindAll("role").Select(x => x.Value) : new string[] { };
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public ClaimsPrincipal user { get; }
+        public ClaimsPrincipal user => _httpContextAccessor.HttpContext?.User;
 
-        public string userId { get; }
+        public string userId => user?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public bool isAuthenticated { get; }
+        public bool isAuthenticated => userId != null;
 
-        public IEnumerable<string> roles { get; }
+        public IEnumerable<string> roles => isAuthenticated ? user.FindAll("role").Select(x => x.Value) : new string[] { };
     }
 }
