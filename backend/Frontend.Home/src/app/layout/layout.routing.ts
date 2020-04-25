@@ -2,12 +2,14 @@ import { AuthGuard } from './../auth/auth.guard';
 import { UserComponent } from './user/user.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 const routes: Routes = [
-  { path: 'user', component: UserComponent },
+  { path: '', component: UserComponent },
+
   {
     path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
-      { path: '', redirectTo: '/home', pathMatch: 'full' }, // redirect to `first-component`
+      // { path: '', redirectTo: '/home', pathMatch: 'full' }, // redirect to `first-component`
       {
         path: 'home',
         loadChildren: () => import('./home/home.module').then(m => m.HomeModule)

@@ -16,7 +16,7 @@ import { BreadcrumbModule } from '../_shared/breadcrumb/breadcrumb.module';
     NavbarModule,
     BreadcrumbModule,
     LayoutRoutes,
-    UserModule
+    UserModule,
   ],
   declarations: [LayoutComponent]
 })

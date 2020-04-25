@@ -1,3 +1,5 @@
+import { AdminModule } from './admin/admin.module';
+import { ForbiddenModule } from './layout/forbidden/forbidden.module';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthGuard } from './auth/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
@@ -8,7 +10,6 @@ import { AppRoutes } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
 import vi from '@angular/common/locales/vi';
 
 registerLocaleData(vi);
@@ -21,7 +22,7 @@ registerLocaleData(vi);
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    // ApiAuthorizationModule,
+    ForbiddenModule,
     NgZorroAntdModule,
     AppRoutes,
   ],
