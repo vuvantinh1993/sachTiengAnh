@@ -9,6 +9,7 @@ import { BehaviorSubject, concat, from, Observable } from 'rxjs';
 })
 export class UsersService extends BaseCrudService<any> {
   baseUrl: string;
+  public userinfo: any;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(
@@ -29,7 +30,7 @@ export class UsersService extends BaseCrudService<any> {
     // return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public getprofile() {
+  public async getprofile() {
     console.log('token', localStorage.getItem('token'));
     this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(
       res => {
@@ -41,6 +42,10 @@ export class UsersService extends BaseCrudService<any> {
         console.log('err', err);
       }
     );
+  }
+
+  public getprofile2(): Observable<IUser | null> {
+    return this.http.get<any>(`${this.baseUrl}/GetProfile`);
   }
 
   roleMatch(allowedRoles): boolean {

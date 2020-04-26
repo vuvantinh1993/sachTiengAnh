@@ -99,9 +99,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.sttleaned = this.sttWordLenning > 1 ? this.sttWordLenning - 1 : 0; // hiện từ đã học html
         this.totalWord = this.data.data[0].totalWord;
         this.data = this.data.data;
-        console.log('this.data', this.data);
         this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
         this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
+        console.log('this.datalist', this.datalist);
+
       } else {
         const result = await this.dl.confirm(`Không có từ cần học lại, quay về trang chủ`, ' ');
         this.router.navigate(['/']);
@@ -265,12 +266,12 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     this.answerWrongEn = sour.answerWrongEn.split(' *** ');
     this.answerWrongVn = sour.answerWrongVn.split(' *** ');
     for (let i = 0; i < numberEn; i++) {
-      const listanswerEn = this.getAnswer(this.answerWrongEn, sour.textEn, sour.urlaudio);
+      const listanswerEn = this.getAnswer(this.answerWrongEn, sour.textEn, sour.urlaudio, true);
       listanswerEn.texttip = sour.textVn;
       listdata.push(listanswerEn);
     }
     for (let i = 0; i < numberVn; i++) {
-      const listanswerVn = this.getAnswer(this.answerWrongVn, sour.textVn, sour.urlaudio);
+      const listanswerVn = this.getAnswer(this.answerWrongVn, sour.textVn, sour.urlaudio, false);
       listanswerVn.texttip = sour.textEn;
       listdata.push(listanswerVn);
     }
@@ -280,7 +281,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
   // input mảng dữ liệu sai và 1 sting đúng
   // return mảng 4 phần tử và vị trí nhần tử đúng
-  getAnswer(sourceArray, stringRight: string, urlaudio: string) {
+  getAnswer(sourceArray, stringRight: string, urlaudio: string, textshow: boolean) {
     const randomInFour = Math.floor(Math.random() * 4);
     const result = [];
     const checkInFour = [];
@@ -301,7 +302,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       }
     }
     result[5] = this.sanitizer.bypassSecurityTrustResourceUrl(urlaudio);
-    return { result, key, texttip };
+    return { result, key, texttip, textshow };
   }
 
   // trộn 1 mảng bất kì
@@ -420,9 +421,11 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     console.log('video ket thuc', event);
   }
 
-  hiengoiy() {
-    this.isshow = !this.isshow;
-  }
+  // hiengoiy(val) {
+  //   if (val === true) {
+  //     this.isshow = !this.isshow;
+  //   }
+  // }
 
   daloadxong() {
     console.log('daloadxong', this.loadxongchohoctiep);

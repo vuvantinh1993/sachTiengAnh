@@ -39,6 +39,7 @@ namespace CTIN.Domain.BackgroundTasks
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                //update các từ trong 3 ô
                 var listUser = _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3).ToList();
                 if (listUser != null)
                 {
@@ -235,6 +236,78 @@ namespace CTIN.Domain.BackgroundTasks
                     }
                 }
 
+
+                //trừ điểm cột cuối theo ngày
+                if (listUser != null)
+                {
+                    foreach (UserLeanning userOld in listUser)
+                    {
+                        var userNew1 = userOld.JsonToString().JsonToObject<UserLeanning>();
+                        List<userfilmleanningDataJson> listfilmPunishing = new List<userfilmleanningDataJson>();
+                        if (userNew1.filmpunishing != null)
+                        {
+                            var listModelWordPunishing = new List<ModelWordPunishing>();
+                            foreach (userfilmleanningDataJson film in userNew1.filmpunishing)
+                            {
+                                List<wordleanedDataJson> listWordPunishing = new List<wordleanedDataJson>();
+                                if (film.wordleaned.Count() > 0)
+                                {
+                                    var wordPunishing = new ModelWordPunishing();
+                                    wordPunishing.filmid = film.filmid;
+                                    wordPunishing.numberTotalWord = 0;
+                                    wordPunishing.numberWordSub = 0;
+                                    foreach (wordleanedDataJson word in film.wordleaned)
+                                    {
+                                        wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
+                                        wordPunishing.numberTotalWord = wordPunishing.numberTotalWord + 1;
+                                        if ((DateTime.UtcNow - word.time).TotalDays > 1)
+                                        {
+                                            wordPunishing.numberWordSub = wordPunishing.numberWordSub + 1;
+                                            iteamWordLeaned.stt = word.stt;
+                                            iteamWordLeaned.time = iteamWordLeaned.time.Date.AddDays(1);
+                                            iteamWordLeaned.isforget = word.isforget;
+                                            iteamWordLeaned.check = word.check;
+                                            iteamWordLeaned.classic = word.classic;
+                                            listWordPunishing.Add(iteamWordLeaned);
+                                        }
+                                        else
+                                        {
+                                            listWordPunishing.Add(word);
+                                        }
+                                    }
+                                    //lưu danh sách các câu sai của bộ phim cho client
+                                    listModelWordPunishing.Add(wordPunishing);
+                                }
+                                film.wordleaned = listWordPunishing;
+                                listfilmPunishing.Add(film);
+                            }
+                            //trả về giá trị các câu và các từu sai cho client
+                            var signalerClient = listModelWordPunishing;
+                            //đoạn này viết sigaler đưa tông tin xuống client và trừ điểm trong db
+                            var datacategory = _db.Categoryfilm
+                                .Select(x => new { x.id, x.pointword, x.name });
+                            foreach (var item in signalerClient)
+                            {
+                                var cat = datacategory.FirstOrDefault(x => x.id == item.filmid);
+                                if (cat != null)
+                                {
+                                    //vieet truwf ddieemr trong nayf
+                                }
+                            }
+
+
+                            var update1 = new
+                            {
+                                filmpunishing = listfilmPunishing
+                            };
+
+                            userNew1 = userNew1.Patch(update1);
+                            // lưu DB
+                            _db.Entry(userOld).CurrentValues.SetValues(userNew1);
+                            await _db.SaveChangesAsync();
+                        }
+                    }
+                }
                 await Task.Delay(3600000, stoppingToken); // delay 1h
             }
         }

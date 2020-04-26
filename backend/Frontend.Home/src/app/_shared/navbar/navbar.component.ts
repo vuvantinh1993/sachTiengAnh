@@ -1,4 +1,4 @@
-import { UsersService } from './../services/User.service';
+import { UsersService, IUser } from './../services/User.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 // import { AuthorizeService } from 'src/api-authorization/authorize.service';
@@ -14,17 +14,24 @@ import { map } from 'rxjs/operators';
 export class NavbarComponent implements OnInit {
 
 
-  public usernameA = localStorage.getItem('fullName');
+  public usernameA: string;
   public userimage = localStorage.getItem('userimage');
   public userpoint = localStorage.getItem('userpoint');
-  // public userName: Observable<string>;
+  public userName: any;
   constructor(
     private router: Router,
     private userService: UsersService,
   ) { }
 
-  ngOnInit() {
-    // this.username = this.userService.getprofile().pipe(map(u => u && u.name));
+  async ngOnInit() {
+    this.userService.getprofile();
+    console.log('usernameAaaaa', localStorage.getItem('fullName'));
+    this.usernameA = localStorage.getItem('fullName');
+
+    // this.userService.getprofile2().subscribe(data => {
+    //   this.userName = data;
+    //   console.log('dayladata', data);
+    // });
   }
 
   logout() {
