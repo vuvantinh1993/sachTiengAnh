@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
         if (this.userservice.roleMatch(roles)) {
           return true;
         } else {
+          console.log('else');
           this.router.navigate(['/forbidden']);
         }
       }

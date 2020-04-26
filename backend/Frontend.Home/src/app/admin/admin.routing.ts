@@ -9,7 +9,7 @@ const routes: Routes = [
       { path: 'rank', loadChildren: () => import('./rank/rank.module').then(x => x.RankModule) },
       {
         path: 'user',
-        loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+        loadChildren: () => import('./user/admin-user.module').then(m => m.AdminUserModule)
       },
       {
         path: 'tips',

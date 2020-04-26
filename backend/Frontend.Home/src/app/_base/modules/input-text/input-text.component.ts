@@ -18,6 +18,7 @@ export class InputTextComponent implements OnInit, AfterViewInit, ControlValueAc
 
   public controlValue: string | null = null;
 
+  @Input() type: 'text';
   @Input() class: any = '';
   @Input() placeholder: any = '';
   @Input() disabled = false;

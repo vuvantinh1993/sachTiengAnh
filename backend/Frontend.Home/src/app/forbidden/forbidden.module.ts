@@ -1,5 +1,5 @@
+import { FormModule } from 'src/app/_base/modules/form/form.module';
 import { ForbiddenRouters } from './forbidden.routing';
-import { FormModule } from './../../_base/modules/form/form.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForbiddenComponent } from './forbidden.component';

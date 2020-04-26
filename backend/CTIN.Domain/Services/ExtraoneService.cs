@@ -61,8 +61,7 @@ namespace CTIN.Domain.Services
         /// <returns></returns>
         public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_ExtraoneServiceModel model)
         {
-            var aaaaa = _currentUserService;
-            var userId = "be26f6c3-9942-4cb8-bd03-c117e33d4283";
+            var userId = _currentUserService.userId;
             if (style == "new")
             {
                 var errors = new List<ErrorModel>();

@@ -1,8 +1,8 @@
+import { GlobalValidate } from './../../_base/class/global-validate';
+import { UsersService } from './../../_shared/services/User.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
-import { UsersService } from './../../../_shared/services/User.service';
-import { GlobalValidate } from './../../../_base/class/global-validate';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { BaseDataComponent } from 'src/app/_base/components/base-data-component';
 
@@ -29,8 +29,10 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
       UserName: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
       Email: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
       FullName: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
-      Password: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
-      ConfirmPassword: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
+      Password: [null, [GlobalValidate.required({ error: 'Không được để trống' }),
+      GlobalValidate.MinLength(6, { error: 'Mật khẩu lớn hơn 6 kí tự' })]], // Điểm số cho từng câu hỏi
+      ConfirmPassword: [null, [GlobalValidate.required({ error: 'Không được để trống' }),
+      this.comparePassword]], // Điểm số cho từng câu hỏi
     });
     if (this.isView) { this.myForm.disable(); }
   }
@@ -41,7 +43,7 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     const rs = await this.userservice.register(this.myForm.value);
     if (rs.ok) {
       this.message.success('Đăng kí thành công', { nzDuration: 10000 });
-      this.router.navigate(['login']);
+      this.router.navigate(['user/login']);
     } else {
       this.message.error('Lỗi! Lưu thất bại');
     }
@@ -68,6 +70,24 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     //     console.log(err);
     //   }
     // );
+  }
+
+  validDate() {
+    Promise.resolve().then(() => this.myForm.controls.Password.updateValueAndValidity());
+    Promise.resolve().then(() => this.myForm.controls.ConfirmPassword.updateValueAndValidity());
+  }
+
+  comparePassword = (control: FormControl) => {
+    if (!this.myForm) { return null; }
+    if (this.myForm.controls.ConfirmPassword.value) {
+      if (this.myForm.controls.ConfirmPassword.value !== this.myForm.controls.Password.value) {
+        return { error: 'Nhập giống trường password' };
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
 }

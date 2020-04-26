@@ -17,7 +17,7 @@ namespace CTIN.WebApi.Bases.Services
 
         public ClaimsPrincipal user => _httpContextAccessor.HttpContext?.User;
 
-        public string userId => user?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        public string userId => user?.FindFirstValue("UserID");
 
         public bool isAuthenticated => userId != null;
 

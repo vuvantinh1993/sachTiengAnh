@@ -6,11 +6,11 @@ import { BaseDataComponent } from 'src/app/_base/components/base-data-component'
 import { GlobalValidate } from 'src/app/_base/class/global-validate';
 
 @Component({
-  selector: 'app-user-data',
-  templateUrl: './user-data.component.html',
-  styleUrls: ['./user-data.component.scss']
+  selector: 'app-admin-user-data',
+  templateUrl: './admin-user-data.component.html',
+  styleUrls: ['./admin-user-data.component.scss']
 })
-export class UserDataComponent extends BaseDataComponent implements OnInit {
+export class AdminUserDataComponent extends BaseDataComponent implements OnInit {
 
   @Input() item: any;
   public listLever: any[] = [

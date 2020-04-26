@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 
 @Component({
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  templateUrl: './admin-user.component.html',
+  styleUrls: ['./admin-user.component.scss']
 })
-export class UserComponent extends BaseListComponent implements OnInit {
+export class AdminUserComponent extends BaseListComponent implements OnInit {
 
 
   public data: any;

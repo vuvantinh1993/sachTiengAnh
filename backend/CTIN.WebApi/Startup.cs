@@ -28,6 +28,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
 

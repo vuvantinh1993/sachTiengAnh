@@ -97,6 +97,7 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
     this.listOfData = [];
     const form = this.myForm.value;
     this.paging.page = page;
+    this.paging.size = 10;
 
     // where theo du lieu dau vao
     const where = { and: [] };

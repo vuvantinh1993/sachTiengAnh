@@ -16,12 +16,15 @@
   </div>
   <div class="form-group">
     <label>Passwords <span class="text-danger"><b> *</b></span></label>
-    <input-text class="form-control" formControlName="Password" [placeholder]="'Nhập mật khẩu'"></input-text>
+    <input-text class="form-control" [type]="'password'" formControlName="Password" (ngModelChange)="validDate()"
+      [placeholder]="'Nhập mật khẩu'">
+    </input-text>
     <render-error [data]="myForm.get('Password')"></render-error>
   </div>
   <div class="form-group">
     <label>Confirm Password <span class="text-danger"><b> *</b></span></label>
-    <input-text class="form-control" formControlName="ConfirmPassword" [placeholder]="'Nhập lại mật khẩu'"></input-text>
+    <input-text class="form-control" [type]="'password'" formControlName="ConfirmPassword" (ngModelChange)="validDate()"
+      [placeholder]="'Nhập lại mật khẩu'"></input-text>
     <render-error [data]="myForm.get('ConfirmPassword')"></render-error>
   </div>
   <div class="form-row">

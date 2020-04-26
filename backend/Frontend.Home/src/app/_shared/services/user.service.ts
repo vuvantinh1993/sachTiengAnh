@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { BaseCrudService } from '../../_base/services/base-crud.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BindDataExtensionService } from '../extensions/bind-data-extension.service';
+import { BehaviorSubject, concat, from, Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService extends BaseCrudService<any> {
   baseUrl: string;
+  private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(
     http: HttpClient,
@@ -52,4 +55,17 @@ export class UsersService extends BaseCrudService<any> {
     });
     return isMatch;
   }
+}
+
+
+export interface IUser {
+  sub: string;
+  name: string;
+  given_name: string;
+  family_name: string;
+  email: string;
+  email_verified: boolean;
+  phone_number: string;
+  phone_number_verified: boolean;
+  two_factor_enabled: boolean;
 }

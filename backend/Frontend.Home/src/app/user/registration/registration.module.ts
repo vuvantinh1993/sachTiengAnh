@@ -1,6 +1,6 @@
+import { FormModule } from './../../_base/modules/form/form.module';
 import { RegistrationRouters } from './registration.routing';
 import { RegistrationComponent } from './registration.component';
-import { FormModule } from './../../../_base/modules/form/form.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 

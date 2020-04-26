@@ -1,5 +1,6 @@
+import { ForbiddenModule } from './forbidden/forbidden.module';
+import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
-import { ForbiddenModule } from './layout/forbidden/forbidden.module';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthGuard } from './auth/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
@@ -25,6 +26,7 @@ registerLocaleData(vi);
     ForbiddenModule,
     NgZorroAntdModule,
     AppRoutes,
+    UserModule
   ],
   providers: [
     AuthGuard,
