@@ -1,4 +1,4 @@
-import { UsersService, IUser } from './../services/User.service';
+import { UsersService } from './../services/User.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 // import { AuthorizeService } from 'src/api-authorization/authorize.service';
@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.userService.getprofile();
+    // this.userService.getprofile();
     console.log('usernameAaaaa', localStorage.getItem('fullName'));
     this.usernameA = localStorage.getItem('fullName');
 
