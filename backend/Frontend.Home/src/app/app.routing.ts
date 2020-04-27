@@ -3,7 +3,7 @@ import { UserComponent } from './user/user.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), pathMatch: "full" },
+  { path: '', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), pathMatch: 'full' },
   // { path: 'user', component: UserComponent },
   // { path: 'forbidden', component: ForbiddenComponent },
   {

@@ -13,7 +13,7 @@ export class LoginTLNComponent implements OnInit {
   formModel = {
     UserName: '',
     Password: ''
-  }
+  };
   constructor(
     // private service: UserService, private router: Router, private toastr: ToastrService
     private message: NzMessageService,
