@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       console.log('load layout');
       App.initAfterLoad();
     });
-    this.userService.getprofile();
+    // this.userService.getprofile();
     // this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
   }
 

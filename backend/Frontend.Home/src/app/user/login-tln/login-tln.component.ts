@@ -18,7 +18,7 @@ export class LoginTLNComponent implements OnInit {
     // private service: UserService, private router: Router, private toastr: ToastrService
     private message: NzMessageService,
     private router: Router,
-    public userservice: UsersService
+    public userService: UsersService,
   ) { }
 
   ngOnInit() {
@@ -28,11 +28,23 @@ export class LoginTLNComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.userservice.login(form.value).subscribe(
+    this.userService.login(form.value).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/home']);
-        this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
+        this.userService.getprofile().subscribe(
+          res => {
+            console.log('res', res);
+            localStorage.setItem('fullName', res.fullName);
+            localStorage.setItem('email', res.email);
+            this.router.navigate(['/home']);
+            this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
+          },
+          err => {
+            console.log('err', err);
+          }
+        );
+        // console.log(localStorage);
+
       },
       err => {
         if (err.status === 400) {
@@ -42,6 +54,7 @@ export class LoginTLNComponent implements OnInit {
         }
       }
     );
+
   }
 
 }

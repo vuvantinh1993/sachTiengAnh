@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
+import { LayoutModule } from './layout/layout.module';
 
 registerLocaleData(vi);
 
@@ -23,10 +24,10 @@ registerLocaleData(vi);
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ForbiddenModule,
+    // ForbiddenModule,
     NgZorroAntdModule,
     AppRoutes,
-    UserModule
+    UserModule, LayoutModule
   ],
   providers: [
     AuthGuard,

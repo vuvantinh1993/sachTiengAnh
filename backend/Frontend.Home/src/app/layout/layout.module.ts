@@ -16,6 +16,7 @@ import { BreadcrumbModule } from '../_shared/breadcrumb/breadcrumb.module';
     BreadcrumbModule,
     LayoutRoutes,
   ],
-  declarations: [LayoutComponent]
+  declarations: [LayoutComponent],
+  exports: [LayoutComponent]
 })
 export class LayoutModule { }

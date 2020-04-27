@@ -10,7 +10,6 @@ import { BehaviorSubject, concat, from, Observable } from 'rxjs';
 export class UsersService extends BaseCrudService<any> {
   baseUrl: string;
   public userinfo: any;
-  private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(
     http: HttpClient,
@@ -25,29 +24,25 @@ export class UsersService extends BaseCrudService<any> {
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public login(body: any) {
+  public login(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, body);
     // return this.bindDataExtensionService.bindResponseApi(api);
   }
 
-  public async getprofile() {
+  public getprofile(): Observable<any> {
     console.log('token', localStorage.getItem('token'));
-    this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(
-      res => {
-        console.log('res', res);
-        localStorage.setItem('fullName', res.fullName);
-        localStorage.setItem('email', res.email);
-      },
-      err => {
-        console.log('err', err);
-      }
-    );
-  }
-
-  public getprofile2(): Observable<IUser | null> {
     return this.http.get<any>(`${this.baseUrl}/GetProfile`);
+    // this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(
+    //   res => {
+    //     console.log('res', res);
+    //     localStorage.setItem('fullName', res.fullName);
+    //     localStorage.setItem('email', res.email);
+    //   },
+    //   err => {
+    //     console.log('err', err);
+    //   }
+    // );
   }
-
   roleMatch(allowedRoles): boolean {
     let isMatch = false;
     const payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
@@ -60,17 +55,4 @@ export class UsersService extends BaseCrudService<any> {
     });
     return isMatch;
   }
-}
-
-
-export interface IUser {
-  sub: string;
-  name: string;
-  given_name: string;
-  family_name: string;
-  email: string;
-  email_verified: boolean;
-  phone_number: string;
-  phone_number_verified: boolean;
-  two_factor_enabled: boolean;
 }
