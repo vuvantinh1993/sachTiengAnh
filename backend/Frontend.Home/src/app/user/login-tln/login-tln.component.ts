@@ -32,10 +32,10 @@ export class LoginTLNComponent implements OnInit {
       (res: any) => {
         localStorage.setItem('token', res.token);
         this.userService.getprofile().subscribe(
-          res => {
-            console.log('res', res);
-            localStorage.setItem('fullName', res.fullName);
-            localStorage.setItem('email', res.email);
+          ress => {
+            console.log('res', ress);
+            localStorage.setItem('fullName', ress.fullName);
+            localStorage.setItem('email', ress.email);
             this.router.navigate(['/home']);
             this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
           },
