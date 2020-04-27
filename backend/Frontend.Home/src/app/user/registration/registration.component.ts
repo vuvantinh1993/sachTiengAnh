@@ -1,5 +1,5 @@
 import { GlobalValidate } from './../../_base/class/global-validate';
-import { UsersService } from './../../_shared/services/User.service';
+import { UsersService } from './../../_shared/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { FormBuilder, FormControl } from '@angular/forms';

@@ -1,4 +1,4 @@
-import { UsersService } from './../../_shared/services/User.service';
+import { UsersService } from './../../_shared/services/user.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
