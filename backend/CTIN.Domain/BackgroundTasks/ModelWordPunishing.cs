@@ -8,6 +8,5 @@ namespace CTIN.Domain.BackgroundTasks
     {
         public int filmid { get; set; }
         public int numberWordSub { get; set; }
-        public int numberTotalWord { get; set; }
     }
 }

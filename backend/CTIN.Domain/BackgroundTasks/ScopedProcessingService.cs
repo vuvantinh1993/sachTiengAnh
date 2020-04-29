@@ -40,7 +40,8 @@ namespace CTIN.Domain.BackgroundTasks
             while (!stoppingToken.IsCancellationRequested)
             {
                 //update các từ trong 3 ô
-                var listUser = _db.UserLeanning.Where(x => (int)DbFunction.JsonValue(x.dataDb, "$.status") != 3).ToList();
+                var listUser = _db.UserLeanning.ToList();
+
                 if (listUser != null)
                 {
                     foreach (UserLeanning userOld in listUser)
@@ -254,17 +255,15 @@ namespace CTIN.Domain.BackgroundTasks
                                 {
                                     var wordPunishing = new ModelWordPunishing();
                                     wordPunishing.filmid = film.filmid;
-                                    wordPunishing.numberTotalWord = 0;
                                     wordPunishing.numberWordSub = 0;
                                     foreach (wordleanedDataJson word in film.wordleaned)
                                     {
                                         wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
-                                        wordPunishing.numberTotalWord = wordPunishing.numberTotalWord + 1;
-                                        if ((DateTime.UtcNow - word.time).TotalDays > 1)
+                                        if (DateTime.UtcNow.Date >= word.time.Date)
                                         {
                                             wordPunishing.numberWordSub = wordPunishing.numberWordSub + 1;
                                             iteamWordLeaned.stt = word.stt;
-                                            iteamWordLeaned.time = iteamWordLeaned.time.Date.AddDays(1);
+                                            iteamWordLeaned.time = DateTime.UtcNow.Date.AddDays(1);
                                             iteamWordLeaned.isforget = word.isforget;
                                             iteamWordLeaned.check = word.check;
                                             iteamWordLeaned.classic = word.classic;
@@ -281,9 +280,14 @@ namespace CTIN.Domain.BackgroundTasks
                                 film.wordleaned = listWordPunishing;
                                 listfilmPunishing.Add(film);
                             }
-                            //trả về giá trị các câu và các từu sai cho client
+                            //trả về giá trị số câu và từ sai cho client
                             var signalerClient = listModelWordPunishing;
-                            //đoạn này viết sigaler đưa tông tin xuống client và trừ điểm trong db
+                            //đoạn này viết sigaler đưa thông tin xuống client và trừ điểm trong db
+
+
+
+
+                            var totalPoint = userNew1.point;
                             var datacategory = _db.Categoryfilm
                                 .Select(x => new { x.id, x.pointword, x.name });
                             foreach (var item in signalerClient)
@@ -291,14 +295,16 @@ namespace CTIN.Domain.BackgroundTasks
                                 var cat = datacategory.FirstOrDefault(x => x.id == item.filmid);
                                 if (cat != null)
                                 {
-                                    //vieet truwf ddieemr trong nayf
+                                    // viết trừ điểm trong này
+                                    totalPoint -= Convert.ToInt32(Math.Round((cat.pointword * item.numberWordSub) * 0.1, 0));
                                 }
                             }
 
 
                             var update1 = new
                             {
-                                filmpunishing = listfilmPunishing
+                                filmpunishing = listfilmPunishing,
+                                point = totalPoint
                             };
 
                             userNew1 = userNew1.Patch(update1);

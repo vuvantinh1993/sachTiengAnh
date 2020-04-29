@@ -1,4 +1,4 @@
-import { UsersService } from './../services/User.service';
+import { UsersService } from './../services/user.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 // import { AuthorizeService } from 'src/api-authorization/authorize.service';
