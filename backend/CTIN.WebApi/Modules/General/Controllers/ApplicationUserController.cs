@@ -1,5 +1,6 @@
 ﻿using CTIN.Common.Extentions;
 using CTIN.Common.Interfaces;
+using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.Models;
 using CTIN.Domain.Services;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security.DataProtection;
@@ -36,8 +38,10 @@ namespace CTIN.WebApi.Modules.General.Controllers
         private SignInManager<ApplicationUser> _singInManager;
         private readonly ApplicationSettings _appSettings;
         public readonly ICurrentUserService _currentUserService;
+        private readonly NATemplateContext _db;
 
         public ApplicationUserController(IApplicationUserService sv, ICurrentUserService currentUserService,
+            NATemplateContext db,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<ApplicationSettings> appSettings)
@@ -47,7 +51,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
             _userManager = userManager;
             _singInManager = signInManager;
             _appSettings = appSettings.Value;
-
+            _db = db;
         }
 
 
@@ -61,7 +65,9 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 if (result.errors.Count == 0)
                 {
                     // xác thực mail 
-                    string code = _userManager.GenerateEmailConfirmationTokenAsync(result.data);
+
+                    //string code = _userManager.GenerateEmailConfirmationTokenAsync(result.data);
+
                     //var callbackUrl = Url.Action(
                     //  "ConfirmEmail", "Account",
                     //  new { userId = result.data.Id, code = code },
@@ -70,10 +76,10 @@ namespace CTIN.WebApi.Modules.General.Controllers
                     //  "Confirm your account",
                     //  "Please confirm your account by clicking this link: <a href=\""
                     //                                  + callbackUrl + "\">link</a>");
-                    if (_singInManager.IsSignedIn(result.data) && User.IsInRole("Admin"))
-                    {
+                    //if (_singInManager.IsSignedIn(result.data) && User.IsInRole("Admin"))
+                    //{
 
-                    }
+                    //}
                 }
                 return await BindData(result.data, result.errors);
             }
@@ -117,8 +123,17 @@ namespace CTIN.WebApi.Modules.General.Controllers
         //GET : /api/UserProfile
         public async Task<Object> GetUserProfile()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            string userId = _currentUserService.userId;
             var user = await _userManager.FindByIdAsync(userId);
+            var info = await _db.UserLeanning.Include(x => x.rank).FirstOrDefaultAsync(x => x.userId == userId);
+            var info2 = from use in _db.UserLeanning
+                        from ra in _db.Rank
+                        where (use.point < ra.pointStage && use.point > ra.star)
+                        select new
+                        {
+                            use.point,
+                            ra.name
+                        };
             return new
             {
                 user.FullName,
@@ -126,6 +141,8 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 user.UserName,
                 user.address,
                 user.avatar,
+                info.point,
+                namerank = info.rank.name,
             };
         }
 

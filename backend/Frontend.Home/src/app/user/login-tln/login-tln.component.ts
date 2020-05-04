@@ -36,6 +36,11 @@ export class LoginTLNComponent implements OnInit {
             console.log('res', ress);
             localStorage.setItem('fullName', ress.fullName);
             localStorage.setItem('email', ress.email);
+            localStorage.setItem('userName', ress.userName);
+            localStorage.setItem('address', ress.address);
+            localStorage.setItem('avatar', ress.avatar);
+            localStorage.setItem('point', ress.point);
+            localStorage.setItem('namerank', ress.namerank);
             this.router.navigate(['/home']);
             this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
           },

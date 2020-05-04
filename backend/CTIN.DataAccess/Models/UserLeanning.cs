@@ -11,14 +11,15 @@ namespace CTIN.DataAccess.Models
         public int id { get; set; }
         public string userId { get; set; }
         public ApplicationUser user { get; set; }
-        public int? point { get; set; }
+        public int point { get; set; }
         public List<userfilmleanningDataJson> filmleanning { get; set; }
         public List<userfilmleanningDataJson> filmforgeted { get; set; }
         public List<userfilmleanningDataJson> filmpunishing { get; set; }
         public List<userfilmleanningDataJson> filmfinish { get; set; }
         public List<int> listfrendid { get; set; }
-        public DataDbJson dataDb { get; set; }
         public int rankId { get; set; }
+        public int star { get; set; }
+        public DataDbJson dataDb { get; set; }
         public Rank rank { get; set; }
     }
 

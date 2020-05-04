@@ -12,10 +12,11 @@ import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
 export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
 
-  public usernameA = localStorage.getItem('usernameA');
-  public userimage = localStorage.getItem('userimage');
+  public avatar = localStorage.getItem('avatar');
   public userpoint = localStorage.getItem('userpoint');
-  public useraddress = localStorage.getItem('useraddress');
+  public fullName = localStorage.getItem('fullName');
+  public point = localStorage.getItem('point');
+  public namerank = localStorage.getItem('namerank');
 
 
   public finishload = false;

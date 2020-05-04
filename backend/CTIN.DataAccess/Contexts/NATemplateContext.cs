@@ -179,6 +179,8 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.point).HasColumnName("point").HasDefaultValue(0);
 
+                entity.Property(e => e.star).HasColumnName("star").HasDefaultValue(1);
+
             });
 
             modelBuilder.Entity<Rank>(entity =>

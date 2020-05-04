@@ -13,20 +13,20 @@ import { map } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
 
-
-  public usernameA: string;
-  public userimage = localStorage.getItem('userimage');
+  public avatar = localStorage.getItem('avatar') === 'undefined' ? null : localStorage.getItem('avatar');
   public userpoint = localStorage.getItem('userpoint');
+  public fullName = localStorage.getItem('fullName');
+  public point = localStorage.getItem('point');
+  public namerank = localStorage.getItem('namerank');
   public userName: any;
   constructor(
     private router: Router,
-    private userService: UsersService,
   ) { }
 
   async ngOnInit() {
     // this.userService.getprofile();
     console.log('usernameAaaaa', localStorage.getItem('fullName'));
-    this.usernameA = localStorage.getItem('fullName');
+
 
     // this.userService.getprofile2().subscribe(data => {
     //   this.userName = data;

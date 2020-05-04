@@ -41,6 +41,8 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     super.submitForm();
     if (this.myForm.invalid) { return; }
     const rs = await this.userservice.register(this.myForm.value);
+    console.log('rs', rs);
+
     if (rs.ok) {
       this.message.success('Đăng kí thành công', { nzDuration: 10000 });
       this.router.navigate(['user/login']);
@@ -58,7 +60,6 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     //           case 'DuplicateUserName':
     //             this.toastr.error('Username is already taken', 'Registration failed.');
     //             break;
-
     //           default:
     //             this.toastr.error(element.description, 'Registration failed.');
     //             break;

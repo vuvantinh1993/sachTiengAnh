@@ -79,6 +79,7 @@ namespace CTIN.Domain.Services
                 }
                 catch (Exception ex)
                 {
+                    errors.Add(new ErrorModel { key = "error", value = "Không đăng kí được tài khoản" });
                     throw ex;
                 }
             }

@@ -15,7 +15,7 @@
     <div class="mr-md-auto"></div>
     <div class="lever">
       <i class="icon-trophy2 mr-2"></i>
-      <span> Bạc 1: {{userpoint | number }} điểm</span>
+      <span> {{namerank}}: {{point | number }} điểm</span>
     </div>
 
     <ul class="navbar-nav">
@@ -83,9 +83,9 @@
         <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle message1" data-toggle="dropdown">
           <span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
           <img src="https://cdns.iconmonstr.com/wp-content/assets/preview/2018/240/iconmonstr-user-circle-thin.png"
-            class="rounded-circle mr-2" height="34" alt="" *ngIf="!userimage">
-          <img [src]="userimage" class="rounded-circle mr-2" height="34" alt="" *ngIf="userimage">
-          <span>{{usernameA}}</span>
+            class="rounded-circle mr-2" height="34" alt="" *ngIf="!avatar">
+          <img [src]="avatar" class="rounded-circle mr-2" height="34" alt="" *ngIf="avatar">
+          <span>{{fullName}}</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right">
