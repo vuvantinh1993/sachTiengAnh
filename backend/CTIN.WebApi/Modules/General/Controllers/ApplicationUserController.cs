@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -27,6 +28,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Modules.General.Controllers
@@ -39,12 +41,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
         private readonly ApplicationSettings _appSettings;
         public readonly ICurrentUserService _currentUserService;
         private readonly NATemplateContext _db;
+        private readonly IEmailSender _emailSender;
 
         public ApplicationUserController(IApplicationUserService sv, ICurrentUserService currentUserService,
             NATemplateContext db,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptions<ApplicationSettings> appSettings)
+            IOptions<ApplicationSettings> appSettings,
+            IEmailSender emailSender)
         {
             _sv = sv;
             _currentUserService = currentUserService;
@@ -52,6 +56,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
             _singInManager = signInManager;
             _appSettings = appSettings.Value;
             _db = db;
+            _emailSender = emailSender;
         }
 
 
@@ -65,6 +70,18 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 if (result.errors.Count == 0)
                 {
                     // xác thực mail 
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.data);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = result.data.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(result.data.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
 
                     //string code = _userManager.GenerateEmailConfirmationTokenAsync(result.data);
 
@@ -125,15 +142,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             string userId = _currentUserService.userId;
             var user = await _userManager.FindByIdAsync(userId);
-            var info = await _db.UserLeanning.Include(x => x.rank).FirstOrDefaultAsync(x => x.userId == userId);
-            var info2 = from use in _db.UserLeanning
+            var info = (from use in _db.UserLeanning
                         from ra in _db.Rank
-                        where (use.point < ra.pointStage && use.point > ra.star)
+                        where (use.userId == userId && use.point < ra.pointStage && use.point > ra.star)
                         select new
                         {
                             use.point,
                             ra.name
-                        };
+                        }).FirstOrDefault();
             return new
             {
                 user.FullName,
@@ -142,7 +158,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 user.address,
                 user.avatar,
                 info.point,
-                namerank = info.rank.name,
+                namerank = info.name,
             };
         }
 

@@ -6,10 +6,12 @@ using CTIN.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -71,9 +73,9 @@ namespace CTIN.Domain.Services
                 try
                 {
                     var result = await _userManager.CreateAsync(applicationUser, model.password);
-                    await _userManager.AddToRoleAsync(applicationUser, model.role);
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(applicationUser, model.role);
                         return (applicationUser, errors);
                     }
                 }

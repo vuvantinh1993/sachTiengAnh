@@ -6,6 +6,7 @@ using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.BackgroundTasks;
 using CTIN.Domain.Bases;
+using CTIN.Domain.Services;
 using CTIN.WebApi.Bases.Services;
 using CTIN.WebApi.Bases.Swagger;
 using CTIN.WebApi.Modules.AES;
@@ -18,6 +19,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -78,6 +81,7 @@ namespace CTIN.WebApi
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddHostedService<ConsumeScopedServiceHostedService>();
             services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
+
             //Inject AppSettings
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
             services.AddHttpContextAccessor();
