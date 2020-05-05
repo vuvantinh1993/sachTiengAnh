@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CTIN.WebApi.Modules.General.Models
+namespace CTIN.WebApi.Modules.JWTAndUser.Models
 {
     public class ApplicationUserModel : ApplicationUserServiceModel
     {

@@ -150,15 +150,7 @@ namespace CTIN.WebApi
             //services.AddIdentity<ApplicationUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddDefaultTokenProviders();
-            services.AddDefaultIdentity<ApplicationUser>(
-                config =>
-                {
-                    config.SignIn.RequireConfirmedEmail = true;
-                    config.Tokens.ProviderMap.Add("CustomEmailConfirmation",
-                    new TokenProviderDescriptor(
-                    typeof(DataProtectorTokenProvider<IdentityUser>)));
-                    config.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
-                })
+            services.AddDefaultIdentity<ApplicationUser>()
              .AddRoles<IdentityRole>()
              .AddEntityFrameworkStores<NATemplateContext>().AddDefaultTokenProviders();
             services.AddTransient<DataProtectorTokenProvider<IdentityUser>>();

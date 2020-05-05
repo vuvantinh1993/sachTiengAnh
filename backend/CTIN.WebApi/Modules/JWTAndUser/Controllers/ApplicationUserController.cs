@@ -8,6 +8,7 @@ using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.General.Models;
 using CTIN.WebApi.Modules.JWT;
+using CTIN.WebApi.Modules.JWTAndUser.Models;
 using CTIN.WebApi.Modules.System1.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +32,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace CTIN.WebApi.Modules.General.Controllers
+namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
 {
     public class ApplicationUserController : ApiController
     {
@@ -70,7 +71,6 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 if (result.errors.Count == 0)
                 {
                     // xác thực mail 
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.data);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
