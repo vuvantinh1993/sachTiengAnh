@@ -1,6 +1,6 @@
 <form [formGroup]="myForm" autocomplete="off" (submit)="onSubmit()">
   <div class="form-group required">
-    <label>Username <span class="text-danger"><b> *</b></span></label>
+    <label>Tên người dùng <span class="text-danger"><b> *</b></span></label>
     <input-text class="form-control" formControlName="UserName" [placeholder]="'Nhập tên'"></input-text>
     <render-error [data]="myForm.get('UserName')"></render-error>
   </div>
@@ -10,26 +10,26 @@
     <render-error [data]="myForm.get('Email')"></render-error>
   </div>
   <div class="form-group">
-    <label>Full Name <span class="text-danger"><b> *</b></span></label>
+    <label>Tên đầy đủ <span class="text-danger"><b> *</b></span></label>
     <input-text class="form-control" formControlName="FullName" [placeholder]="'Nhập tên đầy đủ'"></input-text>
     <render-error [data]="myForm.get('FullName')"></render-error>
   </div>
   <div class="form-group">
-    <label>Passwords <span class="text-danger"><b> *</b></span></label>
+    <label>Mẩu khẩu <span class="text-danger"><b> *</b></span></label>
     <input-text class="form-control" [type]="'password'" formControlName="Password" (ngModelChange)="validDate()"
       [placeholder]="'Nhập mật khẩu'">
     </input-text>
     <render-error [data]="myForm.get('Password')"></render-error>
   </div>
   <div class="form-group">
-    <label>Confirm Password <span class="text-danger"><b> *</b></span></label>
+    <label>Nhập lại mật khẩu <span class="text-danger"><b> *</b></span></label>
     <input-text class="form-control" [type]="'password'" formControlName="ConfirmPassword" (ngModelChange)="validDate()"
       [placeholder]="'Nhập lại mật khẩu'"></input-text>
     <render-error [data]="myForm.get('ConfirmPassword')"></render-error>
   </div>
   <div class="form-row">
     <div class="form-group col-md-8 offset-md-2">
-      <button type="submit" class="btn btn-lg btn-block">Sign Up</button>
+      <button type="submit" class="btn btn-lg btn-block">ĐĂNG KÍ</button>
     </div>
   </div>
 </form>

@@ -53,7 +53,9 @@ export class LoginTLNComponent implements OnInit {
       },
       err => {
         if (err.status === 400) {
-          this.message.error('Tài khoản hoặc mật khẩu không đúng', { nzDuration: 5000 });
+          err.error.forEach(element => {
+            this.message.error(element, { nzDuration: 5000 });
+          });
         } else {
           console.log(err);
         }

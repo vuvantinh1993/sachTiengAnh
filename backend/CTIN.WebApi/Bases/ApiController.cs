@@ -1,8 +1,6 @@
 ﻿using CTIN.Common.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CTIN.WebApi.Bases

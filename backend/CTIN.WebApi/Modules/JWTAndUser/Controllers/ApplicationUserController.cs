@@ -1,33 +1,23 @@
-﻿using CTIN.Common.Extentions;
-using CTIN.Common.Interfaces;
+﻿using CTIN.Common.Interfaces;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
-using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
-using CTIN.WebApi.Modules.AES;
 using CTIN.WebApi.Modules.General.Models;
 using CTIN.WebApi.Modules.JWT;
 using CTIN.WebApi.Modules.JWTAndUser.Models;
-using CTIN.WebApi.Modules.System1.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Owin.Security.DataProtection;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -73,11 +63,8 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                     // xác thực mail 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.data);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = result.data.Id, code = code },
-                        protocol: Request.Scheme);
+                    var userId = result.data.Id;
+                    var callbackUrl = "https://localhost:5001/api/ConfirmEmail/" + userId + "__" + code;
 
                     await _emailSender.SendEmailAsync(result.data.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -111,27 +98,39 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             var user = await _userManager.FindByNameAsync(model.userName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.passWord))
             {
-                var role = await _userManager.GetRolesAsync(user);
-                IdentityOptions _option = new IdentityOptions();
-
-                var tokenDescriptor = new SecurityTokenDescriptor
+                if (await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
+                    var role = await _userManager.GetRolesAsync(user);
+                    IdentityOptions _option = new IdentityOptions();
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
                         new Claim("UserID",user.Id.ToString()),
                         new Claim(_option.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(5),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(5),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return Ok(new { token });
+                }
+                else
+                {
+                    var message = new List<string>();
+                    message.Add("Tài khoản của bạn chưa xác thực mail.");
+                    message.Add("Bạn hãy kiểm tra trong email của mình để xác thực nó trước khi đăng nhập.");
+                    return BadRequest(message);
+                }
             }
             else
             {
-                return BadRequest(new { message = "Username or password không đúng." });
+                var message = new List<string>();
+                message.Add("Tài khoản hoặc mật khẩu không đúng.");
+                return BadRequest(message);
             }
         }
 
