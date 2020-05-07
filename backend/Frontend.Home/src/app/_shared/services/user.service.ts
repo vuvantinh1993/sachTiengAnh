@@ -49,6 +49,7 @@ export class UsersService extends BaseCrudService<any> {
     const userRole = payLoad.role;
     allowedRoles.forEach(element => {
       if (userRole === element) {
+
         isMatch = true;
         return false;
       }

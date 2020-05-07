@@ -48,9 +48,10 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                         var directoryBase = Directory.GetCurrentDirectory();
                         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                        var password = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(model.password));
 
-                        var callbackUrl = directoryBase + "/api/ChangePassWord/" + user.Id + "__" + code;
-                        // yêu cầu xác thực email
+                        var callbackUrl = directoryBase + "/api/ForgotPassword/ChangePassWord/" + user.Id + "__" + code + "__" + password;
+                        // gửi mail để thay đổi password
                     }
                 }
                 else
@@ -63,21 +64,34 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             return await BindData();
         }
 
-        [HttpPost("ChangePassWord")]
-        public async Task<Object> PostChangePassWord([FromBody] ChangePassWordModel model)
+
+        [HttpGet("ChangePassWord/{userAndCode}")]
+        public async Task<IActionResult> Get(string userAndCode)
         {
             var errors = new List<ErrorModel>();
-            if (ModelState.IsValid)
+            if (userAndCode != null)
             {
-                if (model.passWord != null)
+                var arr = userAndCode.Split("__");
+                if (arr.Count() == 3)
                 {
-
+                    var user = await _userManager.FindByIdAsync(arr[0]);
+                    if (user == null)
+                    {
+                        errors.Add(new ErrorModel { key = "userlogin", value = "Không tồn tại tài khoản" });
+                        return await BindData(null, errors, null);
+                    }
+                    var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(arr[1]));
+                    var password = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(arr[2]));
+                    var result = await _userManager.ResetPasswordAsync(user, code, password);
+                    if (result.Succeeded)
+                    {
+                        return await BindData(new { result = "oke" }, null, null);
+                    }
+                    else
+                    {
+                        return await BindData(new { result = "notOke" }, errors, null);
+                    }
                 }
-                else
-                {
-                    errors.Add(new ErrorModel { key = "changePassWord", value = "PassWord không được để trống" });
-                }
-
             }
             return await BindData();
         }

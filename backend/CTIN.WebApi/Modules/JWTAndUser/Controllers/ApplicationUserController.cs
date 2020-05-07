@@ -122,7 +122,7 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                 {
                     var message = new List<string>();
                     message.Add("Tài khoản của bạn chưa xác thực mail.");
-                    message.Add("Bạn hãy kiểm tra trong email của mình để xác thực nó trước khi đăng nhập.");
+                    message.Add("Bạn hãy xác thực email trước khi đăng nhập.");
                     return BadRequest(message);
                 }
             }
@@ -161,28 +161,28 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             };
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Route("ForAdmin")]
-        public string GetForAdmin()
-        {
-            return "Web for admin";
-        }
+        //[HttpGet]
+        //[Authorize(Roles = "Admin")]
+        //[Route("ForAdmin")]
+        //public string GetForAdmin()
+        //{
+        //    return "Web for admin";
+        //}
 
-        [HttpGet]
-        [Authorize(Roles = "Customer")]
-        [Route("ForCustomer")]
-        public string GetForCustomer()
-        {
-            return "Web for Customer";
-        }
+        //[HttpGet]
+        //[Authorize(Roles = "Customer")]
+        //[Route("ForCustomer")]
+        //public string GetForCustomer()
+        //{
+        //    return "Web for Customer";
+        //}
 
-        [HttpGet]
-        [Authorize(Roles = "Customer,Admin")]
-        [Route("ForAdminOrCustomer")]
-        public string GetForAdminOrCustomer()
-        {
-            return "Web for ForAdminOrCustomer";
-        }
+        //[HttpGet]
+        //[Authorize(Roles = "Customer,Admin")]
+        //[Route("ForAdminOrCustomer")]
+        //public string GetForAdminOrCustomer()
+        //{
+        //    return "Web for ForAdminOrCustomer";
+        //}
     }
 }

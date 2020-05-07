@@ -17,12 +17,11 @@ export class AdminNavbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
   }
 
   logout() {
     localStorage.clear();
-    this.router.navigate(['/user']);
+    this.router.navigate(['/user/login']);
   }
 
 }

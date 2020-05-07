@@ -1,6 +1,13 @@
 .navbar-brand{
     font-size: 16px;
     line-height: 24px;
+
+    a{
+      background-color: aliceblue;
+      padding: 5px;
+      border-radius: 15px 0px;
+      color: #000000;
+    }
 }
 .navbar{
   border-radius: 0px 30px 0px 30px;

@@ -5,7 +5,7 @@ import { LayoutComponent } from './layout.component';
 
 const routes: Routes = [
   {
-    path: '', component: LayoutComponent, children: [
+    path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
       {
         path: 'home',
         loadChildren: () => import('./home/home.module').then(m => m.HomeModule)

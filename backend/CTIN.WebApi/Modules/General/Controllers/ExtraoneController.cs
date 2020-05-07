@@ -62,6 +62,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Add([FromForm] Add_ExtraoneModel model)
         {
             if (ModelState.IsValid)
@@ -87,6 +88,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Edit(int id, [FromBody] Edit_ExtraoneModel model)
         {
             if (ModelState.IsValid)
@@ -108,6 +110,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Patch(int id, [FromBody] JObject model)
         {
             if (model == null)
@@ -129,6 +132,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpGet("Dowload/{url}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Dowload([FromRoute]string url, int w = 0, int h = 0, int q = 100)
         {
             if (ModelState.IsValid)
@@ -148,6 +152,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Delete(int id)
         {
             if (ModelState.IsValid)

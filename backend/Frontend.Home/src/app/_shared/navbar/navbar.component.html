@@ -9,7 +9,9 @@
   </div>
   <div class="navbar-brand">
     TLNEnglish
+    <a *ngIf="isAdmin()" routerLink="/adminTinhdeptrai" class="ml-2">ADMIN</a>
   </div>
+
 
   <div class="collapse navbar-collapse" id="navbar-mobile">
     <div class="mr-md-auto"></div>

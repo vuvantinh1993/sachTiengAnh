@@ -62,6 +62,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Add([FromBody] Add_UserLeanningModel model)
         {
             if (ModelState.IsValid)
@@ -82,6 +83,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Edit(int id, [FromBody] Edit_UserLeanningModel model)
         {
             if (ModelState.IsValid)
@@ -103,6 +105,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Patch(int id, [FromBody] JObject model)
         {
             if (model == null)
@@ -124,6 +127,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<object> Delete(int id)
         {
             if (ModelState.IsValid)

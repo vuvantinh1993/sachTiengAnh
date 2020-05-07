@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '', component: AdminComponent, canActivate: [AuthGuard], children: [
+    path: '', component: AdminComponent, canActivate: [AuthGuard], data: { permittedRoles: ['Admin'] }, children: [
       { path: '', redirectTo: '/adminTinhdeptrai', pathMatch: 'full' }, // redirect to `first-component`
       { path: 'rank', loadChildren: () => import('./rank/rank.module').then(x => x.RankModule) },
       {

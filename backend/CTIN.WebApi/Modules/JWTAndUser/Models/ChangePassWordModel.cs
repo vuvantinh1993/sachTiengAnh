@@ -7,6 +7,6 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Models
 {
     public class ChangePassWordModel
     {
-        public string passWord { get; set; }
+        public string passWordAndUserId { get; set; }
     }
 }

@@ -21,22 +21,20 @@ export class NavbarComponent implements OnInit {
   public userName: any;
   constructor(
     private router: Router,
+    private userservice: UsersService
   ) { }
 
   async ngOnInit() {
-    // this.userService.getprofile();
     console.log('usernameAaaaa', localStorage.getItem('fullName'));
-
-
-    // this.userService.getprofile2().subscribe(data => {
-    //   this.userName = data;
-    //   console.log('dayladata', data);
-    // });
   }
 
   logout() {
     localStorage.clear();
     this.router.navigate(['/user/login']);
+  }
+
+  isAdmin() {
+    return this.userservice.roleMatch(['Admin']);
   }
 
 }
