@@ -6,21 +6,22 @@
         <i class="icon-trophy2 d-flex justify-content-center"></i>
         <p class="point" id="point">{{show}}đ</p>
         <div class="star d-flex justify-content-center">
-          <span class="fa fa-star checked" style='font-size:24px'></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
+          <span *ngFor="let i of startYeelow">
+            <span class="fa fa-star checked" style='font-size:24px'></span>
+          </span>
+          <span *ngFor="let i of startnon">
+            <span class="fa fa-star"></span>
+          </span>
         </div>
-        <p class="stage d-flex justify-content-center mt-1">Bạc I</p>
+        <p class="stage d-flex justify-content-center mt-1">{{namerank}}</p>
       </div>
       <div class="col-6 user d-flex align-items-center">
         <div class="image">
-          <img [src]="userimage" alt="">
+          <img [src]="avatar" alt="">
         </div>
         <div class="text d-flex flex-column ml-2">
-          <h2>{{usernameA}}</h2>
-          <p>{{useraddress}}</p>
+          <h2>{{fullName}}</h2>
+          <p>{{address}}</p>
           <p>Hạng : 12.000+</p>
         </div>
       </div>

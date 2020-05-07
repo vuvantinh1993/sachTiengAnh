@@ -16,6 +16,7 @@ namespace CTIN.DataAccess.Models
         public string name { get; set; }
         public int star { get; set; }
         public int pointStage { get; set; }
+        public int pointmaxStage { get; set; }
         public DataDbJson dataDb { get; set; }
     }
 }

@@ -33,7 +33,6 @@ export class LoginTLNComponent implements OnInit {
         localStorage.setItem('token', res.token);
         this.userService.getprofile().subscribe(
           ress => {
-            console.log('res', ress);
             localStorage.setItem('fullName', ress.fullName);
             localStorage.setItem('email', ress.email);
             localStorage.setItem('userName', ress.userName);

@@ -104,7 +104,9 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         console.log('this.datalist', this.datalist);
 
       } else {
-        const result = await this.dl.confirm(`Không có từ cần học lại, quay về trang chủ`, ' ');
+        const result = await this.dl.confirm(`${this.stypelean === 'old'
+          ? 'Không có từ cần học lại'
+          : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này'}, quay về trang chủ`, ' ');
         this.router.navigate(['/']);
       }
     }

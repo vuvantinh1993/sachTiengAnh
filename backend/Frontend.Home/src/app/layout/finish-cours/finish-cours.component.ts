@@ -1,8 +1,9 @@
 import { ExtensionService } from './../../_base/services/extension.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
+import { UsersService } from 'src/app/_shared/services/user.service';
 
 @Component({
   selector: 'app-finish-cours',
@@ -12,12 +13,15 @@ import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
 export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
 
-  public avatar = localStorage.getItem('avatar');
-  public userpoint = localStorage.getItem('userpoint');
-  public fullName = localStorage.getItem('fullName');
-  public point = localStorage.getItem('point');
-  public namerank = localStorage.getItem('namerank');
+  public avatar: string;
+  public fullName: string;
+  public point: string;
+  public namerank: string;
+  public address: string;
+  public star: number;
 
+  public startYeelow: any;
+  public startnon: any;
 
   public finishload = false;
   public data: any;
@@ -26,17 +30,20 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public idfilm = +this.route.snapshot.paramMap.get('idfilm');
   public totalPointRight = +this.route.snapshot.paramMap.get('point');
   public intervalId = null;
-  public num = +this.totalPointRight;
-  public show = +this.userpoint - this.num;
+  public num: number;
+  public show: number;
   constructor(
     private route: ActivatedRoute,
     private extraoneService: ExtraoneService,
     public ex: ExtensionService,
+    private router: Router,
+    public userService: UsersService,
   ) {
     super();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getprofile();
     this.getData();
     setTimeout(() => {
       if (this.num !== 0) {
@@ -45,6 +52,36 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
         document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
       }
     }, 900);
+  }
+
+  getprofile() {
+    this.userService.getprofile().subscribe(
+      ress => {
+        console.log('res', ress);
+        localStorage.setItem('fullName', ress.fullName);
+        localStorage.setItem('email', ress.email);
+        localStorage.setItem('userName', ress.userName);
+        localStorage.setItem('address', ress.address);
+        localStorage.setItem('avatar', ress.avatar);
+        localStorage.setItem('point', ress.point);
+        localStorage.setItem('namerank', ress.namerank);
+        localStorage.setItem('star', ress.star);
+        this.avatar = localStorage.getItem('avatar');
+        this.fullName = localStorage.getItem('fullName');
+        this.point = localStorage.getItem('point');
+        this.namerank = localStorage.getItem('namerank');
+        this.address = localStorage.getItem('address');
+        this.star = +localStorage.getItem('star');
+        this.startYeelow = Array(this.star).fill(4);
+        this.startnon = Array(5 - this.star).fill(4);
+
+        this.num = +this.totalPointRight;
+        this.show = +this.point - this.num;
+      },
+      err => {
+        console.log('err', err);
+      }
+    );
   }
 
   countdown() {

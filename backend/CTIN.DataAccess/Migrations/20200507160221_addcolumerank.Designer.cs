@@ -4,14 +4,16 @@ using CTIN.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    partial class NATemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20200507160221_addcolumerank")]
+    partial class addcolumerank
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

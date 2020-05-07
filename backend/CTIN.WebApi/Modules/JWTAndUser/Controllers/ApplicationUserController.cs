@@ -143,11 +143,12 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var info = (from use in _db.UserLeanning
                         from ra in _db.Rank
-                        where (use.userId == userId && use.point < ra.pointStage && use.point > ra.star)
+                        where (use.userId == userId && use.point >= ra.pointStage && use.point < ra.pointmaxStage)
                         select new
                         {
                             use.point,
-                            ra.name
+                            ra.name,
+                            ra.star
                         }).FirstOrDefault();
             return new
             {
@@ -158,6 +159,7 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                 user.avatar,
                 info.point,
                 namerank = info.name,
+                info.star
             };
         }
 
