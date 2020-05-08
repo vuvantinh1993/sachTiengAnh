@@ -207,6 +207,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
         }
 
         [HttpGet("themcaovaodb")]
+        [Authorize(Roles = "Admin")]
         public void updatedanhsachtuvaoDB()
         {
             _sv.updatedanhsachtuvaoDB();

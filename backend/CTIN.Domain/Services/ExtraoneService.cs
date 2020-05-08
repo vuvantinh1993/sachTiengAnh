@@ -468,14 +468,14 @@ namespace CTIN.Domain.Services
             //ReadFolderAndThenUploadDBAndCopyFile();
 
             // Update vào 2 trường answerWrongEn và answerWrongVn trong DB
-            var listId = _db.Extraone.Where(x => x.categoryfilmid == 1).Select(x => x.id).ToList();
-            foreach (var i in listId)
-            {
-                UpdateAnserWrong(i);
-            }
+            //var listId = _db.Extraone.Where(x => x.categoryfilmid == 1).Select(x => x.id).ToList();
+            //foreach (var i in listId)
+            //{
+            //    UpdateAnserWrong(i);
+            //}
 
-            //// Update table Rank
-            //updateTableRank("C:\\Users\\TINHVU\\Desktop\\extra1\\rank.txt");
+            // Update table Rank
+            updateTableRank("C:\\Users\\TINHVU\\Desktop\\extra1\\rank.txt");
 
         }
 
@@ -596,6 +596,7 @@ namespace CTIN.Domain.Services
         public void updateTableRank(string path)
         {
             string stringFile = File.ReadAllText(path);
+            var point = 0;
             List<string> arrlinetext = new List<string>(stringFile.Split(new string[] { "\r\n" }, StringSplitOptions.None));
             if (arrlinetext.Count() > 0)
             {
@@ -609,13 +610,15 @@ namespace CTIN.Domain.Services
                         data.dataDb = new DataDbJson()
                         {
                             status = 1,
-                            createdBy = Int32.Parse(_currentUserService.userId),
-                            createdDate = DateTime.Now
+                            //createdBy = Int32.Parse(_currentUserService.userId),
+                            //createdDate = DateTime.Now,
                         };
+                        point += Convert.ToInt32(item[2]);
                         //var b = a.Patch(update);
                         data.name = item[0];
                         data.star = Convert.ToInt32(item[1]);
-                        data.pointStage = Convert.ToInt32(item[2]);
+                        data.pointStage = point;
+                        data.pointmaxStage = point;
                         _db.Rank.Add(data);
                         _db.SaveChanges();
                     }
