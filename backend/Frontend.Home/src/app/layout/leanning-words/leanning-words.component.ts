@@ -96,8 +96,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
           localStorage.setItem('sttWordLenning', this.data.sttWord); // lưu dữ liệu từ đang học của bộ phim lên localstagare
         }
         this.sttWordLenning = this.data.sttWord;
-        console.log('this.sttWordLenningservice', this.sttWordLenning);
-        console.log('this.sttWordLenning', this.sttWordLenning);
+        this.speedValueVideo = this.data.speedVideo;
 
         // lấy số từ đã hoc
         this.sttleaned = this.sttWordLenning > 1 ? this.sttWordLenning - 1 : 0; // hiện từ đã học html
@@ -355,42 +354,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.SentenceIsTrue = true;
         setTimeout(async () => {
           if (this.wordNumber === (this.lengthlistword - 1)) {
+            // kết thúc số câu trong 1 lượt hoc, mã hóa dữ liệu dông điểm đưa lên server
+            const chuoimahoacongdiem = this.MaHoaChuoiCongDiem(this.totalSentenceRight)
 
-            // tao chuoi ma hoa khi cong diem
-            const congchuoi = this.idfilm.toString() + ':' + (this.sttWordLenning) + ':' + this.totalSentenceRight;
-            console.log('ban dau', congchuoi, this.sttWordLenning);
-            const chuoimahoa = this.aesservice.encrypt(congchuoi);
-
-            let data = {};
-            // kiểm tra stt=3 nghĩa là từu đó học lại
-            // kiểm tra tiếp có mấy từ học lại rồi gọi lên api truyền nó lên
-            if (this.sttWordLenning === -3) {
-              if (this.data.length === 1) {
-                data = { chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic };
-              } else if (this.data.length === 2) {
-                data = {
-                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic
-                };
-              } else if (this.data.length === 3) {
-                data = {
-                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
-                  stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic
-                };
-              } else {
-                data = {
-                  chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-                  stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
-                  stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic,
-                  stt4: this.data[3].iteam.stt, check4: this.data[3].iteam.check, classic4: this.data[3].iteam.classic
-                };
-              }
-            } else {
-              data = { chuoimahoa };
-            }
-
-            const rs = await this.userLeanningService.updateWordlened(data);
+            const rs = await this.userLeanningService.updateWordlened(chuoimahoacongdiem);
             if (rs.ok) {
               if (this.sttWordLenning !== -3) {
                 localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
@@ -414,33 +381,60 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.SentenceIsTrue = false;
         target.checked = false;
       }
-
-      const element1 = document.getElementById(check1);
-      if (element1 != null) {
-        element1.classList.remove('fas');
-        // tslint:disable-next-line: no-unused-expression
-        element1.offsetWidth;
-        element1.classList.add('fas');
-      }
-      const element2 = document.getElementById(check2);
-      if (element2 != null) {
-        element2.classList.remove('fas');
-        // tslint:disable-next-line: no-unused-expression
-        element2.offsetWidth;
-        element2.classList.add('fas');
-      }
+      this.AnimationCheck(check1);
+      this.AnimationCheck(check2);
     }
   }
 
-  vidEnded(event) {
-    console.log('video ket thuc', event);
+  AnimationCheck(check: string) {
+    const element1 = document.getElementById(check);
+    if (element1 != null) {
+      element1.classList.remove('fas');
+      // tslint:disable-next-line: no-unused-expression
+      element1.offsetWidth;
+      element1.classList.add('fas');
+    }
   }
 
-  // hiengoiy(val) {
-  //   if (val === true) {
-  //     this.isshow = !this.isshow;
-  //   }
-  // }
+  MaHoaChuoiCongDiem(totalSentenceRight) {
+    // tao chuoi ma hoa khi cong diem
+    const congchuoi = this.idfilm.toString() + ':' + (this.sttWordLenning) + ':' + totalSentenceRight + ':' + this.speedValueVideo;
+    const chuoimahoa = this.aesservice.encrypt(congchuoi);
+
+    let data = {};
+    // kiểm tra stt=3 nghĩa là từu đó học lại
+    // kiểm tra tiếp có mấy từ học lại rồi gọi lên api truyền nó lên
+    if (this.sttWordLenning === -3) {
+      if (this.data.length === 1) {
+        data = { chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic };
+      } else if (this.data.length === 2) {
+        data = {
+          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic
+        };
+      } else if (this.data.length === 3) {
+        data = {
+          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
+          stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic
+        };
+      } else {
+        data = {
+          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
+          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
+          stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic,
+          stt4: this.data[3].iteam.stt, check4: this.data[3].iteam.check, classic4: this.data[3].iteam.classic
+        };
+      }
+    } else {
+      data = { chuoimahoa };
+    }
+    return data;
+  }
+
+
+
+
   async daloadxong() {
     this.loadxongchohoctiep = true;
   }
@@ -478,6 +472,18 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       this.speedValueVideo = event;
       this.setupvideo();
     }, 1000);
+  }
+
+
+  OpenTooltips() {
+    var tooltip = document.getElementsByClassName('coupontooltip') as HTMLCollectionOf<HTMLElement>;
+    document.addEventListener('mousemove', fn, false);
+    function fn(e) {
+      for (var i = tooltip.length; i--;) {
+        tooltip[i].style.left = e.pageX + 'px';
+        tooltip[i].style.top = e.pageY + 'px';
+      }
+    }
   }
 
 }

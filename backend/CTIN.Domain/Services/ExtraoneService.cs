@@ -126,7 +126,7 @@ namespace CTIN.Domain.Services
                         x.categoryfilm.level,
                         x.categoryfilm.totalWord
                     }).ToPaging(model);
-                    return (new { result.data, rs.sttWord }, errors, result.paging);
+                    return (new { result.data, rs.sttWord, rs.speedVideo }, errors, result.paging);
                 }
             }
             else if (style == "old")
@@ -371,14 +371,14 @@ namespace CTIN.Domain.Services
         /// <param name="userId">Id của người dùng</param>
         /// <param name="idFilm">Id của film</param>
         /// <returns>Trả về vị trí của từu cần học trong phim, nếu chưa có thì tạo mới gán giá trị bằng -1, còn -2 là lỗi</returns>
-        public (int sttWord, List<ErrorModel> errors) positionWordStop(string userId, int idFilm)
+        public (int sttWord, double speedVideo, List<ErrorModel> errors) positionWordStop(string userId, int idFilm)
         {
             var errors = new List<ErrorModel>();
             var data = _db.UserLeanning.FirstOrDefault(x => x.userId == userId);
             if (data == null)
             {
                 errors.Add(new ErrorModel { key = "NotExitUser", value = "Không tồn tại người dùng" });
-                return (-2, errors);
+                return (-2, 1.0, errors);
             }
             else
             {
@@ -390,6 +390,8 @@ namespace CTIN.Domain.Services
                     {
                         filmid = idFilm,
                         sttWord = -1,
+                        isFinish = false,
+                        speedVideo = 1.0,
                         wordleaned = new List<wordleanedDataJson> { }
                     };
                     update.filmleanning = new List<userfilmleanningDataJson>();
@@ -414,11 +416,11 @@ namespace CTIN.Domain.Services
                         _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
                         if (_db.SaveChanges() > 0)
                         {
-                            return (-1, errors);
+                            return (-1, 1.0, errors);
                         }
                     }
                     errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });
-                    return (-2, errors);
+                    return (-2, 1.0, errors);
 
                 }
                 else
@@ -428,13 +430,15 @@ namespace CTIN.Domain.Services
                     {
                         if (item.filmid == idFilm)
                         {
-                            return (item.sttWord, errors);
+                            return (item.sttWord, item.speedVideo, errors);
                         }
                         else
                         {
                             var newfilm = new userfilmleanningDataJson();
                             newfilm.filmid = idFilm;
                             newfilm.sttWord = -1;
+                            newfilm.isFinish = false;
+                            newfilm.speedVideo = 1.0;
                             newfilm.wordleaned = new List<wordleanedDataJson> { };
                             _db.Entry(data).CurrentValues.SetValues(data.Patch(newfilm));
 
@@ -449,16 +453,16 @@ namespace CTIN.Domain.Services
                                 _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
                                 if (_db.SaveChanges() > 0)
                                 {
-                                    return (newfilm.sttWord, errors);
+                                    return (newfilm.sttWord, 1.0, errors);
                                 }
                             }
                             errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });
-                            return (-2, errors);
+                            return (-2, 1.0, errors);
                         }
                     }
                 }
             }
-            return (-2, errors);
+            return (-2, 1.0, errors);
         }
 
 

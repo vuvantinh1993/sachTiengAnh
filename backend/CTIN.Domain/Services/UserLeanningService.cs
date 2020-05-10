@@ -31,7 +31,7 @@ namespace CTIN.Domain.Services
 
         Task<(int data, List<ErrorModel> errors)> Count(Count_UserLeanningServiceModel model);
 
-        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserLeanningServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, double speedVideo, Updatepoint_UserLeanningServiceModel model);
     }
 
     public class UserLeanningService : IUserService
@@ -208,7 +208,7 @@ namespace CTIN.Domain.Services
         /// <param name="sttWord">là sst của từ đã học thuộc</param>
         /// <param name="totalSentenceRight">Tổng số từ làm đúng trong lần học đó</param>
         /// <returns></returns>
-        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, Updatepoint_UserLeanningServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors)> updateWordlened(int idfilm, int sttWord, int totalSentenceRight, double speedVideo, Updatepoint_UserLeanningServiceModel model)
         {
             var userId = _currentUserService.userId;
             var errors = new List<ErrorModel>();
@@ -229,7 +229,7 @@ namespace CTIN.Domain.Services
                 tuso1.stt = model.stt1;
                 tuso1.check = model.check1;
                 tuso1.classic = model.classic1;
-                var user1 = xulycactuhoclai(data, tuso1, idfilm);
+                var user1 = xulycactuhoclai(data, tuso1, idfilm, speedVideo);
                 if (user1.errors.Count() != 0)
                 {
                     errors = user1.errors;
@@ -242,7 +242,7 @@ namespace CTIN.Domain.Services
                     tuso2.stt = model.stt2;
                     tuso2.check = model.check2;
                     tuso2.classic = model.classic2;
-                    var user2 = xulycactuhoclai(user1.userdata, tuso2, idfilm);
+                    var user2 = xulycactuhoclai(user1.userdata, tuso2, idfilm, speedVideo);
                     if (user2.errors.Count() != 0)
                     {
                         errors = user1.errors;
@@ -255,7 +255,7 @@ namespace CTIN.Domain.Services
                         tuso3.stt = model.stt3;
                         tuso3.check = model.check3;
                         tuso3.classic = model.classic3;
-                        var user3 = xulycactuhoclai(user2.userdata, tuso3, idfilm);
+                        var user3 = xulycactuhoclai(user2.userdata, tuso3, idfilm, speedVideo);
                         if (user3.errors.Count() != 0)
                         {
                             errors = user2.errors;
@@ -268,7 +268,7 @@ namespace CTIN.Domain.Services
                             tuso4.stt = model.stt4;
                             tuso4.check = model.check4;
                             tuso4.classic = model.classic4;
-                            var user4 = xulycactuhoclai(user2.userdata, tuso4, idfilm);
+                            var user4 = xulycactuhoclai(user2.userdata, tuso4, idfilm, speedVideo);
                             if (user4.errors.Count() != 0)
                             {
                                 errors = user3.errors;
@@ -332,6 +332,7 @@ namespace CTIN.Domain.Services
                 var filmleanning = new List<userfilmleanningDataJson>();
                 foreach (var item in data.filmleanning)
                 {
+                    item.speedVideo = speedVideo;
                     if (item.filmid == idfilm)
                     {
                         if (sttWord > 0)
@@ -362,7 +363,6 @@ namespace CTIN.Domain.Services
                 }
                 errors.Add(new ErrorModel { key = "updateWordlened", value = "update lỗi" });
                 return (null, errors);
-
             }
 
             errors.Add(new ErrorModel { key = "updateWordlened", value = "Không tồn tại  từ update" });
@@ -370,7 +370,7 @@ namespace CTIN.Domain.Services
 
         }
 
-        public (UserLeanning userdata, List<ErrorModel> errors) xulycactuhoclai(UserLeanning data, OneWordUpate_UserLeanningServiceModel model, int idfilm)
+        public (UserLeanning userdata, List<ErrorModel> errors) xulycactuhoclai(UserLeanning data, OneWordUpate_UserLeanningServiceModel model, int idfilm, double speedVideo)
         {
             var errors = new List<ErrorModel>();
             var userJson1 = data.JsonToString().JsonToObject<UserLeanning>();
@@ -382,6 +382,7 @@ namespace CTIN.Domain.Services
                     foreach (userfilmleanningDataJson filma in userJson1.filmforgeted)
                     {
                         var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        filmJson1.speedVideo = speedVideo;
                         List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
                         List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
                         if (filma.filmid == idfilm)
@@ -445,6 +446,7 @@ namespace CTIN.Domain.Services
                     foreach (userfilmleanningDataJson filma in userJson1.filmpunishing)
                     {
                         var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        filmJson1.speedVideo = speedVideo;
                         List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
                         List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
                         if (filma.filmid == idfilm)
@@ -510,6 +512,7 @@ namespace CTIN.Domain.Services
                     foreach (userfilmleanningDataJson filma in userJson1.filmfinish)
                     {
                         var filmJson1 = filma.JsonToString().JsonToObject<userfilmleanningDataJson>();
+                        filmJson1.speedVideo = speedVideo;
                         List<wordleanedDataJson> listWord1 = new List<wordleanedDataJson>();
                         List<wordleanedDataJson> listWord2 = new List<wordleanedDataJson>();
                         if (filma.filmid == idfilm)

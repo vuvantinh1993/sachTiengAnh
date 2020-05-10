@@ -13,15 +13,14 @@ import { UsersService } from 'src/app/_shared/services/user.service';
 export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
 
-  public avatar: string;
-  public fullName: string;
-  public point: string;
-  public namerank: string;
-  public address: string;
-  public star: number;
+  public avatar = this.userService.currentAvatar;
+  public fullName = this.userService.currentFullName;
+  public namerank = this.userService.currentNamerank;
+  public address = this.userService.currentAddress;
 
   public startYeelow: any;
   public startnon: any;
+  public pointNeedForNextLever: number;
 
   public finishload = false;
   public data: any;
@@ -43,7 +42,27 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getprofile();
+
+    // lấy thông tin tìa khoản và add dữ liệu vao biến
+    this.userService.getprofile();
+    this.userService.currentStar.subscribe(ress => {
+      this.startYeelow = Array(ress).fill(4);
+      this.startnon = Array(5 - ress).fill(4);
+    }, err => {
+      console.log('err', err);
+    });
+
+    this.userService.currentPointLeverNext.subscribe(ress => {
+      console.log('pointLeverNext', ress);
+
+      this.userService.currentPoint.subscribe(ress2 => {
+        this.num = +this.totalPointRight;
+        this.show = +ress2 - this.num;
+        this.pointNeedForNextLever = ress - ress2;
+      });
+    });
+
+
     this.getData();
     setTimeout(() => {
       if (this.num !== 0) {
@@ -52,36 +71,6 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
         document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
       }
     }, 900);
-  }
-
-  getprofile() {
-    this.userService.getprofile().subscribe(
-      ress => {
-        console.log('res', ress);
-        localStorage.setItem('fullName', ress.fullName);
-        localStorage.setItem('email', ress.email);
-        localStorage.setItem('userName', ress.userName);
-        localStorage.setItem('address', ress.address);
-        localStorage.setItem('avatar', ress.avatar);
-        localStorage.setItem('point', ress.point);
-        localStorage.setItem('namerank', ress.namerank);
-        localStorage.setItem('star', ress.star);
-        this.avatar = localStorage.getItem('avatar');
-        this.fullName = localStorage.getItem('fullName');
-        this.point = localStorage.getItem('point');
-        this.namerank = localStorage.getItem('namerank');
-        this.address = localStorage.getItem('address');
-        this.star = +localStorage.getItem('star');
-        this.startYeelow = Array(this.star).fill(4);
-        this.startnon = Array(5 - this.star).fill(4);
-
-        this.num = +this.totalPointRight;
-        this.show = +this.point - this.num;
-      },
-      err => {
-        console.log('err', err);
-      }
-    );
   }
 
   countdown() {

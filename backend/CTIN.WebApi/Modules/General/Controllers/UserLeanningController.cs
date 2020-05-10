@@ -188,6 +188,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
             int idfilm = Convert.ToInt32(value[0]);
             int sttWord = Convert.ToInt32(value[1]);
             int totalSentenceRight = Convert.ToInt32(value[2]);
+            double speedVideo = Convert.ToDouble(value[3]);
 
             if (sttWord < -3 || totalSentenceRight > 10)
             {
@@ -195,7 +196,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             if (ModelState.IsValid)
             {
-                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, model);
+                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, speedVideo, model);
                 if (result.errors.Count == 0)
                 {
                 }

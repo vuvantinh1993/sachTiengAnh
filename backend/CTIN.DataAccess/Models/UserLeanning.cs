@@ -24,6 +24,8 @@ namespace CTIN.DataAccess.Models
     {
         public int filmid { get; set; }
         public int sttWord { get; set; }
+        public bool isFinish { get; set; }
+        public double speedVideo { get; set; }
         public List<wordleanedDataJson> wordleaned { get; set; }
     }
 

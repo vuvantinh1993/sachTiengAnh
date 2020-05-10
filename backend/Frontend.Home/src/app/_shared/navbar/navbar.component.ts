@@ -13,19 +13,18 @@ import { map } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
 
-  public avatar = localStorage.getItem('avatar') === 'undefined' ? null : localStorage.getItem('avatar');
-  public userpoint = localStorage.getItem('userpoint');
-  public fullName = localStorage.getItem('fullName');
-  public point = localStorage.getItem('point');
-  public namerank = localStorage.getItem('namerank');
+  public point = this.userService.currentPoint;
+  public avatar = this.userService.currentAvatar;
+  public fullName = this.userService.currentFullName;
+  public namerank = this.userService.currentNamerank;
   public userName: any;
   constructor(
     private router: Router,
-    private userservice: UsersService
+    private userService: UsersService
   ) { }
 
   async ngOnInit() {
-    console.log('usernameAaaaa', localStorage.getItem('fullName'));
+    this.userService.getprofile();
   }
 
   logout() {
@@ -34,7 +33,7 @@ export class NavbarComponent implements OnInit {
   }
 
   isAdmin() {
-    return this.userservice.roleMatch(['Admin']);
+    return this.userService.roleMatch(['Admin']);
   }
 
 }

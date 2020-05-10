@@ -1,4 +1,4 @@
-<div class="total mt-4" *ngIf="finishload">
+<div class="total mt-4">
   <div class="information d-flex align-items-center">
     <div class="row d-flex align-items-center">
       <div class="col-6 cup">
@@ -13,21 +13,22 @@
             <span class="fa fa-star"></span>
           </span>
         </div>
-        <p class="stage d-flex justify-content-center mt-1">{{namerank}}</p>
+        <p>Bạn cần {{pointNeedForNextLever}} điểm để tăng sao</p>
+        <p class="stage d-flex justify-content-center mt-1">{{namerank | async}}</p>
       </div>
       <div class="col-6 user d-flex align-items-center">
         <div class="image">
-          <img [src]="avatar" alt="">
+          <img [src]="avatar | async" alt="">
         </div>
         <div class="text d-flex flex-column ml-2">
-          <h2>{{fullName}}</h2>
-          <p>{{address}}</p>
-          <p>Hạng : 12.000+</p>
+          <h2>{{fullName | async}}</h2>
+          <p>{{address | async}}</p>
+          <p>Hạng : Chưa xếp hạng</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="hoctiep d-flex justify-content-center mt-3">
+  <div class="hoctiep d-flex justify-content-center mt-3" *ngIf="finishload">
     <a [routerLink]="['/leanning-words','new', idfilm]" class="btn btn-sm btn-primary justify-content-center">
       Học tiếp <i class="fas fa-angle-right next"></i>
     </a>

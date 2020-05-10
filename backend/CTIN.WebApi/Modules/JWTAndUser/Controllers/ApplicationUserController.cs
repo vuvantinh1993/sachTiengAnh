@@ -153,7 +153,8 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                         {
                             use.point,
                             ra.name,
-                            ra.star
+                            ra.star,
+                            ra.pointmaxStage
                         }).FirstOrDefault();
             return new
             {
@@ -164,7 +165,8 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                 user.avatar,
                 info.point,
                 namerank = info.name,
-                info.star
+                info.star,
+                pointLeverNext = info.pointmaxStage
             };
         }
 
