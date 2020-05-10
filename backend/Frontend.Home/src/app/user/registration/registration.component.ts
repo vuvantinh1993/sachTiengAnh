@@ -82,7 +82,7 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     if (!this.myForm) { return null; }
     if (this.myForm.controls.ConfirmPassword.value) {
       if (this.myForm.controls.ConfirmPassword.value !== this.myForm.controls.Password.value) {
-        return { error: 'Nhập giống trường password' };
+        return { error: 'Bạn cần nhập giống trường mật khẩu' };
       } else {
         return null;
       }

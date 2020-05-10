@@ -17,10 +17,7 @@ namespace CTIN.DataAccess.Models
         public List<userfilmleanningDataJson> filmpunishing { get; set; }
         public List<userfilmleanningDataJson> filmfinish { get; set; }
         public List<int> listfrendid { get; set; }
-        public int rankId { get; set; }
-        public int star { get; set; }
         public DataDbJson dataDb { get; set; }
-        public Rank rank { get; set; }
     }
 
     public class userfilmleanningDataJson

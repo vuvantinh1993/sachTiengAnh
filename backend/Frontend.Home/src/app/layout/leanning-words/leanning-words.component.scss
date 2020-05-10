@@ -14,12 +14,25 @@
       font-size: 17px;
       margin: 0;
       font-weight: 400;
-      cursor: pointer;
       line-height: 13px;
     }
-    iframe{
-      min-height: 300px;
-      min-width: 485px;
+    .video{
+      position: relative;
+      cursor: pointer;
+      min-height: 368px;
+      min-width: 656px;
+
+      img{
+        width: 7em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      video{
+        min-height: 300px;
+        min-width: 485px;
+      }
     }
 
     .totalSentenceRight{
@@ -41,6 +54,10 @@
       position: absolute;
       bottom: 0em;
       right: 1em;
+
+      .ant-input-number{
+          width: 78px;
+      }
 
       a{
         font-size: 17px;

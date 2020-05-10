@@ -60,6 +60,11 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                 var result = await _sv.register(model);
                 if (result.errors.Count == 0)
                 {
+                    // Thêm user vảo userLeanning
+                    var a = new UserLeanning();
+                    a.userId = result.data.Id;
+                    _db.UserLeanning.Add(a);
+
                     // xác thực mail 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(result.data);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

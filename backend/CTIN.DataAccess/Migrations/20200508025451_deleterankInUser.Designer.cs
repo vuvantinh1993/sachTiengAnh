@@ -4,14 +4,16 @@ using CTIN.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    partial class NATemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20200508025451_deleterankInUser")]
+    partial class deleterankInUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,6 +301,8 @@ namespace CTIN.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("point")
                         .HasDefaultValue(0);
+
+                    b.Property<int>("rankId");
 
                     b.Property<string>("userId");
 

@@ -19,6 +19,16 @@ export class DialogService {
     });
   }
 
+  public alert(title: string, content: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      this.modalService.success({
+        nzTitle: title,
+        nzContent: content,
+        nzOnOk: () => resolve(true)
+      });
+    });
+  }
+
   public error(title: string, content: string) {
     return new Promise<boolean>((resolve, reject) => {
       this.modalService.error({

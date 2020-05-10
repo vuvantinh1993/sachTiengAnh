@@ -1,3 +1,4 @@
+import { FormBuilder } from '@angular/forms';
 import { UserLeanningService } from './../../_shared/services/UserLeanning.service';
 import { DialogService } from './../../_base/services/dialog.service';
 import { AESService } from './../../_base/services/aes.service';
@@ -9,6 +10,9 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
+// import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { setTimeout } from 'timers';
+
 
 @Component({
   selector: 'app-leanning-words',
@@ -16,7 +20,7 @@ import { NzMessageService } from 'ng-zorro-antd';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
-
+  public myVar;
   public extran: string;
   public totalSentenceRight = 0;
   public SentenceIsTrue = true;
@@ -103,11 +107,19 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
         console.log('this.datalist', this.datalist);
 
+        setTimeout(() => {
+          this.setupvideo();
+        }, 1);
+
       } else {
-        const result = await this.dl.confirm(`${this.stypelean === 'old'
-          ? 'Không có từ cần học lại'
-          : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này'}, quay về trang chủ`, ' ');
-        this.router.navigate(['/']);
+        const result = await this.dl.alert(`${this.stypelean === 'old'
+          ? 'Không có từ cần học lại, tiếp tục học từ mới'
+          : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này quay về trang chủ'}`, ' ');
+        if (this.stypelean === 'old') {
+          this.router.navigate(['/leanning-words', 'new', this.idfilm]);
+        } else {
+          this.router.navigate(['/']);
+        }
       }
     }
   }
@@ -395,6 +407,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
           } else {
             console.log('tinh');
             this.wordNumber++;
+            this.setupvideo();
           }
         }, 1000);
       } else {
@@ -428,9 +441,43 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   //     this.isshow = !this.isshow;
   //   }
   // }
-
-  daloadxong() {
-    console.log('daloadxong', this.loadxongchohoctiep);
+  async daloadxong() {
     this.loadxongchohoctiep = true;
   }
+
+  setupvideo() {
+    this.hidenplay();
+    const vid = (document.getElementById('myVideo') as HTMLMediaElement);
+    vid.defaultPlaybackRate = this.speedValueVideo;
+    vid.autoplay = true;
+    vid.load();
+  }
+
+  hidenplay() {
+    const imgPlay = (document.getElementById('imgplay') as HTMLElement);
+    imgPlay.hidden = true;
+  }
+  reloadvideo() {
+    this.hidenplay();
+    const vid = (document.getElementById('myVideo') as HTMLMediaElement);
+    // console.log('this.speedvalue', this.speedvalue);
+    vid.currentTime = 0;
+    vid.play();
+  }
+
+  videoketthuc() {
+    const imgPlay = (document.getElementById('imgplay') as HTMLElement);
+    imgPlay.hidden = false;
+  }
+
+  ChangeSpeedVideo(event) {
+    clearTimeout(this.myVar);
+    console.log('1');
+
+    this.myVar = setTimeout(() => {
+      this.speedValueVideo = event;
+      this.setupvideo();
+    }, 1000);
+  }
+
 }
