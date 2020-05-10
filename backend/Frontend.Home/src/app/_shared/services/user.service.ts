@@ -49,7 +49,6 @@ export class UsersService extends BaseCrudService<any> {
   }
 
   public getprofile(): Observable<any> {
-    console.log('token', localStorage.getItem('token'));
     this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(ress => {
       this.ChangeFullName(ress.fullName);
       this.ChangeEmail(ress.email);
@@ -60,10 +59,11 @@ export class UsersService extends BaseCrudService<any> {
       this.ChangePoint(ress.point);
       this.ChangeStar(ress.star);
       this.ChangePointLeverNext(ress.pointLeverNext);
+      // return 'ok';
     }, err => {
       console.log('err', err);
+      // return 'notOk';
     });
-
     return this.http.get<any>(`${this.baseUrl}/GetProfile`);
   }
 
@@ -101,15 +101,17 @@ export class UsersService extends BaseCrudService<any> {
 
   roleMatch(allowedRoles): boolean {
     let isMatch = false;
-    const payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-    const userRole = payLoad.role;
-    allowedRoles.forEach(element => {
-      if (userRole === element) {
+    if (localStorage.getItem('token')) {
+      const payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+      const userRole = payLoad.role;
+      allowedRoles.forEach(element => {
+        if (userRole === element) {
 
-        isMatch = true;
-        return false;
-      }
-    });
+          isMatch = true;
+          return false;
+        }
+      });
+    }
     return isMatch;
   }
 }

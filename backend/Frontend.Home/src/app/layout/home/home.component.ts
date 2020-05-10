@@ -37,14 +37,11 @@ export class HomeComponent extends BaseListComponent implements OnInit {
       delete this.paging.where;
     }
     this.isLoading = true;
-    console.log('this.paging', this.paging);
     const rs = await this.categoryFilmService.get(this.paging);
     this.isLoading = false;
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
     }
-    console.log('Get data', this.data);
-
     if (this.data) {
       this.listOfData = this.data;
       this.paging = rs.result.paging;

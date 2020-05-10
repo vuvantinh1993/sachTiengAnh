@@ -35,8 +35,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
   ngOnInit() {
     this.creatForm();
     this.getlistfilm();
-    console.log(this.item);
-
     if (this.item) {
       this.myForm.patchValue(this.item);
     }
@@ -62,7 +60,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       size: 100
     };
     const rs = await this.categoryFilmService.get(params);
-    console.log('status', rs.result);
     if (rs.ok) {
       this.listfilm = rs.result.data.map(x => {
         return {
@@ -82,13 +79,6 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
     this.formData.append('textEn', this.myForm.get('textEn').value);
     this.formData.append('status', this.myForm.value.dataDb.status);
     this.formData.append('fullName', this.myForm.get('fullName').value);
-
-
-    console.log(this.formData.getAll('status'));
-    console.log(this.formData.getAll('textVn'));
-    console.log(this.formData.getAll('textEn'));
-    console.log(this.formData.getAll('audio'));
-
     const rs = ((!this.item) ? await this.extraoneService.add(this.formData)
       : await this.extraoneService.edit(this.item.id as number, this.formData));
     if (rs.ok) {
@@ -108,14 +98,10 @@ export class ExtraOneDataComponent extends BaseDataComponent implements OnInit {
       const profile1 = event.target.files[0];
       this.myForm.get('audio').setValue(profile1);
       this.formData.append('audio', this.myForm.get('audio').value);
-
-      console.log('aaaasssssss', this.myForm.get('audio').value);
       const text = this.myForm.get('audio').value.name;
       let textEn = text.substring(text.indexOf('.') + 1, text.indexOf('-') - 1);
       let textVn = text.substring(text.indexOf('-') + 2, text.length - 4);
       const checkQuest = textVn[textVn.length - 1];
-      console.log('checkQuest', checkQuest);
-
       if (checkQuest === '`') {
         textEn = textEn + '?';
         textVn = textVn.substring(0, textVn.length - 1) + '?';

@@ -43,12 +43,9 @@ export class ListWordsFilmComponent extends BaseListComponent implements OnInit 
     } else {
       delete this.paging.where;
     }
-    console.log('aaaaaaaa', where);
     this.isLoading = true;
     const rs = await this.extraoneService.get(this.paging);
     const rsCate = await this.categoryFilmService.get({ where: { id: this.route.snapshot.paramMap.get('id') } });
-    console.log('Get tai lieu', rs.result);
-    console.log('Get rsCate', rsCate.result.data);
     this.isLoading = false;
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
@@ -56,11 +53,7 @@ export class ListWordsFilmComponent extends BaseListComponent implements OnInit 
       if (rs.result.data.length !== 0) {
         this.isView = true;
       }
-      console.log('view', this.isView);
     }
-    console.log('this.listOfData', this.data);
-
-
     if (this.data) {
       this.listOfData = this.data;
       this.paging = rs.result.paging;

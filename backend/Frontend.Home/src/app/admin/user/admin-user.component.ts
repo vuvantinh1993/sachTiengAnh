@@ -118,7 +118,6 @@ export class AdminUserComponent extends BaseListComponent implements OnInit {
     const rs = await this.userService.get(this.paging);
     this.isLoading = false;
     if (rs.ok) {
-      console.log('Get tai lieu', rs.result.data);
       this.data = rs.result.data;
       if (this.data) {
         this.listOfData = this.data;
@@ -131,7 +130,6 @@ export class AdminUserComponent extends BaseListComponent implements OnInit {
   async deleteItem(id: number) {
     const result = await this.dl.confirm('<i>Bạn có muốn xóa dữ liệu này không?</i>', '<b>Some descriptions</b>');
     if (result) {
-      console.log(id);
       const rs = await this.userService.delete(id);
       if (rs.ok) {
         this.getData(this.paging.page);

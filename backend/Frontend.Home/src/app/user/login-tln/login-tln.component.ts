@@ -40,7 +40,6 @@ export class LoginTLNComponent implements OnInit {
             console.log('err', err);
           }
         );
-        // console.log(localStorage);
 
       },
       err => {

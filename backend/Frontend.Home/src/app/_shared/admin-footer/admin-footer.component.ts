@@ -7,7 +7,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class AdminFooterComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    console.log('afterviewInit admin-footer');
+
   }
 
   constructor() { }

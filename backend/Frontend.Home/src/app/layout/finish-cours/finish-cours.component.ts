@@ -53,8 +53,6 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     });
 
     this.userService.currentPointLeverNext.subscribe(ress => {
-      console.log('pointLeverNext', ress);
-
       this.userService.currentPoint.subscribe(ress2 => {
         this.num = +this.totalPointRight;
         this.show = +ress2 - this.num;
@@ -82,15 +80,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   async getData(page = null) {
-    console.log(page);
-
     this.data = null;
     this.datalist = [null];
     this.listOfData = [];
 
     this.sttWordLenning = +localStorage.getItem('sttWordLenning') - 1;
-    console.log('this.sttWordLenning', this.sttWordLenning);
-
     if (!page) {
       this.paging.page = (Math.floor((this.sttWordLenning - 1) / 12) + 1) > 1 ? (Math.floor((this.sttWordLenning - 1) / 12) + 1) : 1;
     } else {
@@ -105,15 +99,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     } else {
       delete this.paging.where;
     }
-    // tslint:disable-next-line: max-line-length
-    console.log(this.paging);
-
     const rs = await this.extraoneService.get(this.paging);
-    console.log('Get tai lieu', rs.result);
     if (rs.ok && rs.result && (rs.result.data.length !== 0)) {
       this.data = rs.result.data;
       // lấy số từ đã hoc
-      console.log('this.data', this.data);
+
     }
     if (this.data) {
       this.listOfData = this.data;

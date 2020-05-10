@@ -125,7 +125,6 @@ export class RankComponent extends BaseListComponent implements OnInit {
     if (rs.ok) {
       this.listOfData = rs.result.data;
       this.paging = rs.result.paging;
-      console.log('getdata', this.listOfData);
     }
   }
 

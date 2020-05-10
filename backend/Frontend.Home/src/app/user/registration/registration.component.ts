@@ -41,8 +41,6 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     super.submitForm();
     if (this.myForm.invalid) { return; }
     const rs = await this.userservice.register(this.myForm.value);
-    console.log('rs', rs);
-
     if (rs.ok) {
       this.message.success('Đăng kí thành công', { nzDuration: 10000 });
       this.router.navigate(['user/login']);

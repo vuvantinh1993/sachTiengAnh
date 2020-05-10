@@ -128,7 +128,6 @@ export class CategoryFilmComponent extends BaseListComponent implements OnInit {
         element.nameLever = element.level === 1 ? 'easy' : (element.level === 2 ? 'Medium' : (element.level === 3 ? 'Hard' : 'Very Hard'));
       });
       this.paging = rs.result.paging;
-      console.log('getdata', this.listOfData);
     }
   }
 

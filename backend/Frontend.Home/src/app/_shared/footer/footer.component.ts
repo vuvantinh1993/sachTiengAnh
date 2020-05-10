@@ -7,7 +7,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    console.log('afterviewInit footer')
   }
 
   constructor() { }

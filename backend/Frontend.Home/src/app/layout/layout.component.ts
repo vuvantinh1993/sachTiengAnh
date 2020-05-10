@@ -21,39 +21,15 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    console.log('ngOnInit layout');
     App.initBeforeLoad();
     window.addEventListener('load', () => {
-      console.log('load layout');
       App.initAfterLoad();
     });
-    // this.userService.getprofile();
-    // this.userName = this.authorizeService.getUser().pipe(map(u => u && u.name));
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit layout');
     App.initCore();
   }
 
-  // async getfindOneById() {
-  //   this.userService.getprofile().subscribe(
-  //     res => {
-  //       console.log('res', res);
-  //       this.userinfora = res;
-  //       localStorage.setItem('fullName', res.fullName);
-  //       localStorage.setItem('email', res.email);
-  //     },
-  //     err => {
-  //       console.log('err', err);
-  //     }
-  //   );
-  //   // if (rs.ok) {
-  //   //   this.userinfora = rs.result;
-  //   //   localStorage.setItem('usernameA', rs.result.name);
-  //   //   localStorage.setItem('userpoint', rs.result.point);
-  //   //   localStorage.setItem('userimage', rs.result.image);
-  //   //   localStorage.setItem('useraddress', rs.result.address);
-  //   // }
-  // }
+
 }

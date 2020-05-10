@@ -88,7 +88,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       this.paging.size = 4;
     }
     const rs = await this.extraoneService.getWords(this.stypelean, this.idfilm, this.paging);
-    console.log('Get tai lieu', rs.result);
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
       if ((this.data.data.length !== 0)) {
@@ -104,8 +103,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.data = this.data.data;
         this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
         this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
-        console.log('this.datalist', this.datalist);
-
         setTimeout(() => {
           this.setupvideo();
         }, 1);
@@ -149,7 +146,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         if (key === '4') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('listda', listda);
         }
       }
     } else if (sttWord === 2) {
@@ -173,7 +169,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         if (key === '4') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('listda', listda);
         }
       }
     } else if (sttWord === 1) {
@@ -193,12 +188,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         if (key === '3') {
           const list = this.laySoCauTheoTu(value, 2, 0);
           listda = listda.concat(list);
-          console.log('tinh', listda);
         }
         if (key === '4') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('listda', listda);
         }
       }
     } else if (sttWord === 0) {
@@ -218,12 +211,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         if (key === '3') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('tinh', listda);
         }
         if (key === '4') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('listda', listda);
         }
       }
     } else if (sttWord === -1) {
@@ -243,7 +234,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         if (key === '3') {
           const list = this.laySoCauTheoTu(value, 1, 0);
           listda = listda.concat(list);
-          console.log('tinh', listda);
         }
       }
     } else if (sttWord === -3) {
@@ -266,9 +256,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         }
       }
     }
-    console.log('listdachuatron', listda);
     listda = this.tronMang(listda);
-    console.log('listda đã trộn', this.tronMang(listda));
     return listda;
   }
 

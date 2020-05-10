@@ -39,11 +39,7 @@ export class AESService {
   }
 
   private replacevalue(value) {
-    console.log('chuoi chua chuyen: ', value);
-
     value = value.toString().replace(new RegExp('\\+', 'g'), '-').replace(new RegExp('\\/', 'g'), '_');
-    console.log('chuoi da chuyen: ', value);
-
     return value;
   }
 

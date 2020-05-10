@@ -7,7 +7,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
-    console.log('afterview menu');
   }
 
   constructor() { }

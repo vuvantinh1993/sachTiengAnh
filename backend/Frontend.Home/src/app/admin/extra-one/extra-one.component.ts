@@ -34,7 +34,6 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
   async ngOnInit() {
     this.creatForm();
     await this.getData();
-    console.log('this.item', this.item);
   }
 
   creatForm() {
@@ -46,8 +45,6 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
 
 
   openModal(item = null, isView = false) {
-    console.log('iteam', item);
-
     this.item = item;
     this.id = item ? item.id : null;
     this.isView = isView;
@@ -122,10 +119,8 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
     }
     this.isLoading = true;
     const rs = await this.extraoneService.get(this.paging);
-    console.log('Get tai lieu', rs.result);
     this.isLoading = false;
     if (rs.ok && rs.result) {
-      console.log('Get tai lieu', rs.result.data);
       this.data = rs.result.data;
       if (this.data) {
         this.listOfData = this.data;
@@ -138,7 +133,6 @@ export class ExtraOneComponent extends BaseListComponent implements OnInit {
   async deleteItem(id: number) {
     const result = await this.dl.confirm('<i>Bạn có muốn xóa dữ liệu này không?</i>', '<b>Some descriptions</b>');
     if (result) {
-      console.log(id);
       const rs = await this.extraoneService.delete(id);
       if (rs.ok) {
         this.getData(this.paging.page);
