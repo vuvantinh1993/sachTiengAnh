@@ -27,10 +27,17 @@
       <!-- <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="!isshow">Show</p> -->
       <p class="totalSentenceRight">{{totalSentenceRight}} câu</p>
       <div class="boqua">
-        <div class="speedvideo pb-2">
-          <nz-input-number [(ngModel)]="this.speedValueVideo" [nzMin]="0.5" [nzMax]="2" [nzStep]="0.05"
+        <div class="speedvideo pb-2" (mousemove)="OpenTooltips()">
+          <nz-input-number class="hover" [(ngModel)]="tinh" [nzMin]="0.5" [nzMax]="2" [nzStep]="0.05"
             [nzPlaceHolder]="'Digital'" (ngModelChange)="ChangeSpeedVideo($event)">
           </nz-input-number>
+
+          <div class="speedvideoangtip" id="tooltip">
+            <p>1.5x</p>
+            <span class="span" id="tooltip-span">
+              Nếu bạn là người mới bắt đầu nên để 0,8-0,9x
+            </span>
+          </div>
         </div>
         <!-- <input-float class="speddvideo" [step]="0.05" [(ngModel)]="this.speedValueVideo"
           (onChange)="ChangeSpeedVideo($event)" [decimalLimit]="2" [min]="0.5" [max]="2"></input-float> -->
@@ -82,15 +89,6 @@
       </div>
     </div>
   </div>
-</div>
-
-
-<div class="couponcode" (hover)="OpenTooltips()">First Link
-  <span class="coupontooltip">Content 1</span>
-</div>
-
-<div class="couponcode">Second Link
-  <span class="coupontooltip"> Content 2</span>
 </div>
 
 

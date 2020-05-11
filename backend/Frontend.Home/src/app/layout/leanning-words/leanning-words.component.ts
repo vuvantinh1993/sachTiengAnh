@@ -11,7 +11,7 @@ import { BaseListComponent } from 'src/app/_base/components/base-list-component'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 // import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { setTimeout } from 'timers';
+import { setTimeout, setInterval } from 'timers';
 
 
 @Component({
@@ -20,7 +20,8 @@ import { setTimeout } from 'timers';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
-  public myVar;
+  tinh = 1;
+  public myTimer;
   public extran: string;
   public totalSentenceRight = 0;
   public SentenceIsTrue = true;
@@ -453,24 +454,25 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   ChangeSpeedVideo(event) {
-    clearTimeout(this.myVar);
-    console.log('1');
+    console.log(event);
 
-    this.myVar = setTimeout(() => {
-      this.speedValueVideo = event;
-      this.setupvideo();
-    }, 1000);
+    // clearTimeout(this.myTimer);
+    // setTimeout(() => {
+    //   this.speedValueVideo = event;
+    //   this.setupvideo();
+    //   console.log('1');
+    // }, 2000);
   }
 
 
   OpenTooltips() {
-    var tooltip = document.getElementsByClassName('coupontooltip') as HTMLCollectionOf<HTMLElement>;
-    document.addEventListener('mousemove', fn, false);
-    function fn(e) {
-      for (var i = tooltip.length; i--;) {
-        tooltip[i].style.left = e.pageX + 'px';
-        tooltip[i].style.top = e.pageY + 'px';
-      }
+    var tooltip = document.getElementById('tooltip');
+    var tooltipSpan = document.getElementById('tooltip-span');
+    tooltip.onmousemove = function (e) {
+      var x = e.clientX,
+        y = e.clientY;
+      tooltipSpan.style.top = (y - 30) + 'px';
+      tooltipSpan.style.left = (x + 10) + 'px';
     }
   }
 

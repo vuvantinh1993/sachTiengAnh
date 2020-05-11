@@ -16,33 +16,35 @@
       font-weight: 400;
       line-height: 13px;
     }
-    .video{
+
+    .video {
       position: relative;
       cursor: pointer;
       min-height: 368px;
       min-width: 656px;
 
-      img{
+      img {
         width: 7em;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
       }
-      video{
+
+      video {
         min-height: 300px;
         min-width: 485px;
       }
     }
 
-    .totalSentenceRight{
+    .totalSentenceRight {
       position: absolute;
       top: 2em;
       right: 1em;
       font-size: 20px;
       font-family: cursive;
 
-      a{
+      a {
         font-size: 20px;
         background-color: 1fd446;
         border-radius: 120px;
@@ -50,16 +52,32 @@
         background-image: linear-gradient(90deg, #41fb419e, #9dff42);
       }
     }
-    .boqua{
+
+    .boqua {
       position: absolute;
       bottom: 0em;
       right: 1em;
 
-      .ant-input-number{
-          width: 78px;
+      .speedvideo {
+        text-decoration: none;
+        position: relative;
+
+        span {
+          display: none;
+        }
+
+        .speedvideoangtip:hover span {
+          display: block;
+          position: fixed;
+          overflow: hidden;
+        }
       }
 
-      a{
+      .ant-input-number {
+        width: 78px;
+      }
+
+      a {
         font-size: 17px;
         background-color: #f33a21bd;
       }
@@ -96,9 +114,17 @@
     }
 
     @keyframes danhdau {
-      1%  { opacity: 1;}
-      90%   { opacity: 1;}
-      100%  { opacity: 0;}
+      1% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
     }
 
     label {
@@ -124,15 +150,23 @@ label:hover {
 }
 
 
-.pclass{
+.pclass {
   animation-name: danhdau;
   animation-duration: 2s;
   opacity: 0;
 
   @keyframes danhdau {
-    1%  { opacity: 1;}
-    70%   { opacity: 1;}
-    100%  { opacity: 0;}
+    1% {
+      opacity: 1;
+    }
+
+    70% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
   }
 }
 
@@ -141,12 +175,13 @@ label:hover {
 ///tét
 @keyframes my-animation {
   from {
-    opacity : 0;
-    left : -500px;
+    opacity: 0;
+    left: -500px;
   }
+
   to {
-    opacity : 1;
-    left : 0;
+    opacity: 1;
+    left: 0;
   }
 }
 
@@ -157,28 +192,22 @@ label:hover {
 
 #logo {
   text-align: center;
-  font-family : Palatino Linotype, Book Antiqua, Palatino, serif;
+  font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
 }
 
 
-
-//tooltips
-.couponcode:hover .coupontooltip {
-  display: block;
+//tooltip
+.tooltip2 {
+  text-decoration: none;
+  position: relative;
 }
 
-
-.coupontooltip {
+.tooltip2 span {
   display: none;
-  background: #C8C8C8;
-  margin-left: 28px;
-  padding: 10px;
-  position: absolute;
-  z-index: 1000;
-  width:200px;
-  height:100px;
 }
 
-.couponcode {
-  margin:100px;
+.tooltip2:hover span {
+  display: block;
+  position: fixed;
+  overflow: hidden;
 }
