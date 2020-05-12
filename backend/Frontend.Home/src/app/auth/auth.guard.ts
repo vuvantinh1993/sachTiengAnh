@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (localStorage.getItem('token') != null) {
+    if ((localStorage.getItem('token') != null) && (localStorage.getItem('token').match(/\./g).length === 2)) {
       const roles = next.data.permittedRoles as Array<string>;
       if (roles) {
         if (this.userservice.roleMatch(roles)) {
@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate {
       }
       return true;
     } else {
+      localStorage.clear();
       this.router.navigate(['/user/login']);
       return false;
     }
