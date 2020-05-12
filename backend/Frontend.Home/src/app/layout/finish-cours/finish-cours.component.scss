@@ -62,6 +62,32 @@
           color: #e88509d1;
         }
       }
+       #tooltip{
+          text-decoration: none;
+          position: relative;
+
+          .progress{
+            height: 0.4rem;
+            width: 14rem;
+            background-image: linear-gradient(to right, #32ee20 , #ff4848);
+
+            .progress-bar{
+              background-color: inherit!important;
+              transform: rotate(180deg);
+            }
+          }
+
+          span {
+            display: none;
+            color: #3fba0b;
+          }
+        }
+
+        #tooltip:hover span {
+          display: block;
+          position: fixed;
+          overflow: hidden;
+        }
 
       .stage {
         font-size: 1.4em;

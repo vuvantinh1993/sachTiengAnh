@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
 import { UsersService } from 'src/app/_shared/services/user.service';
+import { Common } from 'src/app/_shared/extensions/common.service';
 
 @Component({
   selector: 'app-finish-cours',
@@ -18,15 +19,18 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public namerank = this.userService.currentNamerank;
   public address = this.userService.currentAddress;
 
+  public a = 0;
+
   public startYeelow: any;
   public startnon: any;
   public pointNeedForNextLever: number;
 
-  public finishload = false;
+  public finishload = Common.currentOpenComponentViewFinish;
   public data: any;
   public datalist: any[];
-  public sttWordLenning: number;
-  public idfilm = +this.route.snapshot.paramMap.get('idfilm');
+  public sttWordLenningComponent: number;
+  public idfilmComponent: any;
+  // public idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
   public totalPointRight = +this.route.snapshot.paramMap.get('point');
   public intervalId = null;
   public num: number;
@@ -42,7 +46,6 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     // lấy thông tin tìa khoản và add dữ liệu vao biến
     this.userService.getprofile();
     this.userService.currentStar.subscribe(ress => {
@@ -60,7 +63,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
       });
     });
 
-
+    Common.ChangeidFilm(+this.route.snapshot.paramMap.get('idfilm'));
     this.getData();
     setTimeout(() => {
       if (this.num !== 0) {
@@ -84,16 +87,18 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     this.datalist = [null];
     this.listOfData = [];
 
-    this.sttWordLenning = +localStorage.getItem('sttWordLenning') - 1;
+    Common.currentSttWord.subscribe(e => {
+      this.sttWordLenningComponent = e - 1;
+    })
     if (!page) {
-      this.paging.page = (Math.floor((this.sttWordLenning - 1) / 12) + 1) > 1 ? (Math.floor((this.sttWordLenning - 1) / 12) + 1) : 1;
+      this.paging.page = (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) > 1 ? (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) : 1;
     } else {
       this.paging.page = page;
     }
     this.paging.size = 12;
     // where theo du lieu dau vao
     const where = { and: [] };
-    where.and.push({ categoryfilmid: this.idfilm });
+    where.and.push({ categoryfilmid: this.idfilmComponent });
     if (where.and.length > 0) {
       this.paging.where = where;
     } else {
@@ -108,12 +113,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     if (this.data) {
       this.listOfData = this.data;
       this.paging = rs.result.paging;
-      this.finishload = true;
     }
   }
 
   checkclass(i: number) {
-    if (i >= this.sttWordLenning + 1) {
+    if (i >= this.sttWordLenningComponent + 1) {
       return 'contentb';
     } else {
       return 'contenta';
@@ -121,12 +125,18 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   che(i: number) {
-    if (i > this.sttWordLenning) {
+    if (i > this.sttWordLenningComponent) {
       return 'che2';
-    } else if (i === this.sttWordLenning) {
+    } else if (i === this.sttWordLenningComponent) {
       return 'che1';
     } else {
       return '';
     }
+  }
+
+  OpenTooltips(event) {
+    const tooltipSpan = document.getElementById('tooltip-span');
+    tooltipSpan.style.top = (event.clientY - 30) + 'px';
+    tooltipSpan.style.left = (event.clientX + 10) + 'px';
   }
 }

@@ -13,8 +13,14 @@
             <span class="fa fa-star"></span>
           </span>
         </div>
-        <p>Bạn cần {{pointNeedForNextLever}} điểm để tăng sao</p>
-        <p class="stage d-flex justify-content-center mt-1">{{namerank | async}}</p>
+        <div class="d-flex justify-content-center mt-1" id="tooltip" (mousemove)="OpenTooltips($event)">
+          <div class="progress d-flex justify-content-end">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
+              aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <span class="span" id="tooltip-span">Bạn cần {{pointNeedForNextLever}} điểm để tăng thêm 1 sao</span>
+        </div>
+        <p class="stage d-flex justify-content-center mt-1" style="color: #f63a1d;">{{namerank | async}}</p>
       </div>
       <div class="col-6 user d-flex align-items-center">
         <div class="image">
@@ -28,11 +34,12 @@
       </div>
     </div>
   </div>
-  <div class="hoctiep d-flex justify-content-center mt-3" *ngIf="finishload">
-    <a [routerLink]="['/leanning-words','new', idfilm]" class="btn btn-sm btn-primary justify-content-center">
+  {{finishload|async}}
+  <div class="hoctiep d-flex justify-content-center mt-3" *ngIf="!finishload|async">
+    <a [routerLink]="['/leanning-words','new', idfilmComponent]" class="btn btn-sm btn-primary justify-content-center">
       Học tiếp <i class="fas fa-angle-right next"></i>
     </a>
-    <a [routerLink]="['/leanning-words','old', idfilm]"
+    <a [routerLink]="['/leanning-words','old', idfilmComponent]"
       class="btn btn-sm btn-primary ml-3 justify-content-center forget">
       Học từ đã quên <i class="fas fa-angle-right next"></i>
     </a>
@@ -42,8 +49,9 @@
       <div class="col-md-4 col-12 mb-1" *ngFor="let item of data; let i = index ">
         <div [ngClass]="che(i+1+((paging.page-1) * paging.size))"></div>
         <div class="content" [ngClass]="checkclass(i+((paging.page-1) * paging.size)+1)">
-          <p *ngIf="(i+((paging.page-1) * paging.size)) < (sttWordLenning)">{{item.stt}}. {{item.textEn}}</p>
-          <i class="fas fa-question question" *ngIf="i+((paging.page-1) * paging.size) > (sttWordLenning-1)"></i>
+          <p *ngIf="(i+((paging.page-1) * paging.size)) < (sttWordLenningComponent)">{{item.stt}}. {{item.textEn}}</p>
+          <i class="fas fa-question question"
+            *ngIf="i+((paging.page-1) * paging.size) > (sttWordLenningComponent-1)"></i>
         </div>
       </div>
     </div>

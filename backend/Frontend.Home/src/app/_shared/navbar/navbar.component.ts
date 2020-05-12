@@ -1,3 +1,4 @@
+import { Common } from 'src/app/_shared/extensions/common.service';
 import { UsersService } from './../services/user.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
@@ -34,6 +35,10 @@ export class NavbarComponent implements OnInit {
 
   isAdmin() {
     return this.userService.roleMatch(['Admin']);
+  }
+
+  changeIdFilm() {
+    Common.ChangeidFilm(0);
   }
 
 }

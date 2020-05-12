@@ -12,6 +12,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 // import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { setTimeout, setInterval } from 'timers';
+import { Common } from 'src/app/_shared/extensions/common.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { setTimeout, setInterval } from 'timers';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
-  tinh = 1;
+  public idFilmComponent: any;
   public myTimer;
   public extran: string;
   public totalSentenceRight = 0;
@@ -35,7 +36,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public totalWord: number;
   public sttWordLenning: number;
   public sttleaned: number;
-  public idfilm: number;
+  public idfilmComponent: number;
   public isshow = false;
   public loadxongchohoctiep = false;
   private stypelean: string;
@@ -83,12 +84,15 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     } else {
       delete this.paging.where;
     }
-    this.idfilm = +this.route.snapshot.paramMap.get('idfilm');
+    Common.ChangeidFilm(+this.route.snapshot.paramMap.get('idfilm'));
+    Common.currentIdFilm.subscribe(e => {
+      this.idfilmComponent = e;
+    });
     this.stypelean = this.route.snapshot.paramMap.get('style');
     if (this.stypelean === 'old') {
       this.paging.size = 4;
     }
-    const rs = await this.extraoneService.getWords(this.stypelean, this.idfilm, this.paging);
+    const rs = await this.extraoneService.getWords(this.stypelean, this.idfilmComponent, this.paging);
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
       if ((this.data.data.length !== 0)) {
@@ -113,7 +117,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
           ? 'Không có từ cần học lại, tiếp tục học từ mới'
           : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này quay về trang chủ'}`, ' ');
         if (this.stypelean === 'old') {
-          this.router.navigate(['/leanning-words', 'new', this.idfilm]);
+          this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
         } else {
           this.router.navigate(['/']);
         }
@@ -351,7 +355,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
               if (this.sttWordLenning !== -3) {
                 localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
               }
-              this.router.navigate(['/finish-cours', this.idfilm, rs.result.totalPointRight]);
+              this.router.navigate(['/finish-cours', this.idfilmComponent, rs.result.totalPointRight]);
             } else {
               this.message.error('Lỗi! Lưu thất bại', { nzDuration: 40000 });
               setTimeout(() => {
@@ -387,7 +391,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
   MaHoaChuoiCongDiem(totalSentenceRight) {
     // tao chuoi ma hoa khi cong diem
-    const congchuoi = this.idfilm.toString() + ':' + (this.sttWordLenning) + ':' + totalSentenceRight + ':' + this.speedValueVideo;
+    const congchuoi = this.idfilmComponent.toString() + ':' + (this.sttWordLenning) + ':' + totalSentenceRight + ':' + this.speedValueVideo;
     const chuoimahoa = this.aesservice.encrypt(congchuoi);
 
     let data = {};
@@ -465,15 +469,9 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
 
-  OpenTooltips() {
-    var tooltip = document.getElementById('tooltip');
-    var tooltipSpan = document.getElementById('tooltip-span');
-    tooltip.onmousemove = function (e) {
-      var x = e.clientX,
-        y = e.clientY;
-      tooltipSpan.style.top = (y - 30) + 'px';
-      tooltipSpan.style.left = (x + 10) + 'px';
-    }
+  OpenTooltips(event) {
+    const tooltipSpan = document.getElementById('tooltip-span');
+    tooltipSpan.style.top = (event.clientY - 30) + 'px';
+    tooltipSpan.style.left = (event.clientX + 10) + 'px';
   }
-
 }

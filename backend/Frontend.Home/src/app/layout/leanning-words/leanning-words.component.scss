@@ -64,6 +64,7 @@
 
         span {
           display: none;
+          color: #3fba0b;
         }
 
         .speedvideoangtip:hover span {
@@ -193,21 +194,4 @@ label:hover {
 #logo {
   text-align: center;
   font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
-}
-
-
-//tooltip
-.tooltip2 {
-  text-decoration: none;
-  position: relative;
-}
-
-.tooltip2 span {
-  display: none;
-}
-
-.tooltip2:hover span {
-  display: block;
-  position: fixed;
-  overflow: hidden;
 }
