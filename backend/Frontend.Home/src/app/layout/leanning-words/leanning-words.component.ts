@@ -11,7 +11,6 @@ import { BaseListComponent } from 'src/app/_base/components/base-list-component'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
 // import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { setTimeout, setInterval } from 'timers';
 import { Common } from 'src/app/_shared/extensions/common.service';
 
 
@@ -21,8 +20,9 @@ import { Common } from 'src/app/_shared/extensions/common.service';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
+  public tinh = 1;
   public idFilmComponent: any;
-  public myTimer;
+  public myTimer: any;
   public extran: string;
   public totalSentenceRight = 0;
   public SentenceIsTrue = true;
@@ -58,6 +58,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   ngOnInit() {
+    this.changeSpeedVideo(1);
+    setTimeout(() => {
+      this.changeSpeedVideo(2);
+    }, 1000);
     this.getData();
     this.countdown();
   }
@@ -457,15 +461,14 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     imgPlay.hidden = false;
   }
 
-  ChangeSpeedVideo(event) {
+  changeSpeedVideo(event) {
     console.log(event);
-
-    // clearTimeout(this.myTimer);
-    // setTimeout(() => {
-    //   this.speedValueVideo = event;
-    //   this.setupvideo();
-    //   console.log('1');
-    // }, 2000);
+    clearTimeout(this.myTimer);
+    this.myTimer = setTimeout(() => {
+      this.speedValueVideo = event;
+      this.setupvideo();
+      console.log('TÍNH');
+    }, 2000);
   }
 
 

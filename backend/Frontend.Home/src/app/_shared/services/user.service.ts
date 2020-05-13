@@ -63,8 +63,9 @@ export class UsersService extends BaseCrudService<any> {
     }, err => {
       console.log('err', err);
       // return 'notOk';
-    });
-    return this.http.get<any>(`${this.baseUrl}/GetProfile`);
+    }
+    );
+    return null;
   }
 
   ChangePoint(point: number) {

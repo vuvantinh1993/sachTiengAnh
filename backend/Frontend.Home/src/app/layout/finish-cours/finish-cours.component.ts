@@ -19,7 +19,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public namerank = this.userService.currentNamerank;
   public address = this.userService.currentAddress;
 
-  public a = 0;
+  public a = +this.route.snapshot.paramMap.get('idfilm');
 
   public startYeelow: any;
   public startnon: any;
