@@ -25,12 +25,11 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public startnon: any;
   public pointNeedForNextLever: number;
 
-  public finishload = Common.currentOpenComponentViewFinish;
+  public isShowProfileUser = Common.currentOpenComponentViewFinish;
   public data: any;
   public datalist: any[];
   public sttWordLenningComponent: number;
-  public idfilmComponent: any;
-  // public idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
+  public idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
   public totalPointRight = +this.route.snapshot.paramMap.get('point');
   public intervalId = null;
   public num: number;
@@ -63,7 +62,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
       });
     });
 
-    Common.ChangeidFilm(+this.route.snapshot.paramMap.get('idfilm'));
+    Common.ChangeIshowUserProfile(+this.route.snapshot.paramMap.get('idfilm'));
     this.getData();
     setTimeout(() => {
       if (this.num !== 0) {
@@ -72,6 +71,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
         document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
       }
     }, 900);
+
   }
 
   countdown() {
@@ -87,11 +87,13 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     this.datalist = [null];
     this.listOfData = [];
 
-    Common.currentSttWord.subscribe(e => {
-      this.sttWordLenningComponent = e - 1;
-    })
+    this.sttWordLenningComponent = +localStorage.getItem('sttWordLenning') - 1;
+    // Common.currentSttWord.subscribe(e => {
+    //   this.sttWordLenningComponent = e - 1;
+    // })
     if (!page) {
-      this.paging.page = (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) > 1 ? (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) : 1;
+      this.paging.page = (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) > 1
+        ? (Math.floor((this.sttWordLenningComponent - 1) / 12) + 1) : 1;
     } else {
       this.paging.page = page;
     }
@@ -99,6 +101,10 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     // where theo du lieu dau vao
     const where = { and: [] };
     where.and.push({ categoryfilmid: this.idfilmComponent });
+
+    console.log('where', where);
+
+
     if (where.and.length > 0) {
       this.paging.where = where;
     } else {

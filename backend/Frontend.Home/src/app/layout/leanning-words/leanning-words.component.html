@@ -25,18 +25,16 @@
       <p class="btn btn-secondary mt-2" *ngIf="datalist[wordNumber].textshow">
         {{datalist[wordNumber].texttip}}</p>
       <!-- <p class="btn btn-secondary mt-2" (click)="hiengoiy()" *ngIf="!isshow">Show</p> -->
-      <p class="totalSentenceRight">{{ totalSentenceRight }} câu</p>
+      <p class="totalSentenceRight">{{totalSentenceRight}} câu</p>
       <div class="boqua">
-        <div class="speedvideo pb-2">
+        <div class="speedvideo pb-2" (mousemove)="OpenTooltips($event)">
           <nz-input-number class="hover" [(ngModel)]="speedValueVideo" [nzMin]="0.5" [nzMax]="2" [nzStep]="0.05"
-            nzPlaceHolder="Digital" (ngModelChange)="changeSpeedVideo($event)">
+            [nzPlaceHolder]="'Digital'" (ngModelChange)="changeSpeedVideo($event)">
           </nz-input-number>
-          <div class="speedvideoangtip" id="tooltip">
-            <p>1.5x</p>
-            <span class="span" id="tooltip-span">
-              Nếu bạn là người mới bắt đầu nên để 0,8-0,9x
-            </span>
-          </div>
+          <span class="span" id="tooltip-span">
+            Nếu bạn là người mới bắt đầu nên sử dụng 0,8-0,9x
+            <br> để nghe rõ cách phát âm nhé!
+          </span>
         </div>
         <a [routerLink]="['/finish-cours', idfilmComponent, 0]" class="btn btn-sm justify-content-center">Hủy
           <i class="fas fa-times"></i>

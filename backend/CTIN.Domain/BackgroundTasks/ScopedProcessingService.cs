@@ -295,8 +295,8 @@ namespace CTIN.Domain.BackgroundTasks
                                 var cat = datacategory.FirstOrDefault(x => x.id == item.filmid);
                                 if (cat != null)
                                 {
-                                    // viết trừ điểm trong này
-                                    totalPoint -= Convert.ToInt32(Math.Round((cat.pointword * item.numberWordSub) * 0.1, 0));
+                                    // viết trừ điểm trong này trừ 50% số điểm 1 câu
+                                    totalPoint -= Convert.ToInt32(Math.Round((cat.pointword * item.numberWordSub) * 0.5, 0));
                                 }
                             }
 

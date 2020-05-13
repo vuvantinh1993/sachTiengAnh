@@ -20,7 +20,7 @@ export class Common {
   static ChangeOpenComponentViewFinish(isShow: boolean) {
     this.openComponentViewFinishSource.next(isShow);
   }
-  static ChangeidFilm(idFilm: number) {
+  static ChangeIshowUserProfile(idFilm: number) {
     this.idFilmSource.next(idFilm);
     this.idFilmSource.subscribe(e => {
       if (e === 0) {

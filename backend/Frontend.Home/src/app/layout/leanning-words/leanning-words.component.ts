@@ -10,8 +10,6 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
-// import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { Common } from 'src/app/_shared/extensions/common.service';
 
 
 @Component({
@@ -20,7 +18,6 @@ import { Common } from 'src/app/_shared/extensions/common.service';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
-  public tinh = 1;
   public idFilmComponent: any;
   public myTimer: any;
   public extran: string;
@@ -58,10 +55,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   ngOnInit() {
-    this.changeSpeedVideo(1);
-    setTimeout(() => {
-      this.changeSpeedVideo(2);
-    }, 1000);
     this.getData();
     this.countdown();
   }
@@ -88,10 +81,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     } else {
       delete this.paging.where;
     }
-    Common.ChangeidFilm(+this.route.snapshot.paramMap.get('idfilm'));
-    Common.currentIdFilm.subscribe(e => {
-      this.idfilmComponent = e;
-    });
+    this.idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
     this.stypelean = this.route.snapshot.paramMap.get('style');
     if (this.stypelean === 'old') {
       this.paging.size = 4;
@@ -135,137 +125,31 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   tron10Cau(sttWord) {
     let listda = [];
     if (sttWord > 2) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 0, 3);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 0, 2);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '4') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 0, v: 3 }, { e: 0, v: 2 }, { e: 2, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === 2) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 0, 3);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 0, 2);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 1, 1);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '4') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 0, v: 3 }, { e: 0, v: 2 }, { e: 1, v: 1 }, { e: 2, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === 1) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 0, 3);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 0, 2);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '4') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 0, v: 3 }, { e: 0, v: 2 }, { e: 2, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === 0) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 1, 2);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 3, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '4') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 1, v: 2 }, { e: 3, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === -1) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 4, 0);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 3, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 2, 0);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 1, 0);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 4, v: 0 }, { e: 3, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === -3) {
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === '0') {
-          const list = this.laySoCauTheoTu(value, 1, 2);
-          listda = list;
-        }
-        if (key === '1') {
-          const list = this.laySoCauTheoTu(value, 1, 2);
-          listda = listda.concat(list);
-        }
-        if (key === '2') {
-          const list = this.laySoCauTheoTu(value, 1, 2);
-          listda = listda.concat(list);
-        }
-        if (key === '3') {
-          const list = this.laySoCauTheoTu(value, 1, 2);
-          listda = listda.concat(list);
-        }
-      }
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 1, v: 2 }, { e: 1, v: 2 }, { e: 1, v: 2 }, { e: 1, v: 2 }]);
     }
     listda = this.tronMang(listda);
+    return listda;
+  }
+
+  // Biến những từ lấy về thành 10 từ với số tiếng anh tiếng việt theo ý
+  // typeWord[key].e : là số từ tiếng anh
+  // typeWord[key].v : là số từ tiếng việt
+  laySoCauTheoSttWord(data: any, typeWord: any) {
+    let listda = [];
+    for (const [key, value] of Object.entries(this.data)) {
+      const list = this.laySoCauTheoTu(value, typeWord[key].e, typeWord[key].v);
+      listda = listda.concat(list);
+    }
     return listda;
   }
 
@@ -369,7 +253,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
               }, 300);
             }
           } else {
-            console.log('tinh');
             this.wordNumber++;
             this.setupvideo();
           }
@@ -462,19 +345,17 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   }
 
   changeSpeedVideo(event) {
-    console.log(event);
     clearTimeout(this.myTimer);
     this.myTimer = setTimeout(() => {
       this.speedValueVideo = event;
       this.setupvideo();
-      console.log('TÍNH');
-    }, 2000);
+    }, 1000);
   }
 
 
   OpenTooltips(event) {
     const tooltipSpan = document.getElementById('tooltip-span');
-    tooltipSpan.style.top = (event.clientY - 30) + 'px';
+    tooltipSpan.style.top = (event.clientY - 60) + 'px';
     tooltipSpan.style.left = (event.clientX + 10) + 'px';
   }
 }

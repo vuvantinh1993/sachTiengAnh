@@ -318,7 +318,7 @@ namespace CTIN.Domain.Services
                     // update usser vaf coongj ddieemr cho USER1
                     var totalPointRight = totalSentenceRight * film.pointword;
                     user1.userdata.point += totalPointRight;
-                    _db.Entry(data).CurrentValues.SetValues(user1);
+                    _db.Entry(data).CurrentValues.SetValues(user1.userdata);
                     if (await _db.SaveChangesAsync() > 0)
                     {
                         return (new { totalSentenceRight, totalPointRight }, errors);

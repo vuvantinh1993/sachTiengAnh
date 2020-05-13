@@ -37,8 +37,8 @@ export class NavbarComponent implements OnInit {
     return this.userService.roleMatch(['Admin']);
   }
 
-  changeIdFilm() {
-    Common.ChangeidFilm(0);
+  ishowUserProfile() {
+    Common.ChangeIshowUserProfile(0);
   }
 
 }

@@ -62,72 +62,68 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_ExtraoneServiceModel model)
         {
             var userId = _currentUserService.userId;
+            // trả về vị trí từ đang học của film
             if (style == "new")
             {
                 var errors = new List<ErrorModel>();
-
-                // trả về vị trí từ đang học của film
                 var rs = positionWordStop(userId, idfilm);
                 if (rs.sttWord == -2)
                 {
                     return (null, rs.errors, new PagingModel { });
                 }
-                else
+                var statusActive = (int)StatusDb.Nomal;
+                var statusHide = (int)StatusDb.Hide;
+                var stt = rs.sttWord;
+                if (stt <= 1)
                 {
-                    var statusActive = (int)StatusDb.Nomal;
-                    var statusHide = (int)StatusDb.Hide;
-                    var stt = rs.sttWord;
-                    if (stt <= 1)
+                    if (stt == -1)
                     {
-                        if (stt == -1)
-                        {
-                            model.size = 4;
-                        }
-                        else
-                        {
-                            stt = 1;
-                        }
-                    }
-                    var query = _db.Extraone
-                        .Where(x => x.categoryfilmid == idfilm)
-                        .Where(x => x.stt >= stt)
-                        .Where(x => (int)DbFunction.JsonValue(x.categoryfilm.dataDb, "$.status") != 3)
-                        .AsQueryable();
-
-                    if (model.where != null)
-                    {
-                        query = query.WhereLoopback(model.whereLoopback);
-
-                        if (!model.whereLoopback.HaveWhereStatusDb()) //default where statusdb is active
-                        {
-                            query = query.Where(x =>
-                           (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
-                        }
+                        model.size = 4;
                     }
                     else
                     {
-                        query = query.Where(x =>
-                           (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                        stt = 1;
                     }
-
-                    query = query.OrderByLoopback(model.orderLoopback);
-                    var result = query.Select(x => new
-                    {
-                        x.id,
-                        x.textVn,
-                        x.textEn,
-                        x.stt,
-                        x.urlaudio,
-                        x.answerWrongEn,
-                        x.answerWrongVn,
-                        x.categoryfilmid,
-                        namefilm = x.categoryfilm.name,
-                        pointfilm = x.categoryfilm.pointword,
-                        x.categoryfilm.level,
-                        x.categoryfilm.totalWord
-                    }).ToPaging(model);
-                    return (new { result.data, rs.sttWord, rs.speedVideo }, errors, result.paging);
                 }
+                var query = _db.Extraone
+                    .Where(x => x.categoryfilmid == idfilm)
+                    .Where(x => x.stt >= stt)
+                    .Where(x => (int)DbFunction.JsonValue(x.categoryfilm.dataDb, "$.status") != 3)
+                    .AsQueryable();
+
+                if (model.where != null)
+                {
+                    query = query.WhereLoopback(model.whereLoopback);
+
+                    if (!model.whereLoopback.HaveWhereStatusDb()) //default where statusdb is active
+                    {
+                        query = query.Where(x =>
+                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                    }
+                }
+                else
+                {
+                    query = query.Where(x =>
+                       (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusActive || (int)DbFunction.JsonValue(x.dataDb, "$.status") == statusHide);
+                }
+
+                query = query.OrderByLoopback(model.orderLoopback);
+                var result = query.Select(x => new
+                {
+                    x.id,
+                    x.textVn,
+                    x.textEn,
+                    x.stt,
+                    x.urlaudio,
+                    x.answerWrongEn,
+                    x.answerWrongVn,
+                    x.categoryfilmid,
+                    namefilm = x.categoryfilm.name,
+                    pointfilm = x.categoryfilm.pointword,
+                    x.categoryfilm.level,
+                    x.categoryfilm.totalWord
+                }).ToPaging(model);
+                return (new { result.data, rs.sttWord, rs.speedVideo }, errors, result.paging);
             }
             else if (style == "old")
             {
@@ -135,9 +131,11 @@ namespace CTIN.Domain.Services
                 var errors = new List<ErrorModel>();
                 var data = await _db.UserLeanning.FirstOrDefaultAsync(x => x.userId == userId);
                 var a = data.filmpunishing.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
-                var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm).wordleaned;
+                var b = data.filmforgeted.FirstOrDefault(y => y.filmid == idfilm);
                 var c = data.filmfinish.FirstOrDefault(y => y.filmid == idfilm).wordleaned.Where(z => z.isforget == 1);
-                var d = a.Concat(b).Concat(c).OrderBy(x => x.check).ToList();
+                var d = a.Concat(b.wordleaned).Concat(c).OrderBy(x => x.check).ToList();
+                // lấy tốc dộ video bằng tốc độ video đã quên
+                var speedVideo = b.speedVideo;
 
                 var query = _db.Extraone
                         .Where(x => x.categoryfilmid == idfilm)
@@ -167,7 +165,13 @@ namespace CTIN.Domain.Services
 
                 }).ToPaging(model);
 
-                return (new { result.data, sttWord = -3 }, errors, result.paging);
+
+                //lấy tốc độ phim
+                //if (item.filmid == idFilm)
+                //{
+                //    return (item.sttWord, item.speedVideo, errors);
+                //}
+                return (new { result.data, sttWord = -3, speedVideo }, errors, result.paging);
             }
 
             return (null, null, new PagingModel { });
