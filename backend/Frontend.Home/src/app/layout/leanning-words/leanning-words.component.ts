@@ -87,6 +87,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       this.paging.size = 4;
     }
     const rs = await this.wordFilmService.getWords(this.stypelean, this.idfilmComponent, this.paging);
+
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
       if ((this.data.data.length !== 0)) {

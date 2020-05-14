@@ -49,6 +49,14 @@ namespace CTIN.Common.Enums
 
     }
 
+    public enum SttWord
+    {
+        [Display(Name = "Không tồn tại")]
+        NotExist = -2,
+        [Display(Name = "Từ bắt đầu")]
+        Begin = -1
+    }
+
     public enum UserType
     {
         [Display(Name = "Admin")]

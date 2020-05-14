@@ -15,7 +15,7 @@
 
       <div class="video" (click)="reloadvideo()">
         <img id="imgplay" src="../../../assets/images/play.png" hidden>
-        <video (loadstart)="daloadxong()" id="myVideo" (ended)="videoketthuc()">
+        <video (loadstart)="daloadxong()" id="myVideo" (ended)="videoketthuc()" width="100%">
           <source [src]="datalist[wordNumber].result[5]" type="video/mp4">
         </video>
       </div>

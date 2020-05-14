@@ -5,11 +5,9 @@ using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.General.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -32,13 +30,13 @@ namespace CTIN.WebApi.Modules.General.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var result = await _sv.GetWord(style, idfilm, model);
-                //if (result.errors.Count == 0)
-                //{
-                //    //new task  sent mail
-                //    //push notification
-                //}
-                //return await BindData(result.data, result.errors, result.paging);
+                var result = await _sv.GetWord(style, idfilm, model);
+                if (result.errors.Count == 0)
+                {
+                    //new task  sent mail
+                    //push notification
+                }
+                return await BindData(result.data, result.errors, result.paging);
             }
             return await BindData();
         }
