@@ -4,5 +4,11 @@
         <name>CTIN.WebApi</name>
     </assembly>
     <members>
+        <member name="M:CTIN.WebApi.Modules.General.Controllers.UpdateDataBaseController.updateWordDatabase1">
+            <summary>
+            cần phải update cả 1 và 2 để lưu dữ liệu các từ
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

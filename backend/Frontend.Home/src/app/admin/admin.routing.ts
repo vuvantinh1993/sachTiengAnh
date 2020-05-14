@@ -20,8 +20,8 @@ const routes: Routes = [
         loadChildren: () => import('./category-film/category-film.module').then(m => m.CategoryFilmModule)
       },
       {
-        path: 'extra-one',
-        loadChildren: () => import('./extra-one/extra-one.module').then(m => m.ExtraOneModule)
+        path: 'word-film',
+        loadChildren: () => import('./word-film/word-film.module').then(m => m.WordFilmModule)
       }
     ]
   },

@@ -19,7 +19,7 @@ namespace CTIN.DataAccess.Contexts
         public virtual DbSet<Categoryfilm> Categoryfilm { get; set; }
         public virtual DbSet<Tips> Tips { get; set; }
         public virtual DbSet<UserLeanning> UserLeanning { get; set; }
-        public virtual DbSet<Extraone> Extraone { get; set; }
+        public virtual DbSet<WordFilm> WordFilm { get; set; }
         public virtual DbSet<Rank> Rank { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -91,23 +91,15 @@ namespace CTIN.DataAccess.Contexts
 
             });
 
-            modelBuilder.Entity<Extraone>(entity =>
+            modelBuilder.Entity<WordFilm>(entity =>
             {
-                entity.ToTable("extraone");
+                entity.ToTable("WordFilm");
 
                 entity.Property(e => e.id).HasColumnName("id");
-
-                entity.Property(e => e.audio)
-                    .HasColumnName("audio");
 
                 entity.Property(e => e.dataDb)
                     .HasColumnName("dataDb")
                     .HasMaxLength(200)
-                    .IsUnicode(false).IsJson();
-
-                entity.Property(e => e.doubtid)
-                    .HasColumnName("doubtid")
-                    .HasMaxLength(70)
                     .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.textVn)
@@ -121,11 +113,6 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.textEn)
                     .HasColumnName("textEn")
                     .HasMaxLength(500);
-
-                entity.Property(e => e.unselectid)
-                    .HasColumnName("unselectid")
-                    .HasMaxLength(70)
-                    .IsUnicode(false).IsJson();
 
                 entity.Property(e => e.urlaudio)
                     .HasColumnName("urlaudio")
@@ -160,22 +147,17 @@ namespace CTIN.DataAccess.Contexts
 
                 entity.Property(e => e.id).HasColumnName("id");
 
-                entity.Property(e => e.dataDb)
-                    .HasColumnName("dataDb")
-                    .HasMaxLength(200)
-                    .IsUnicode(false).IsJson();
+                entity.Property(e => e.listFilmLearned).HasColumnName("listfilmlearned").IsJson();
 
-                entity.Property(e => e.filmforgeted).HasColumnName("filmforgeted").IsJson();
+                entity.Property(e => e.filmForgeted).HasColumnName("filmforgeted").IsJson();
 
-                entity.Property(e => e.filmleanning).HasColumnName("filmleanning").IsJson();
+                entity.Property(e => e.filmLearnning).HasColumnName("filmlearnning").IsJson();
 
-                entity.Property(e => e.filmpunishing).HasColumnName("filmpunishing").IsJson();
+                entity.Property(e => e.filmPunishing).HasColumnName("filmpunishing").IsJson();
 
-                entity.Property(e => e.filmfinish).HasColumnName("filmfinish").IsJson();
+                entity.Property(e => e.filmFinish).HasColumnName("filmfinish").IsJson();
 
-                entity.Property(e => e.listfrendid)
-                    .HasColumnName("listfrendid")
-                    .IsUnicode(false).IsJson();
+                entity.Property(e => e.filmFinishForget).HasColumnName("filmfinishforget").IsJson();
 
                 entity.Property(e => e.point).HasColumnName("point").HasDefaultValue(0);
 

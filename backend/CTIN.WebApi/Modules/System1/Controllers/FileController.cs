@@ -41,7 +41,7 @@ namespace tci.server.Modules.Stm.Controllers
             {
                 model.domail = GetDomain();
                 model.creationTime = DateTime.Now;
-                model.creationBy = GetUserId();
+                model.creationBy = GetUserId().ToString();
                 var result = await _sv.Add(model);
                 return await BindData(result.data, result.errors);
             }

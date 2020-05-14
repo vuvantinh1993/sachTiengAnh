@@ -110,7 +110,7 @@ namespace CTIN.Domain.Services
                 errors.Add(new ErrorModel { key = "", value = "share.notExist" });
             }
             var update = data.Patch(model);
-            update.dataDb.modifiedBy = Int32.Parse(_currentUserService.userId);
+            update.dataDb.modifiedBy = _currentUserService.userId;
             update.dataDb.modifiedDate = DateTime.Now;
             _db.Entry(data).CurrentValues.SetValues(update);
             if (await _db.SaveChangesAsync() > 0)

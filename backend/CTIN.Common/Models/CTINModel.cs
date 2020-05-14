@@ -135,10 +135,10 @@ namespace CTIN.Common.Models
     {
         public virtual short status { get; set; } = (byte)StatusDb.Nomal;
         public virtual DateTime createdDate { get; set; } = DateTime.Now;
-        public virtual long createdBy { get; set; }
+        public virtual string createdBy { get; set; }
         public virtual DateTime? modifiedDate { get; set; }
-        public virtual long? modifiedBy { get; set; }
+        public virtual string modifiedBy { get; set; }
         public virtual DateTime? deletedDate { get; set; }
-        public virtual long? deletedBy { get; set; }
+        public virtual string deletedBy { get; set; }
     }
 }

@@ -5,7 +5,7 @@ import { AESService } from './../../_base/services/aes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExtensionService } from './../../_base/services/extension.service';
 import { ExtentionTableService } from './../../_base/services/extention-table.service';
-import { ExtraoneService } from './../../_shared/services/extraone.service';
+import { WordFilmService } from './../../_shared/services/wordFilm.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -41,7 +41,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   public intervalId = null;
   public lengthlistword: number; // là tổng số các câu trong 1 lượt học
   constructor(
-    private extraoneService: ExtraoneService,
+    private wordFilmService: WordFilmService,
     private route: ActivatedRoute,
     public sanitizer: DomSanitizer,
     public exTableService: ExtentionTableService,
@@ -86,7 +86,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     if (this.stypelean === 'old') {
       this.paging.size = 4;
     }
-    const rs = await this.extraoneService.getWords(this.stypelean, this.idfilmComponent, this.paging);
+    const rs = await this.wordFilmService.getWords(this.stypelean, this.idfilmComponent, this.paging);
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
       if ((this.data.data.length !== 0)) {

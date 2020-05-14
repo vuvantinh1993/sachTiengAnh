@@ -32,6 +32,23 @@ namespace CTIN.Common.Enums
         Blocked,
     }
 
+    public enum Forget
+    {
+        [Display(Name = "đã quên")]
+        Forget,
+        [Display(Name = "chưa quên")]
+        NotForget
+    }
+
+    public enum ClassicWord
+    {
+        [Display(Name = "Không bị phạt")]
+        NotFined,
+        [Display(Name = "Bị phạt")]
+        Fined,
+
+    }
+
     public enum UserType
     {
         [Display(Name = "Admin")]

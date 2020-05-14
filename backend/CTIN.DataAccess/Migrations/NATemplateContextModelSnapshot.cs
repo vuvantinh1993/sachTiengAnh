@@ -156,67 +156,6 @@ namespace CTIN.DataAccess.Migrations
                     b.ToTable("categoryfilm");
                 });
 
-            modelBuilder.Entity("CTIN.DataAccess.Models.Extraone", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("answerWrongEn")
-                        .HasColumnName("answerWrongEn");
-
-                    b.Property<string>("answerWrongVn")
-                        .HasColumnName("answerWrongVn");
-
-                    b.Property<byte[]>("audio")
-                        .HasColumnName("audio");
-
-                    b.Property<int>("categoryfilmid");
-
-                    b.Property<string>("dataDb")
-                        .HasColumnName("dataDb")
-                        .HasMaxLength(200)
-                        .IsUnicode(false);
-
-                    b.Property<string>("doubtid")
-                        .HasColumnName("doubtid")
-                        .HasMaxLength(70)
-                        .IsUnicode(false);
-
-                    b.Property<string>("fullName")
-                        .HasColumnName("fullname")
-                        .HasMaxLength(500);
-
-                    b.Property<long?>("size");
-
-                    b.Property<int>("stt");
-
-                    b.Property<string>("textEn")
-                        .HasColumnName("textEn")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("textVn")
-                        .HasColumnName("textVn")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("unselectid")
-                        .HasColumnName("unselectid")
-                        .HasMaxLength(70)
-                        .IsUnicode(false);
-
-                    b.Property<string>("urlaudio")
-                        .HasColumnName("urlaudio")
-                        .HasMaxLength(500)
-                        .IsUnicode(false);
-
-                    b.HasKey("id");
-
-                    b.HasIndex("categoryfilmid");
-
-                    b.ToTable("extraone");
-                });
-
             modelBuilder.Entity("CTIN.DataAccess.Models.Rank", b =>
                 {
                     b.Property<int>("id")
@@ -274,26 +213,23 @@ namespace CTIN.DataAccess.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("dataDb")
-                        .HasColumnName("dataDb")
-                        .HasMaxLength(200)
-                        .IsUnicode(false);
-
-                    b.Property<string>("filmfinish")
+                    b.Property<string>("filmFinish")
                         .HasColumnName("filmfinish");
 
-                    b.Property<string>("filmforgeted")
+                    b.Property<string>("filmFinishForget")
+                        .HasColumnName("filmfinishforget");
+
+                    b.Property<string>("filmForgeted")
                         .HasColumnName("filmforgeted");
 
-                    b.Property<string>("filmleanning")
-                        .HasColumnName("filmleanning");
+                    b.Property<string>("filmLearnning")
+                        .HasColumnName("filmlearnning");
 
-                    b.Property<string>("filmpunishing")
+                    b.Property<string>("filmPunishing")
                         .HasColumnName("filmpunishing");
 
-                    b.Property<string>("listfrendid")
-                        .HasColumnName("listfrendid")
-                        .IsUnicode(false);
+                    b.Property<string>("listFilmLearned")
+                        .HasColumnName("listFilmLearned");
 
                     b.Property<int>("point")
                         .ValueGeneratedOnAdd()
@@ -307,6 +243,54 @@ namespace CTIN.DataAccess.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("userLeanning");
+                });
+
+            modelBuilder.Entity("CTIN.DataAccess.Models.WordFilm", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("answerWrongEn")
+                        .HasColumnName("answerWrongEn");
+
+                    b.Property<string>("answerWrongVn")
+                        .HasColumnName("answerWrongVn");
+
+                    b.Property<int>("categoryfilmid");
+
+                    b.Property<string>("dataDb")
+                        .HasColumnName("dataDb")
+                        .HasMaxLength(200)
+                        .IsUnicode(false);
+
+                    b.Property<string>("fullName")
+                        .HasColumnName("fullname")
+                        .HasMaxLength(500);
+
+                    b.Property<long?>("size");
+
+                    b.Property<int>("stt");
+
+                    b.Property<string>("textEn")
+                        .HasColumnName("textEn")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("textVn")
+                        .HasColumnName("textVn")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("urlaudio")
+                        .HasColumnName("urlaudio")
+                        .HasMaxLength(500)
+                        .IsUnicode(false);
+
+                    b.HasKey("id");
+
+                    b.HasIndex("categoryfilmid");
+
+                    b.ToTable("WordFilm");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -423,19 +407,19 @@ namespace CTIN.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CTIN.DataAccess.Models.Extraone", b =>
-                {
-                    b.HasOne("CTIN.DataAccess.Models.Categoryfilm", "categoryfilm")
-                        .WithMany()
-                        .HasForeignKey("categoryfilmid")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("CTIN.DataAccess.Models.UserLeanning", b =>
                 {
                     b.HasOne("CTIN.DataAccess.Models.ApplicationUser", "user")
                         .WithMany()
                         .HasForeignKey("userId");
+                });
+
+            modelBuilder.Entity("CTIN.DataAccess.Models.WordFilm", b =>
+                {
+                    b.HasOne("CTIN.DataAccess.Models.Categoryfilm", "categoryfilm")
+                        .WithMany()
+                        .HasForeignKey("categoryfilmid")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

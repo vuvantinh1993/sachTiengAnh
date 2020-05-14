@@ -50,7 +50,7 @@ namespace CTIN.Domain.Models
     public class Delete_UserLeanningServiceModel
     {
         public virtual int id { get; set; }
-        public virtual long delectationBy { get; set; }
+        public virtual string delectationBy { get; set; }
         public virtual DateTime delectationTime { get; set; }
     }
 

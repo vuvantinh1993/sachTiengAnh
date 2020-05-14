@@ -3,7 +3,6 @@ using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
-using CTIN.WebApi.Modules.General.Models;
 using CTIN.WebApi.Modules.JWT;
 using CTIN.WebApi.Modules.JWTAndUser.Models;
 using Microsoft.AspNetCore.Authorization;

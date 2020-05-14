@@ -28,7 +28,7 @@ namespace CTIN.Domain.Models
 
             public virtual string domail { get; set; }
 
-            public virtual long creationBy { get; set; }
+            public virtual string creationBy { get; set; }
 
             public virtual DateTime creationTime { get; set; }
         }
@@ -37,7 +37,7 @@ namespace CTIN.Domain.Models
         {
             public virtual long id { get; set; }
 
-            public virtual long delectationBy { get; set; }
+            public virtual string delectationBy { get; set; }
 
             public virtual DateTime delectationTime { get; set; }
         }

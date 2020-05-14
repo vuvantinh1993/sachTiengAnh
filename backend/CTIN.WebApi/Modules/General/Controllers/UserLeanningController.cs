@@ -69,8 +69,6 @@ namespace CTIN.WebApi.Modules.General.Controllers
             {
                 var modelService = model.MapToObject<Add_UserLeanningServiceModel>();
                 //set value default
-                modelService.dataDb.createdDate = DateTime.Now;
-                modelService.dataDb.createdBy = Int32.Parse(_currentUserService.userId);
                 var result = await _sv.Add(modelService);
                 if (result.errors.Count == 0)
                 {
@@ -91,8 +89,6 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 var modelService = model.MapToObject<Edit_UserLeanningServiceModel>();
                 //set value default
                 modelService.id = id;
-                modelService.dataDb.modifiedDate = DateTime.Now;
-                modelService.dataDb.modifiedBy = Int32.Parse(_currentUserService.userId);
                 var result = await _sv.Edit(id, modelService);
                 if (result.errors.Count == 0)
                 {
@@ -135,7 +131,7 @@ namespace CTIN.WebApi.Modules.General.Controllers
                 var modelService = new Delete_UserLeanningServiceModel { id = id };
                 //set value default
                 modelService.delectationTime = DateTime.Now;
-                modelService.delectationBy = Int32.Parse(_currentUserService.userId);
+                modelService.delectationBy = _currentUserService.userId;
                 var result = await _sv.Delete(modelService);
                 if (result.errors.Count == 0)
                 {
@@ -196,11 +192,11 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             if (ModelState.IsValid)
             {
-                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, speedVideo, model);
-                if (result.errors.Count == 0)
-                {
-                }
-                return await BindData(result.data, result.errors);
+                //var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, speedVideo, model);
+                //if (result.errors.Count == 0)
+                //{
+                //}
+                //return await BindData(result.data, result.errors);
             }
             return await BindData();
         }

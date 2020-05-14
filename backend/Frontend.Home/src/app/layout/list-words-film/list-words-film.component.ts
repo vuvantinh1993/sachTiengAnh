@@ -1,5 +1,5 @@
 import { CategoryFilmService } from './../../_shared/services/categoryfilm.service';
-import { ExtraoneService } from './../../_shared/services/extraone.service';
+import { WordFilmService } from './../../_shared/services/wordFilm.service';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ export class ListWordsFilmComponent extends BaseListComponent implements OnInit 
   public finishload = false;
   public isView = false;
   constructor(
-    private extraoneService: ExtraoneService,
+    private wordFilmService: WordFilmService,
     private categoryFilmService: CategoryFilmService,
     private route: ActivatedRoute,
   ) {
@@ -44,8 +44,10 @@ export class ListWordsFilmComponent extends BaseListComponent implements OnInit 
       delete this.paging.where;
     }
     this.isLoading = true;
-    const rs = await this.extraoneService.get(this.paging);
+    const rs = await this.wordFilmService.get(this.paging);
     const rsCate = await this.categoryFilmService.get({ where: { id: this.route.snapshot.paramMap.get('id') } });
+    console.log(rsCate, rs);
+
     this.isLoading = false;
     if (rs.ok && rs.result) {
       this.data = rs.result.data;

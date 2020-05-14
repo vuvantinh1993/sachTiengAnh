@@ -28,42 +28,31 @@ namespace CTIN.WebApi.Modules.General.Models
 
     public class Add_UserLeanningModel
     {
-        public int? point { get; set; }
-        public List<userfilmleanningDataJsonModel> filmleanning { get; set; }
-        public informationDataJsonModel information { get; set; }
-        public List<int> listfrendid { get; set; }
-        public Add_UserLeanningModel_DataDbJson dataDb { get; set; }
+        public int point { get; set; }
+        public List<filmlearnedJsonModel> listFilmLearned { get; set; }
+        public List<wordleanedJsonModel> filmLearnning { get; set; }
     }
 
-    public class informationDataJsonModel
-    {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
-        public string password { get; set; }
-        public string image { get; set; }
-        public string address { get; set; }
-    }
-
-    public class userfilmleanningDataJsonModel
+    public class filmlearnedJsonModel
     {
         public int filmid { get; set; }
         public int sttWord { get; set; }
-        public List<wordleanedDataJsonModel> wordleaned { get; set; }
+        public bool isFinish { get; set; }
+        public double speedVideo { get; set; }
     }
 
-    public class wordleanedDataJsonModel
+    public class wordleanedJsonModel
     {
+        public int idfilm { get; set; }
         public int stt { get; set; }
         public DateTime time { get; set; }
-        public int check { get; set; }
-        public int classic { get; set; }
-        public int isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
+        public Forget isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
+        public int check { get; set; } // là từ đã học được mấy lần rồi ban đầu sẽ là 1 lần (là số lần từ đó được học)
+        public ClassicWord classic { get; set; } // là thuộc loại nào trong 5 loại học đúng hạn hay sai hạn
     }
 
     public class Add_UserLeanningModel_DataDbJson
     {
-        public int status { get; set; }
     }
 
     public class Edit_UserLeanningModel : Add_UserLeanningModel
@@ -79,11 +68,4 @@ namespace CTIN.WebApi.Modules.General.Models
     {
 
     }
-
-    public class LoginModel
-    {
-        public string userName { get; set; }
-        public string passWord { get; set; }
-    }
-
 }

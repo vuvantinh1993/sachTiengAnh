@@ -10,4 +10,9 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Models
     {
 
     }
+    public class LoginModel
+    {
+        public string userName { get; set; }
+        public string passWord { get; set; }
+    }
 }

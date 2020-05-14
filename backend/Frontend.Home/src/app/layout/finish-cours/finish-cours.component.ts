@@ -2,7 +2,7 @@ import { ExtensionService } from './../../_base/services/extension.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
-import { ExtraoneService } from 'src/app/_shared/services/extraone.service';
+import { WordFilmService } from 'src/app/_shared/services/wordFilm.service';
 import { UsersService } from 'src/app/_shared/services/user.service';
 import { Common } from 'src/app/_shared/extensions/common.service';
 
@@ -36,7 +36,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   public show: number;
   constructor(
     private route: ActivatedRoute,
-    private extraoneService: ExtraoneService,
+    private wordFilmService: WordFilmService,
     public ex: ExtensionService,
     private router: Router,
     public userService: UsersService,
@@ -110,7 +110,7 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     } else {
       delete this.paging.where;
     }
-    const rs = await this.extraoneService.get(this.paging);
+    const rs = await this.wordFilmService.get(this.paging);
     if (rs.ok && rs.result && (rs.result.data.length !== 0)) {
       this.data = rs.result.data;
       // lấy số từ đã hoc

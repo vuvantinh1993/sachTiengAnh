@@ -193,7 +193,7 @@ namespace CTIN.Domain.Services
         public async Task<(dynamic data, List<ErrorModel> errors)> Delete(Delete_FilesServiceModel model)
         {
             var errors = new List<ErrorModel>();
-            model.delectationBy = Convert.ToInt32(_currentUserService.userId);
+            model.delectationBy = _currentUserService.userId;
             model.delectationTime = DateTime.Now;
             var data = await _db.Files.FirstOrDefaultAsync(x => x.id == model.id);
             if (data == null)
