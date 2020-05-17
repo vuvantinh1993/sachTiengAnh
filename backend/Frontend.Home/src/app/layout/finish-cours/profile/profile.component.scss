@@ -1,0 +1,120 @@
+.information {
+  min-height: 300px;
+
+  .row {
+    width: 100%;
+
+    .cup {
+
+      z-index: 10;
+
+      .addpoint {
+        position: absolute;
+        display: inline-block;
+        top: 1.6em;
+        left: calc(50% - 19px) !important;
+        font-weight: 700;
+        font-size: 1.5em;
+        animation-name: themdiem;
+        animation-duration: 4s;
+        animation-delay: -2s;
+        color: #77f9d5e0;
+        z-index: 0;
+      }
+
+      @keyframes themdiem {
+        50% {
+          left: calc(50% - 19px) !important;
+          top: -2.5em;
+          transform: rotate(-360deg);
+        }
+
+        100% {
+          left: calc(50% - 19px) !important;
+          top: 3em;
+          transform: rotate(0deg);
+        }
+      }
+
+      i {
+        font-size: 12em;
+        color: #4188de;
+      }
+
+      .point {
+        position: absolute;
+        left: 50% !important;
+        top: 1.4em;
+        font-size: 1.4em;
+        font-weight: 600;
+        color: #fffdf8;
+        // color: #ffb805;
+        margin: 0;
+        transform: translateX(-50%);
+      }
+
+      .star {
+        span {
+          font-size: 24px;
+        }
+
+        .checked {
+          color: #e88509d1;
+        }
+      }
+       #tooltip{
+          text-decoration: none;
+          position: relative;
+
+          .progress{
+            height: 0.4rem;
+            width: 14rem;
+            background-image: linear-gradient(to right, #32ee20 , #ff4848);
+
+            .progress-bar{
+              background-color: inherit!important;
+              transform: rotate(180deg);
+            }
+          }
+
+          span {
+            display: none;
+            color: #3fba0b;
+          }
+        }
+
+        #tooltip:hover span {
+          display: block;
+          position: fixed;
+          overflow: hidden;
+        }
+
+      .stage {
+        font-size: 1.4em;
+        font-family: cursive;
+      }
+    }
+
+    .user {
+      .image {
+
+        img {
+          width: 12em;
+          border-radius: 200px;
+        }
+      }
+
+      .text {
+
+        h2,
+        p {
+          margin: 0px;
+        }
+
+        p {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

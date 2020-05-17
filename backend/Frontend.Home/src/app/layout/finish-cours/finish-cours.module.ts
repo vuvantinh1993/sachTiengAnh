@@ -1,3 +1,5 @@
+import { ProfileComponent } from './profile/profile.component';
+import { ProfileModule } from './profile/profile.module';
 import { FinishCoursComponent } from './finish-cours.component';
 import { FinishCoursModuleRouters } from './finish-cours.routing';
 import { FormModule } from './../../_base/modules/form/form.module';
@@ -11,7 +13,9 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     FormModule,
-    FinishCoursModuleRouters
-  ]
+    FinishCoursModuleRouters,
+    ProfileModule
+  ],
+  exports: [ProfileComponent]
 })
 export class FinishCoursModule { }

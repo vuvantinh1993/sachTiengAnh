@@ -31,15 +31,15 @@ export class LoginTLNComponent implements OnInit {
     this.userService.login(form.value).subscribe(
       (res: any) => {
         localStorage.setItem('token', res.token);
-        this.userService.getprofile().subscribe(
-          ress => {
-            this.router.navigate(['/home']);
-            this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
-          },
-          err => {
-            console.log('err', err);
-          }
-        );
+        this.router.navigate(['/home']);
+        // this.userService.getprofile().subscribe(
+        //   ress => {
+        //     this.message.success('Đăng nhập thành công', { nzDuration: 5000 });
+        //   },
+        //   err => {
+        //     console.log('err', err);
+        //   }
+        // );
       },
       err => {
         if (err.status === 400) {

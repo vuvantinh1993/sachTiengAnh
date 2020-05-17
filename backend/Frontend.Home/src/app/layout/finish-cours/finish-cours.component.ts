@@ -13,29 +13,11 @@ import { Common } from 'src/app/_shared/extensions/common.service';
 })
 export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
-
-  public avatar = this.userService.currentAvatar;
-  public fullName = this.userService.currentFullName;
-  public namerank = this.userService.currentNamerank;
-  public address = this.userService.currentAddress;
-
-  public a = +this.route.snapshot.paramMap.get('idfilm');
-
-  public processing: number;
-
-  public startYeelow: any;
-  public startnon: any;
-  public pointNeedForNextLever: number;
-
   public isShowProfileUser = Common.currentOpenComponentViewFinish;
   public data: any;
   public datalist: any[];
   public sttWordLenningComponent: number;
   public idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
-  public totalPointRight = +this.route.snapshot.paramMap.get('point');
-  public intervalId = null;
-  public num: number;
-  public show: number;
   constructor(
     private route: ActivatedRoute,
     private wordFilmService: WordFilmService,
@@ -47,45 +29,12 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // lấy thông tin tìa khoản và add dữ liệu vao biến
-    this.userService.getprofile();
-    this.userService.currentStar.subscribe(ress => {
-      this.startYeelow = Array(ress).fill(4);
-      this.startnon = Array(5 - ress).fill(4);
-    }, err => {
-      console.log('err', err);
-    });
-
-    this.userService.currentPointLeverNext.subscribe(ress1 => {
-      this.userService.currentpointStage.subscribe(ress2 => {
-        this.userService.currentPoint.subscribe(ress3 => {
-          this.num = +this.totalPointRight;
-          this.show = +ress3 - this.num;
-          this.pointNeedForNextLever = ress1 - ress3;
-          this.processing = Math.round((this.pointNeedForNextLever / (ress1 - ress2)) * 100);
-        });
-      });
-    });
 
     Common.ChangeIshowUserProfile(+this.route.snapshot.paramMap.get('idfilm'));
     this.getData();
-    setTimeout(() => {
-      if (this.num !== 0) {
-        this.countdown();
-        const widthpoint = document.getElementById('point').offsetWidth;
-        document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
-      }
-    }, 900);
-
   }
 
-  countdown() {
-    this.intervalId = setInterval(() => {
-      this.num = this.num - 1;
-      this.show = this.show + 1;
-      if (this.num <= 0) { clearInterval(this.intervalId); }
-    }, 1);
-  }
+
 
   async getData(page = null) {
     this.data = null;
@@ -143,11 +92,5 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
     } else {
       return '';
     }
-  }
-
-  OpenTooltips(event) {
-    const tooltipSpan = document.getElementById('tooltip-span');
-    tooltipSpan.style.top = (event.clientY - 30) + 'px';
-    tooltipSpan.style.left = (event.clientX + 10) + 'px';
   }
 }

@@ -27,7 +27,9 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
   creatForm() {
     this.myForm = this.fb.group({
       UserName: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
-      Email: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Tên bộ phim
+      Email: [null
+        , [GlobalValidate.required({ error: 'Không được để trống' })
+          , GlobalValidate.mailFormat({ error: 'Email không đúng định dạng' })]], // Tên bộ phim
       FullName: [null, GlobalValidate.required({ error: 'Không được để trống' })], // Điểm số cho từng câu hỏi
       Password: [null, [GlobalValidate.required({ error: 'Không được để trống' }),
       GlobalValidate.MinLength(6, { error: 'Mật khẩu lớn hơn 6 kí tự' })]], // Điểm số cho từng câu hỏi

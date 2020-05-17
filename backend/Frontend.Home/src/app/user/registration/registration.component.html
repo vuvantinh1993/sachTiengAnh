@@ -1,6 +1,6 @@
 <form [formGroup]="myForm" autocomplete="off" (submit)="onSubmit()">
   <div class="form-group required">
-    <label>Tên người dùng <span class="text-danger"><b> *</b></span></label>
+    <label>Tên đăng nhập <span class="text-danger"><b> *</b></span></label>
     <input-text class="form-control" formControlName="UserName" [placeholder]="'Nhập tên'"></input-text>
     <render-error [data]="myForm.get('UserName')"></render-error>
   </div>

@@ -102,33 +102,33 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             var user = await _userManager.FindByNameAsync(model.userName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.passWord))
             {
-                if (await _userManager.IsEmailConfirmedAsync(user))
-                {
-                    var role = await _userManager.GetRolesAsync(user);
-                    IdentityOptions _option = new IdentityOptions();
+                var role = await _userManager.GetRolesAsync(user);
+                IdentityOptions _option = new IdentityOptions();
 
-                    var tokenDescriptor = new SecurityTokenDescriptor
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
                         new Claim("UserID",user.Id.ToString()),
                         new Claim(_option.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(5),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                    var token = tokenHandler.WriteToken(securityToken);
-                    return Ok(new { token });
-                }
-                else
-                {
-                    var message = new List<string>();
-                    message.Add("Tài khoản của bạn chưa xác thực mail.");
-                    message.Add("Bạn hãy xác thực email trước khi đăng nhập.");
-                    return BadRequest(message);
-                }
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(5),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { token });
+                //if (await _userManager.IsEmailConfirmedAsync(user))
+                //{
+                //}
+                //else
+                //{
+                //    var message = new List<string>();
+                //    message.Add("Tài khoản của bạn chưa xác thực mail.");
+                //    message.Add("Bạn hãy xác thực email trước khi đăng nhập.");
+                //    return BadRequest(message);
+                //}
             }
             else
             {
