@@ -21,6 +21,8 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
 
   public a = +this.route.snapshot.paramMap.get('idfilm');
 
+  public processing: number;
+
   public startYeelow: any;
   public startnon: any;
   public pointNeedForNextLever: number;
@@ -54,11 +56,14 @@ export class FinishCoursComponent extends BaseListComponent implements OnInit {
       console.log('err', err);
     });
 
-    this.userService.currentPointLeverNext.subscribe(ress => {
-      this.userService.currentPoint.subscribe(ress2 => {
-        this.num = +this.totalPointRight;
-        this.show = +ress2 - this.num;
-        this.pointNeedForNextLever = ress - ress2;
+    this.userService.currentPointLeverNext.subscribe(ress1 => {
+      this.userService.currentpointStage.subscribe(ress2 => {
+        this.userService.currentPoint.subscribe(ress3 => {
+          this.num = +this.totalPointRight;
+          this.show = +ress3 - this.num;
+          this.pointNeedForNextLever = ress1 - ress3;
+          this.processing = Math.round((this.pointNeedForNextLever / (ress1 - ress2)) * 100);
+        });
       });
     });
 

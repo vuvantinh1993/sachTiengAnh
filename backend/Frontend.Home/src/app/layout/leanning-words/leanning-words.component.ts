@@ -83,10 +83,8 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     }
     this.idfilmComponent = +this.route.snapshot.paramMap.get('idfilm');
     this.stypelean = this.route.snapshot.paramMap.get('style');
-    if (this.stypelean === 'old') {
-      this.paging.size = 4;
-    }
     const rs = await this.wordFilmService.getWords(this.stypelean, this.idfilmComponent, this.paging);
+    console.log('getdata', rs.result.data);
 
     if (rs.ok && rs.result) {
       this.data = rs.result.data;
@@ -99,7 +97,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
         // lấy số từ đã hoc
         this.sttleaned = this.sttWordLenning > 1 ? this.sttWordLenning - 1 : 0; // hiện từ đã học html
-        this.totalWord = this.data.data[0].totalWord;
+        this.totalWord = this.data.data[0].totalWord; // hiện tổng số từ trong html
         this.data = this.data.data;
         this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
         this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
@@ -135,8 +133,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       listda = this.laySoCauTheoSttWord(this.data, [{ e: 1, v: 2 }, { e: 3, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }, { e: 1, v: 0 }]);
     } else if (sttWord === -1) {
       listda = this.laySoCauTheoSttWord(this.data, [{ e: 4, v: 0 }, { e: 3, v: 0 }, { e: 2, v: 0 }, { e: 1, v: 0 }]);
+    } else if (sttWord === -2) {
+      listda = [];
     } else if (sttWord === -3) {
-      listda = this.laySoCauTheoSttWord(this.data, [{ e: 1, v: 2 }, { e: 1, v: 2 }, { e: 1, v: 2 }, { e: 1, v: 2 }]);
+      listda = this.laySoCauTheoSttWord(this.data, [{ e: 1, v: 1 }, { e: 1, v: 1 }, { e: 1, v: 1 }, { e: 1, v: 1 }, { e: 1, v: 1 }]);
     }
     listda = this.tronMang(listda);
     return listda;
@@ -237,9 +237,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         setTimeout(async () => {
           if (this.wordNumber === (this.lengthlistword - 1)) {
             // kết thúc số câu trong 1 lượt hoc, mã hóa dữ liệu dông điểm đưa lên server
-            const chuoimahoacongdiem = this.MaHoaChuoiCongDiem(this.totalSentenceRight)
+            const chuoimahoacongdiem = this.MaHoaChuoiCongDiem(this.totalSentenceRight);
+            console.log('chuoimahoacongdiem', chuoimahoacongdiem);
 
-            const rs = await this.userLeanningService.updateWordlened(chuoimahoacongdiem);
+            const rs = await this.userLeanningService.updateWordlened(chuoimahoacongdiem); // soos
             if (rs.ok) {
               if (this.sttWordLenning !== -3) {
                 localStorage.setItem('sttWordLenning', (+localStorage.getItem('sttWordLenning') + 1).toString());
@@ -282,33 +283,19 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     const congchuoi = this.idfilmComponent.toString() + ':' + (this.sttWordLenning) + ':' + totalSentenceRight + ':' + this.speedValueVideo;
     const chuoimahoa = this.aesservice.encrypt(congchuoi);
 
-    let data = {};
-    // kiểm tra stt=3 nghĩa là từu đó học lại
+    const data = {
+      chuoimahoa: '',
+      wordRelearn: []
+    };
+    // kiểm tra stt = 3 nghĩa là từu đó học lại
     // kiểm tra tiếp có mấy từ học lại rồi gọi lên api truyền nó lên
     if (this.sttWordLenning === -3) {
-      if (this.data.length === 1) {
-        data = { chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic };
-      } else if (this.data.length === 2) {
-        data = {
-          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic
-        };
-      } else if (this.data.length === 3) {
-        data = {
-          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
-          stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic
-        };
-      } else {
-        data = {
-          chuoimahoa, stt1: this.data[0].iteam.stt, check1: this.data[0].iteam.check, classic1: this.data[0].iteam.classic,
-          stt2: this.data[1].iteam.stt, check2: this.data[1].iteam.check, classic2: this.data[1].iteam.classic,
-          stt3: this.data[2].iteam.stt, check3: this.data[2].iteam.check, classic3: this.data[2].iteam.classic,
-          stt4: this.data[3].iteam.stt, check4: this.data[3].iteam.check, classic4: this.data[3].iteam.classic
-        };
-      }
+      data.chuoimahoa = chuoimahoa;
+      this.data.forEach(e => {
+        data.wordRelearn.push({ idfilm: e.iteam.idfilm, idWord: e.iteam.idWord, check: e.iteam.check, classic: e.iteam.classic });
+      });
     } else {
-      data = { chuoimahoa };
+      data.chuoimahoa = chuoimahoa;
     }
     return data;
   }

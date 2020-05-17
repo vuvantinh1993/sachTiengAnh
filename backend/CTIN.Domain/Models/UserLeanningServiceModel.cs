@@ -1,4 +1,5 @@
-﻿using CTIN.Common.Models;
+﻿using CTIN.Common.Enums;
+using CTIN.Common.Models;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using System;
@@ -15,26 +16,17 @@ namespace CTIN.Domain.Models
 
     public class Updatepoint_UserLeanningServiceModel
     {
-        public int stt1 { get; set; }
-        public int check1 { get; set; }
-        public int classic1 { get; set; }
-        public int? stt2 { get; set; }
-        public int? check2 { get; set; }
-        public int? classic2 { get; set; }
-        public int? stt3 { get; set; }
-        public int? check3 { get; set; }
-        public int? classic3 { get; set; }
-        public int? stt4 { get; set; }
-        public int? check4 { get; set; }
-        public int? classic4 { get; set; }
         public string chuoimahoa { get; set; }
+        public List<OneWordUpate_UserLeanningServiceModel> wordRelearn { get; set; }
     }
 
     public class OneWordUpate_UserLeanningServiceModel
     {
-        public int? stt { get; set; }
-        public int? check { get; set; }
-        public int? classic { get; set; }
+        //public int stt { get; set; }
+        public int check { get; set; }
+        public ClassicWordEnum classic { get; set; }
+        public int idWord { get; set; }
+        public int idFilm { get; set; }
     }
 
     public class Add_UserLeanningServiceModel : UserLeanning

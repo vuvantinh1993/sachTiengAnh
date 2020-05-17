@@ -46,9 +46,9 @@ namespace CTIN.WebApi.Modules.General.Models
         public int idfilm { get; set; }
         public int stt { get; set; }
         public DateTime time { get; set; }
-        public Forget isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
+        public ForgetEnum isforget { get; set; } // nếu là 0 có nghãi chưa quên, nếu là 1 có nghĩa đã quên
         public int check { get; set; } // là từ đã học được mấy lần rồi ban đầu sẽ là 1 lần (là số lần từ đó được học)
-        public ClassicWord classic { get; set; } // là thuộc loại nào trong 5 loại học đúng hạn hay sai hạn
+        public ClassicWordEnum classic { get; set; } // là thuộc loại nào trong 5 loại học đúng hạn hay sai hạn
     }
 
     public class Add_UserLeanningModel_DataDbJson

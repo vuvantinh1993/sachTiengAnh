@@ -28,7 +28,8 @@ export class UsersService extends BaseCrudService<any> {
   currentStar = this.starSource.asObservable();
   private pointLeverNextSource = new BehaviorSubject(1);
   currentPointLeverNext = this.pointLeverNextSource.asObservable();
-
+  private pointStageSource = new BehaviorSubject(1);
+  currentpointStage = this.pointStageSource.asObservable();
 
   constructor(
     http: HttpClient,
@@ -49,7 +50,8 @@ export class UsersService extends BaseCrudService<any> {
   }
 
   public getprofile(): Observable<any> {
-    this.http.get<any>(`${this.baseUrl}/GetProfile`).subscribe(ress => {
+    const getProfile = this.http.get<any>(`${this.baseUrl}/GetProfile`);
+    getProfile.subscribe(ress => {
       this.ChangeFullName(ress.fullName);
       this.ChangeEmail(ress.email);
       this.ChangeUserName(ress.userName);
@@ -59,13 +61,11 @@ export class UsersService extends BaseCrudService<any> {
       this.ChangePoint(ress.point);
       this.ChangeStar(ress.star);
       this.ChangePointLeverNext(ress.pointLeverNext);
-      // return 'ok';
+      this.ChangePointStage(ress.pointStage);
     }, err => {
       console.log('err', err);
-      // return 'notOk';
-    }
-    );
-    return null;
+    });
+    return getProfile;
   }
 
   ChangePoint(point: number) {
@@ -98,6 +98,10 @@ export class UsersService extends BaseCrudService<any> {
   }
   ChangePointLeverNext(pointLeverNext: number) {
     this.pointLeverNextSource.next(pointLeverNext);
+  }
+
+  ChangePointStage(pointStage: number) {
+    this.pointStageSource.next(pointStage);
   }
 
   roleMatch(allowedRoles): boolean {

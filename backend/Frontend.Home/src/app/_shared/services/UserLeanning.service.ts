@@ -16,8 +16,8 @@ export class UserLeanningService extends BaseCrudService<any> {
     this.baseUrl = 'UserLeanning';
   }
 
-  public updateWordlened(params: any) {
-    const api = this.http.get<any>(`${this.baseUrl}/updateWordlened`, { params: this.stringifyParams(params) });
+  public updateWordlened(body: any) {
+    const api = this.http.post<any>(`${this.baseUrl}/updateWordlened`, body);
     return this.bindDataExtensionService.bindResponseApi(api);
   }
 }

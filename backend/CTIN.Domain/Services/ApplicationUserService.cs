@@ -76,7 +76,24 @@ namespace CTIN.Domain.Services
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(applicationUser, model.role);
-                        return (applicationUser, errors);
+
+                        // đăng kí được tài khoản thêm tài khaonr vào userLeanning
+                        var userLearnning = new UserLeanning
+                        {
+                            userId = await _userManager.GetUserIdAsync(applicationUser),
+                            point = 0,
+                            listFilmLearned = new List<filmlearnedJson>(),
+                            filmLearnning = new List<wordleanedJson>(),
+                            filmForgeted = new List<wordleanedJson>(),
+                            filmPunishing = new List<wordleanedJson>(),
+                            filmFinish = new List<wordleanedJson>(),
+                            filmFinishForget = new List<wordleanedJson>()
+                        };
+                        _db.UserLeanning.Add(userLearnning);
+                        if (await _db.SaveChangesAsync() > 0)
+                        {
+                            return (applicationUser, errors);
+                        }
                     }
                 }
                 catch (Exception ex)

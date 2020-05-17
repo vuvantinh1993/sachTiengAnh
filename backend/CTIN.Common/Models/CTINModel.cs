@@ -73,7 +73,7 @@ namespace CTIN.Common.Models
         {
             order = "[{\"id\": true}]";
             page = 1;
-            size = 5;
+            size = 20;
         }
 
         [JsonIgnore]

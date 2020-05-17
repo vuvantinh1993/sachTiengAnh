@@ -25,12 +25,19 @@ namespace CTIN.WebApi.Modules.General.Controllers
             _currentUserService = currentUserService;
         }
 
+        /// <summary>
+        /// lấy danh sách các từ về
+        /// </summary>
+        /// <param name="style">là kiểu kiểu học từu "new hay old"</param>
+        /// <param name="idfilm">là id của film cần lấy, nếu idfilm = 0 và stype = old, sẽ lấy 20 bản cho nhanh</param>
+        /// <param name="model">điều kiện where với order</param>
+        /// <returns></returns>
         [HttpGet("GetWord/{style}/{idfilm}")]
         public async Task<IActionResult> GetWord([FromRoute]string style, [FromRoute]int idfilm, [FromQuery] Search_WordFilmModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _sv.GetWord(style, idfilm, model);
+                var result = await _sv.GetWord(style, model, idfilm);
                 if (result.errors.Count == 0)
                 {
                     //new task  sent mail

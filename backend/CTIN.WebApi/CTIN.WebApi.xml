@@ -10,5 +10,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:CTIN.WebApi.Modules.General.Controllers.WordFilmController.GetWord(System.String,System.Int32,CTIN.WebApi.Modules.General.Models.Search_WordFilmModel)">
+            <summary>
+            lấy danh sách các từ về
+            </summary>
+            <param name="style">là kiểu kiểu học từu "new hay old"</param>
+            <param name="idfilm">là id của film cần lấy, nếu idfilm = 0 và stype = old, sẽ lấy 20 bản cho nhanh</param>
+            <param name="model">điều kiện where với order</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -4,14 +4,16 @@ using CTIN.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    partial class NATemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20200515185043_addminstageRank")]
+    partial class addminstageRank
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,6 +178,8 @@ namespace CTIN.DataAccess.Migrations
                         .HasColumnName("pointStage");
 
                     b.Property<int>("pointmaxStage");
+
+                    b.Property<int>("pointminStage");
 
                     b.Property<int>("star");
 

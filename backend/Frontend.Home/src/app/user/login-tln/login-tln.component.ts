@@ -40,11 +40,11 @@ export class LoginTLNComponent implements OnInit {
             console.log('err', err);
           }
         );
-
       },
       err => {
         if (err.status === 400) {
           err.error.forEach(element => {
+            console.log('err', err);
             this.message.error(element, { nzDuration: 5000 });
           });
         } else {

@@ -1,4 +1,5 @@
-﻿using CTIN.Common.Extentions;
+﻿using CTIN.Common.Enums;
+using CTIN.Common.Extentions;
 using CTIN.DataAccess.Bases;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
@@ -21,11 +22,9 @@ namespace CTIN.Domain.BackgroundTasks
     {
 
         private readonly NATemplateContext _db;
-        private readonly ILogger _logger;
 
-        public ScopedProcessingService(ILogger<ScopedProcessingService> logger, NATemplateContext db)
+        public ScopedProcessingService(NATemplateContext db)
         {
-            _logger = logger;
             _db = db;
         }
 
@@ -35,292 +34,152 @@ namespace CTIN.Domain.BackgroundTasks
         /// </summary>
         /// <param name="stoppingToken">éo biết</param>
         /// <returns></returns>
-        //public async Task DoWork(CancellationToken stoppingToken)
-        //{
-        //    while (!stoppingToken.IsCancellationRequested)
-        //    {
-        //        //update các từ trong 3 ô
-        //        var listUser = _db.UserLeanning.ToList();
-
-        //        if (listUser != null)
-        //        {
-        //            foreach (UserLeanning userOld in listUser)
-        //            {
-        //                var userNew1 = userOld.JsonToString().JsonToObject<UserLeanning>();
-        //                List<userfilmleanningDataJson> listfilmLeanning = new List<userfilmleanningDataJson>();
-        //                List<userfilmleanningDataJson> listfilmForgeted1 = new List<userfilmleanningDataJson>();
-        //                List<userfilmleanningDataJson> listfilmForgeted2 = new List<userfilmleanningDataJson>();
-        //                List<userfilmleanningDataJson> listfilmPunishing = new List<userfilmleanningDataJson>();
-
-        //                if (userNew1.filmforgeted != null)
-        //                {
-        //                    foreach (userfilmleanningDataJson film in userNew1.filmforgeted)
-        //                    {
-        //                        var filmNew = film.JsonToString().JsonToObject<userfilmleanningDataJson>();
-        //                        List<wordleanedDataJson> listWordForgeted = new List<wordleanedDataJson>();
-        //                        List<wordleanedDataJson> listWordPunishing = new List<wordleanedDataJson>();
-
-        //                        foreach (wordleanedDataJson word in filmNew.wordleaned)
-        //                        {
-        //                            wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
-        //                            if (word.check == 1)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalHours > 28)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 3; // là từ bị phạt mà ko học
-        //                                    listWordPunishing.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordForgeted.Add(word);
-        //                                }
-        //                            }
-        //                            if (word.check == 2)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalDays > 7)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 3;
-        //                                    listWordPunishing.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordForgeted.Add(word);
-        //                                }
-        //                            }
-        //                            if (word.check == 3)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalDays > 23)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 3;
-        //                                    listWordPunishing.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordForgeted.Add(word);
-        //                                }
-        //                            }
-        //                        }
-        //                        foreach (var a in userNew1.filmpunishing)
-        //                        {
-        //                            if (a.filmid == film.filmid)
-        //                            {
-        //                                if (a.wordleaned.Count > 0)
-        //                                {
-        //                                    foreach (var b in a.wordleaned)
-        //                                    {
-        //                                        listWordPunishing.Add(b);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                        // add dữ liệu lại trường Punishing
-        //                        film.wordleaned = listWordPunishing;
-        //                        listfilmPunishing.Add(film);
-        //                        // add dữ liệu lại trường isforgeted
-        //                        filmNew.wordleaned = listWordForgeted;
-        //                        listfilmForgeted1.Add(filmNew);
-        //                    }
-
-        //                    var update1 = new
-        //                    {
-        //                        filmforgeted = listfilmForgeted1,
-        //                        filmpunishing = listfilmPunishing
-        //                    };
-
-        //                    userNew1 = userNew1.Patch(update1);
-        //                }
-
-        //                var userNew2 = userNew1.JsonToString().JsonToObject<UserLeanning>();
-
-        //                if (userNew2.filmleanning != null)
-        //                {
-        //                    foreach (userfilmleanningDataJson film in userNew2.filmleanning)
-        //                    {
-        //                        var filmNew = film.JsonToString().JsonToObject<userfilmleanningDataJson>();
-        //                        List<wordleanedDataJson> listWordLeanning = new List<wordleanedDataJson>();
-        //                        List<wordleanedDataJson> listWordForgeted = new List<wordleanedDataJson>();
-
-        //                        foreach (wordleanedDataJson word in filmNew.wordleaned)
-        //                        {
-        //                            wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
-        //                            if (word.check == 1)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalHours > 20)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 2;
-        //                                    listWordForgeted.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordLeanning.Add(word);
-        //                                }
-        //                            }
-        //                            if (word.check == 2)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalDays > 5)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 2;
-        //                                    listWordForgeted.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordLeanning.Add(word);
-        //                                }
-        //                            }
-        //                            if (word.check == 3)
-        //                            {
-        //                                if ((DateTime.UtcNow - word.time).TotalDays > 18)
-        //                                {
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = word.time;
-        //                                    iteamWordLeaned.isforget = 1;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = 2;
-        //                                    listWordForgeted.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordLeanning.Add(word);
-        //                                }
-        //                            }
-        //                        }
-        //                        foreach (var a in userNew2.filmforgeted)
-        //                        {
-        //                            if (a.filmid == film.filmid)
-        //                            {
-        //                                if (a.wordleaned.Count > 0)
-        //                                {
-        //                                    foreach (var b in a.wordleaned)
-        //                                    {
-        //                                        listWordForgeted.Add(b);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                        // add dữ liệu lại trường leanning
-        //                        film.wordleaned = listWordLeanning;
-        //                        listfilmLeanning.Add(film);
-        //                        // add dữ liệu lại trường isforgeted
-        //                        filmNew.wordleaned = listWordForgeted;
-        //                        listfilmForgeted2.Add(filmNew);
-        //                    }
-        //                    var update2 = new
-        //                    {
-        //                        filmforgeted = listfilmForgeted2,
-        //                        filmleanning = listfilmLeanning
-        //                    };
-        //                    userNew2 = userNew2.Patch(update2);
-        //                }
-        //                // nếu không có gì thay đổi thì không lưu DB
-        //                _db.Entry(userOld).CurrentValues.SetValues(userNew2);
-        //                await _db.SaveChangesAsync();
-        //            }
-        //        }
-
-
-        //        //trừ điểm cột cuối theo ngày
-        //        if (listUser != null)
-        //        {
-        //            foreach (UserLeanning userOld in listUser)
-        //            {
-        //                var userNew1 = userOld.JsonToString().JsonToObject<UserLeanning>();
-        //                List<userfilmleanningDataJson> listfilmPunishing = new List<userfilmleanningDataJson>();
-        //                if (userNew1.filmpunishing != null)
-        //                {
-        //                    var listModelWordPunishing = new List<ModelWordPunishing>();
-        //                    foreach (userfilmleanningDataJson film in userNew1.filmpunishing)
-        //                    {
-        //                        List<wordleanedDataJson> listWordPunishing = new List<wordleanedDataJson>();
-        //                        if (film.wordleaned.Count() > 0)
-        //                        {
-        //                            var wordPunishing = new ModelWordPunishing();
-        //                            wordPunishing.filmid = film.filmid;
-        //                            wordPunishing.numberWordSub = 0;
-        //                            foreach (wordleanedDataJson word in film.wordleaned)
-        //                            {
-        //                                wordleanedDataJson iteamWordLeaned = new wordleanedDataJson();
-        //                                if (DateTime.UtcNow.Date >= word.time.Date)
-        //                                {
-        //                                    wordPunishing.numberWordSub = wordPunishing.numberWordSub + 1;
-        //                                    iteamWordLeaned.stt = word.stt;
-        //                                    iteamWordLeaned.time = DateTime.UtcNow.Date.AddDays(1);
-        //                                    iteamWordLeaned.isforget = word.isforget;
-        //                                    iteamWordLeaned.check = word.check;
-        //                                    iteamWordLeaned.classic = word.classic;
-        //                                    listWordPunishing.Add(iteamWordLeaned);
-        //                                }
-        //                                else
-        //                                {
-        //                                    listWordPunishing.Add(word);
-        //                                }
-        //                            }
-        //                            //lưu danh sách các câu sai của bộ phim cho client
-        //                            listModelWordPunishing.Add(wordPunishing);
-        //                        }
-        //                        film.wordleaned = listWordPunishing;
-        //                        listfilmPunishing.Add(film);
-        //                    }
-        //                    //trả về giá trị số câu và từ sai cho client
-        //                    var signalerClient = listModelWordPunishing;
-        //                    //đoạn này viết sigaler đưa thông tin xuống client và trừ điểm trong db
-
-
-
-
-        //                    var totalPoint = userNew1.point;
-        //                    var datacategory = _db.Categoryfilm
-        //                        .Select(x => new { x.id, x.pointword, x.name });
-        //                    foreach (var item in signalerClient)
-        //                    {
-        //                        var cat = datacategory.FirstOrDefault(x => x.id == item.filmid);
-        //                        if (cat != null)
-        //                        {
-        //                            // viết trừ điểm trong này trừ 50% số điểm 1 câu
-        //                            totalPoint -= Convert.ToInt32(Math.Round((cat.pointword * item.numberWordSub) * 0.5, 0));
-        //                        }
-        //                    }
-
-
-        //                    var update1 = new
-        //                    {
-        //                        filmpunishing = listfilmPunishing,
-        //                        point = totalPoint
-        //                    };
-
-        //                    userNew1 = userNew1.Patch(update1);
-        //                    // lưu DB
-        //                    _db.Entry(userOld).CurrentValues.SetValues(userNew1);
-        //                    await _db.SaveChangesAsync();
-        //                }
-        //            }
-        //        }
-        //        await Task.Delay(3600000, stoppingToken); // delay 1h
-        //    }
-        //}
-
         public async Task DoWork(CancellationToken stoppingToken)
         {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                //update các từ trong 3 ô
+                var listUser = _db.UserLeanning.ToList();
+                if (listUser != null)
+                {
+                    foreach (UserLeanning user in listUser)
+                    {
+                        var userClone = user.JsonToString().JsonToObject<UserLeanning>();
+                        // kiểm tra và quét cột film filmForgeted
+                        if (userClone.filmForgeted.Count > 0)
+                        {
+                            foreach (var word in userClone.filmForgeted)
+                            {
+                                if (word.check == 1)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalHours > 28)
+                                    {
+                                        // xóa từ cột leaning
+                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 1 sau 24h ngày chuyển từ filmForgeted sang FilmPunishing
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                    }
+                                }
+                                if (word.check == 2)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalDays > 7)
+                                    {
+                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 2 sau 7 ngày chuyển từ filmForgeted sang FilmPunishing
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                    }
+                                }
+                                if (word.check == 3)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalDays > 23)
+                                    {
+                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 3 sau 30 ngày chuyển từ filmForgeted sang FilmPunishing
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                    }
+                                }
+                            }
+                        }
 
+                        // kiểm tra và quét cột film filmLearnning
+                        if (userClone.filmLearnning.Count > 0)
+                        {
+                            foreach (var word in userClone.filmLearnning)
+                            {
+                                if (word.check == 1)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalHours > 20)
+                                    {
+                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                    }
+                                }
+                                if (word.check == 2)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalDays > 5)
+                                    {
+                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 2 sau 7 ngày chuyển từ filmLearnning sang FilmForgeted
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                    }
+                                }
+                                if (word.check == 3)
+                                {
+                                    if ((DateTime.UtcNow - word.time).TotalDays > 18)
+                                    {
+                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
+                                        // từ này học lần 3 sau 30 ngày chuyển từ filmLearnning sang FilmForgeted
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                    }
+                                }
+                            }
+                        }
+
+                        // kiểm tra và quét cột film filmFinish
+                        if (userClone.filmFinish.Count > 0)
+                        {
+                            foreach (var word in userClone.filmFinish)
+                            {
+                                // nếu thời gian lớn hơn 20 ngày + check * 10 thì chuyển sang cột đã quên
+                                if ((DateTime.UtcNow - word.time).TotalHours > (10 + word.check * 5))
+                                {
+                                    // xóa ở cột filmFinish
+                                    userClone.filmFinish = userClone.filmFinish.Where(x => x.idWord != word.idWord).ToList();
+                                    // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
+                                    ChangeColumeWordBackGroundTasks(word, userClone.filmFinishForget, ClassicWordEnum.FilmFinishForget);
+                                }
+                            }
+                        }
+
+
+
+                        // trừ điểm theo ngày
+                        if (userClone.filmPunishing != null && userClone.filmPunishing.Count > 0)
+                        {
+                            var totalWordPunishing = 0;
+                            foreach (var word in userClone.filmPunishing)
+                            {
+                                if (DateTime.UtcNow.Date >= word.time.Date)
+                                {
+                                    totalWordPunishing += 1;
+                                    word.time = DateTime.UtcNow.Date.AddDays(1);
+                                }
+                            }
+
+                            // đoạn này viết trừ điểm
+                            var totalPointSub = totalWordPunishing * 1; // mỗi từ trừ 1 điểm nếu số điểm nhỏ hơn 0 thì sẽ bằng 0
+                            if (userClone.point - totalPointSub < 0)
+                            {
+                                userClone.point = 0;
+                            }
+                            else
+                            {
+                                userClone.point -= totalPointSub;
+                            }
+                        }
+                        // lưu DB
+                        _db.Entry(user).CurrentValues.SetValues(userClone);
+                        await _db.SaveChangesAsync();
+                    }
+
+                }
+                await Task.Delay(3600000, stoppingToken); // delay 1h
+            }
+
+        }
+
+        /// <summary>
+        /// Hàm BackGroundTasks chạy ngầm thay đổi cột từ đang học sang cột quên, hay từ cột quên sang trừ điểm
+        /// </summary>
+        /// <param name="word">từ cần update</param>
+        /// <param name="columeAdd">Cột nhận từ word</param>
+        /// <param name="changeToColume">id của cột</param>
+        public void ChangeColumeWordBackGroundTasks(wordleanedJson word, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
+        {
+            word.isforget = ForgetEnum.Forget;
+            word.classic = changeToColume;
+            columeAdd.Add(word);
         }
 
     }

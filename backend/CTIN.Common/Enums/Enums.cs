@@ -32,29 +32,41 @@ namespace CTIN.Common.Enums
         Blocked,
     }
 
-    public enum Forget
+    public enum ForgetEnum
     {
         [Display(Name = "đã quên")]
-        Forget,
+        Forget = 1,
         [Display(Name = "chưa quên")]
-        NotForget
+        NotForget = 0
     }
 
-    public enum ClassicWord
+    public enum ClassicWordEnum
     {
-        [Display(Name = "Không bị phạt")]
-        NotFined,
-        [Display(Name = "Bị phạt")]
-        Fined,
+        [Display(Name = "Nó đang ở cột filmLearnning")]
+        FilmLearnning,
+        [Display(Name = "Nó đang ở cột filmForgeted")]
+        FilmForgeted,
+        [Display(Name = "Nó đang ở cột filmPunishing")]
+        FilmPunishing,
+        [Display(Name = "Nó đang ở cột filmFinish")]
+        FilmFinish,
+        [Display(Name = "Nó đang ở cột filmFinishForget")]
+        FilmFinishForget,
 
     }
 
-    public enum SttWord
+    public enum SttWordEnum
     {
+        [Display(Name = "Từ học lại")]
+        Relearn = -3,
         [Display(Name = "Không tồn tại")]
         NotExist = -2,
-        [Display(Name = "Từ bắt đầu")]
-        Begin = -1
+        [Display(Name = "Lần thứ nhất")]
+        First = -1,
+        [Display(Name = "Lần thứ hai")]
+        Second = 0,
+        [Display(Name = "Lần thứ ba vs sau đó")]
+        ThirdAndThen = 1,
     }
 
     public enum UserType

@@ -20,7 +20,7 @@ namespace CTIN.Domain.Services
 {
     public interface IWordFilmService
     {
-        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_WordFilmServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, Search_WordFilmServiceModel model, int idfilm = 0);
         Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_WordFilmServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors)> Add(Add_WordFilmServiceModel model);
 
@@ -58,7 +58,7 @@ namespace CTIN.Domain.Services
         /// <param name="idfilm">id của bộ phim</param>
         /// <param name="model">điều kiện where</param>
         /// <returns></returns>
-        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, int idfilm, Search_WordFilmServiceModel model)
+        public async Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, Search_WordFilmServiceModel model, int idfilm = 0)
         {
             var userId = _currentUserService.userId;
             var errors = new List<ErrorModel>();
@@ -68,17 +68,14 @@ namespace CTIN.Domain.Services
             if (style == "new")
             {
                 // Nếu số thứ tự trả về là -2 có nghia là lỗi
-                if (rs.sttWord == (int)SttWord.NotExist)
+                if (rs.sttWord == -2)
                 {
                     return (null, rs.errors, new PagingModel { });
                 }
                 var statusActive = (int)StatusDb.Nomal;
                 var stt = rs.sttWord;
-                if (stt <= 1)
-                {
-                    if (stt == -1) { model.size = 4; }
-                    else { stt = 1; }
-                }
+                if (stt == -1) { model.size = 4; } // film học lần đầu tiên lấy 4 bản ghi
+
                 var query = _db.WordFilm
                     .Where(x => x.categoryfilmid == idfilm)
                     .Where(x => x.stt >= stt)
@@ -118,48 +115,102 @@ namespace CTIN.Domain.Services
                 else
                 {
                     var d = new List<wordleanedJson>();
-                    if (data.filmPunishing != null)
-                    {
-                        var a = data.filmPunishing.Where(y => y.idfilm == idfilm);
-                        d = a.ToList();
-                    }
-                    if (d.Count < 5 && data.filmForgeted != null)
-                    {
-                        var b = data.filmForgeted.Where(y => y.idfilm == idfilm);
-                        d = d.Concat(b).ToList();
-                    }
-                    if (d.Count < 5 && data.filmFinishForget != null)
-                    {
-                        var b = data.filmFinishForget.Where(y => y.idfilm == idfilm);
-                        d = d.Concat(b).ToList();
-                    }
-                    // lấy tốc dộ video
-                    var speedVideo = rs.speedVideo;
 
-                    var query = _db.WordFilm
-                            .Where(x => x.categoryfilmid == idfilm)
-                            .Where(t => d.Select(x => x.stt).Contains(t.stt));
-                    if (model.where != null)
+                    if (idfilm == 0)
                     {
-                        query = query.WhereLoopback(model.whereLoopback);
+                        // lấy 20 từ về cho học nhanh
+                        // học từ đã quên của film đưa lên
+                        if (data.filmPunishing != null)
+                        {
+                            var a = data.filmPunishing;
+                            d = a.ToList();
+                        }
+                        if (d.Count < 20 && data.filmForgeted != null)
+                        {
+                            var b = data.filmForgeted;
+                            d = d.Concat(b).ToList();
+                        }
+                        if (d.Count < 20 && data.filmFinishForget != null)
+                        {
+                            var b = data.filmFinishForget;
+                            d = d.Concat(b).ToList();
+                        }
+                        // lấy tốc dộ video
+                        var speedVideo = rs.speedVideo;
+
+                        var query = _db.WordFilm
+                                .Where(x => x.categoryfilmid == idfilm)
+                                .Where(t => d.Select(x => x.idWord).Contains(t.id));
+                        if (model.where != null)
+                        {
+                            query = query.WhereLoopback(model.whereLoopback);
+                        }
+                        query = query.OrderByLoopback(model.orderLoopback);
+                        var result = query.Select(x => new
+                        {
+                            x.id,
+                            x.textVn,
+                            x.textEn,
+                            x.stt,
+                            x.urlaudio,
+                            x.answerWrongEn,
+                            x.answerWrongVn,
+                            x.categoryfilmid,
+                            namefilm = x.categoryfilm.name,
+                            pointfilm = x.categoryfilm.pointword,
+                            x.categoryfilm.level,
+                            x.categoryfilm.totalWord,
+                            iteam = d.FirstOrDefault(n => n.idWord == x.id)
+                        }).ToPaging(model);
+                        return (new { result.data, sttWord = -3, rs.speedVideo }, errors, result.paging);
                     }
-                    query = query.OrderByLoopback(model.orderLoopback);
-                    var result = query.Select(x => new
+                    else
                     {
-                        x.id,
-                        x.textVn,
-                        x.textEn,
-                        x.stt,
-                        x.urlaudio,
-                        x.answerWrongEn,
-                        x.answerWrongVn,
-                        x.categoryfilmid,
-                        namefilm = x.categoryfilm.name,
-                        pointfilm = x.categoryfilm.pointword,
-                        x.categoryfilm.level,
-                        x.categoryfilm.totalWord
-                    }).ToPaging(model);
-                    return (new { result.data, rs.sttWord, rs.speedVideo }, errors, result.paging);
+                        // học từ đã quên của film đưa lên
+                        if (data.filmPunishing != null)
+                        {
+                            var a = data.filmPunishing.Where(y => y.idfilm == idfilm);
+                            d = a.ToList();
+                        }
+                        if (d.Count < 5 && data.filmForgeted != null)
+                        {
+                            var b = data.filmForgeted.Where(y => y.idfilm == idfilm);
+                            d = d.Concat(b).ToList();
+                        }
+                        if (d.Count < 5 && data.filmFinishForget != null)
+                        {
+                            var b = data.filmFinishForget.Where(y => y.idfilm == idfilm);
+                            d = d.Concat(b).ToList();
+                        }
+                        // lấy tốc dộ video
+                        var speedVideo = rs.speedVideo;
+
+                        var query = _db.WordFilm
+                                .Where(x => x.categoryfilmid == idfilm)
+                                .Where(t => d.Select(x => x.idWord).Contains(t.stt));
+                        if (model.where != null)
+                        {
+                            query = query.WhereLoopback(model.whereLoopback);
+                        }
+                        query = query.OrderByLoopback(model.orderLoopback);
+                        var result = query.Select(x => new
+                        {
+                            x.id,
+                            x.textVn,
+                            x.textEn,
+                            x.stt,
+                            x.urlaudio,
+                            x.answerWrongEn,
+                            x.answerWrongVn,
+                            x.categoryfilmid,
+                            namefilm = x.categoryfilm.name,
+                            pointfilm = x.categoryfilm.pointword,
+                            x.categoryfilm.level,
+                            x.categoryfilm.totalWord,
+                            iteam = d.FirstOrDefault(n => n.idWord == x.id)
+                        }).ToPaging(model);
+                        return (new { result.data, sttWord = -3, rs.speedVideo }, errors, result.paging);
+                    }
                 }
             }
             return (null, null, new PagingModel { });
@@ -214,13 +265,20 @@ namespace CTIN.Domain.Services
         /// <param name="idfilm">id của bộ phim</param>
         /// <returns></returns>
 
-        private (int sttWord, double speedVideo, List<ErrorModel> errors) CreateFilmAndAddUser(UserLeanning data, UserLeanning dataClone, int idfilm)
+        private (int idWord, int sttWord, double speedVideo, List<ErrorModel> errors) CreateFilmAndAddUser(UserLeanning data, UserLeanning dataClone, int idfilm)
         {
             var errors = new List<ErrorModel>();
+            var wordFirstOfFilm = _db.WordFilm.FirstOrDefault(x => x.categoryfilmid == idfilm);
+            if (wordFirstOfFilm == null)
+            {
+                errors.Add(new ErrorModel { key = "AddFilm", value = "Film này ko có trong cơ sở dữ liệu" });
+                return (0, -2, 1.0, errors);
+            }
+
             var filmlean = new filmlearnedJson
             {
                 filmid = idfilm,
-                sttWord = (int)SttWord.Begin,
+                sttWord = -1,
                 isFinish = false,
                 speedVideo = 1.0,
             };
@@ -240,11 +298,11 @@ namespace CTIN.Domain.Services
                 _db.Entry(categ).CurrentValues.SetValues(categ.Patch(updatecate));
                 if (_db.SaveChanges() > 0)
                 {
-                    return ((int)SttWord.Begin, 1.0, errors);
+                    return (wordFirstOfFilm.id, -1, 1.0, errors);
                 }
             }
             errors.Add(new ErrorModel { key = "AddFilm", value = "Không thể thêm được film" });
-            return ((int)SttWord.NotExist, 1.0, errors);
+            return (wordFirstOfFilm.id, -2, 1.0, errors);
         }
 
 

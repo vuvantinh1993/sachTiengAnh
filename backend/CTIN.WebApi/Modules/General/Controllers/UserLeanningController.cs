@@ -1,4 +1,5 @@
-﻿using CTIN.Common.Extentions;
+﻿using CTIN.Common.Enums;
+using CTIN.Common.Extentions;
 using CTIN.Common.Interfaces;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.Models;
@@ -177,8 +178,8 @@ namespace CTIN.WebApi.Modules.General.Controllers
             return await BindData();
         }
 
-        [HttpGet("updateWordlened")]
-        public async Task<object> updateWordlened([FromQuery] Updatepoint_UserLeanningModel model)
+        [HttpPost("updateWordlened")]
+        public async Task<object> updateWordlened([FromBody] Updatepoint_UserLeanningModel model)
         {
             var value = EncryptionHelper.DecryptStringAES(model.chuoimahoa).Split(":");
             int idfilm = Convert.ToInt32(value[0]);
@@ -186,17 +187,18 @@ namespace CTIN.WebApi.Modules.General.Controllers
             int totalSentenceRight = Convert.ToInt32(value[2]);
             double speedVideo = Convert.ToDouble(value[3]);
 
+            // không có stt word như vậy
             if (sttWord < -3 || totalSentenceRight > 10)
             {
                 ModelState.AddModelError("updateWordlened", "data not empty");
             }
             if (ModelState.IsValid)
             {
-                //var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, speedVideo, model);
-                //if (result.errors.Count == 0)
-                //{
-                //}
-                //return await BindData(result.data, result.errors);
+                var result = await _sv.updateWordlened(idfilm, sttWord, totalSentenceRight, speedVideo, model.wordRelearn);
+                if (result.errors.Count == 0)
+                {
+                }
+                return await BindData(result.data, result.errors);
             }
             return await BindData();
         }
