@@ -110,7 +110,18 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
           ? 'Không có từ cần học lại, tiếp tục học từ mới'
           : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này quay về trang chủ'}`, ' ');
         if (this.stypelean === 'old') {
-          this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
+
+          this.router.navigateByUrl(`/leanning-words/new/${this.idfilmComponent}`, { skipLocationChange: false })
+            .then(() => {
+              this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
+            });
+
+          // if (result) {
+          //   this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
+          // }
+          // setTimeout(() => {
+          //   location.reload();
+          // }, 10);
         } else {
           this.router.navigate(['/']);
         }

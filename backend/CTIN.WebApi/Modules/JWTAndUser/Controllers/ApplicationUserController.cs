@@ -1,4 +1,5 @@
-﻿using CTIN.Common.Interfaces;
+﻿using CTIN.Common.Extentions;
+using CTIN.Common.Interfaces;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.Services;
@@ -170,6 +171,28 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
                 info.pointStage
             };
         }
+
+
+        [HttpPost("ChangeProfile")]
+        [Authorize]
+        public async Task<object> ChangeProfile([FromBody] ChangeprofileModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var modelService = model.MapToObject<ApplicationUser>();
+                var result = await _sv.ChangeProfile(modelService);
+                if (result.errors.Count == 0)
+                {
+                    //new task  sent mail
+                    //push notification
+                }
+                return await BindData(result.data, result.errors);
+            }
+            return await BindData();
+        }
+
+
+
 
         //[HttpGet]
         //[Authorize(Roles = "Admin")]

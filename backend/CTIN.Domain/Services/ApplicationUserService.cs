@@ -20,7 +20,7 @@ namespace CTIN.Domain.Services
     public interface IApplicationUserService
     {
         Task<(dynamic data, List<ErrorModel> errors)> register(ApplicationUserServiceModel model);
-        //Task<(dynamic data, List<ErrorModel> errors)> Login(Add_CategoryfilmServiceModel model);
+        Task<(dynamic data, List<ErrorModel> errors)> ChangeProfile(ApplicationUser model);
     }
 
     public class ApplicationUserService : IApplicationUserService
@@ -106,6 +106,30 @@ namespace CTIN.Domain.Services
             {
                 return (null, errors);
             }
+            return (null, errors);
+        }
+
+        public async Task<(dynamic data, List<ErrorModel> errors)> ChangeProfile(ApplicationUser model)
+        {
+            var errors = new List<ErrorModel>();
+            var user = await _userManager.FindByIdAsync(_currentUserService.userId);
+            if (model.avatar != null)
+            {
+                user.avatar = model.avatar;
+                // xóa ảnh cũ trong thư mục
+            }
+            if (model.address != null)
+            {
+                user.address = model.address;
+            }
+
+            _db.Users.Add(user);
+            if (await _db.SaveChangesAsync() > 0)
+            {
+                return (new { user.avatar, user.address }, errors);
+            }
+
+            errors.Add(new ErrorModel { key = "error", value = "Hệ thống không thể thay đổi thông tin" });
             return (null, errors);
         }
 

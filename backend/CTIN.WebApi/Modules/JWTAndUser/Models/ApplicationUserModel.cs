@@ -15,4 +15,10 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Models
         public string userName { get; set; }
         public string passWord { get; set; }
     }
+
+    public class ChangeprofileModel
+    {
+        public string avatar { get; set; }
+        public string address { get; set; }
+    }
 }

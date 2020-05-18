@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'finish-cours/:idfilm/:point',
         loadChildren: () => import('./finish-cours/finish-cours.module').then(m => m.FinishCoursModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('./show-profile/show-profile.module').then(m => m.ShowProfileModule)
       }
     ]
   }
