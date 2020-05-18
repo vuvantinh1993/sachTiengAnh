@@ -12,8 +12,8 @@
           <span class="fa fa-star"></span>
         </span>
       </div>
-      <div class="d-flex justify-content-center mt-1" id="tooltip" (mousemove)="OpenTooltips($event)">
-        <div class="progress d-flex justify-content-end">
+      <div class="d-flex justify-content-center mt-1" id="tooltip">
+        <div class="progress d-flex justify-content-end" (mousemove)="OpenTooltips($event)">
           <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{'width': processing + '%'}"
             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -23,13 +23,12 @@
     </div>
     <div class="col-6 user d-flex align-items-center">
       <div class="image">
-        <div class="cover">
-        </div>
-        <img [src]="avatar | async" alt="">
+        <img [src]="avatar | async" alt="TLNEnglish">
+        <i class="far fa-edit ml-2"></i>
       </div>
       <div class="text d-flex flex-column ml-2">
         <h2>{{fullName | async}}</h2>
-        <p>{{address | async}}</p>
+        <p class="address">{{address | async}}<i class="far fa-edit ml-2"></i></p>
         <p>Hạng : Chưa xếp hạng</p>
       </div>
     </div>

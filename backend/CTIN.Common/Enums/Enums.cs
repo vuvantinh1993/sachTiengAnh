@@ -32,6 +32,28 @@ namespace CTIN.Common.Enums
         Blocked,
     }
 
+    public enum StatusFeedbackEnum
+    {
+        [Display(Name = "xóa")]
+        Delete = 0,
+        [Display(Name = "hiện")]
+        Show = 1,
+        [Display(Name = "ẩn")]
+        Hide = 2,
+        [Display(Name = "đã đọc và bỏ qua")]
+        ReadedAndIgnore = 3,
+        [Display(Name = "đã đọc và đã trả lời")]
+        ReadedAndRep = 4,
+    }
+
+    public enum FeedBackaboutWordEnum
+    {
+        [Display(Name = "Sửa từ tiếng anh")]
+        EnWrong = 0,
+        [Display(Name = "Sửa từ tiếng việt")]
+        VnWrong = 1,
+    }
+
     public enum ForgetEnum
     {
         [Display(Name = "đã quên")]

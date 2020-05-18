@@ -4,14 +4,16 @@ using CTIN.DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTIN.DataAccess.Migrations
 {
     [DbContext(typeof(NATemplateContext))]
-    partial class NATemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20200518161137_them_feedback2")]
+    partial class them_feedback2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,29 +156,6 @@ namespace CTIN.DataAccess.Migrations
                     b.HasKey("id");
 
                     b.ToTable("categoryfilm");
-                });
-
-            modelBuilder.Entity("CTIN.DataAccess.Models.Feedback", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("contentFeedback");
-
-                    b.Property<DateTime?>("cretedDateFeedback");
-
-                    b.Property<int>("rateStar");
-
-                    b.Property<DateTime?>("replyDateFeedback");
-
-                    b.Property<string>("replyFeedback");
-
-                    b.Property<int>("statusFeedback");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Feedback");
                 });
 
             modelBuilder.Entity("CTIN.DataAccess.Models.Rank", b =>

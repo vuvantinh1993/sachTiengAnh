@@ -89,6 +89,13 @@
     margin-right: 5px;
   }
 
+  .feedback{
+    cursor: pointer;
+
+    i:hover{
+      color: #25ff44ab;
+    }
+  }
 
   .answer {
     height: 150px;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query.Expressions;
+using System;
 
 namespace CTIN.DataAccess.Contexts
 {
@@ -21,6 +22,8 @@ namespace CTIN.DataAccess.Contexts
         public virtual DbSet<UserLeanning> UserLeanning { get; set; }
         public virtual DbSet<WordFilm> WordFilm { get; set; }
         public virtual DbSet<Rank> Rank { get; set; }
+        public virtual DbSet<Feedback> Feedback { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,6 +64,27 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.source)
                     .HasColumnName("source");
             });
+
+
+            modelBuilder.Entity("CTIN.DataAccess.Models.Feedback", b =>
+            {
+                b.Property<int>("id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                b.Property<string>("contentFeedback");
+
+                b.Property<DateTime?>("cretedDateFeedback");
+
+                b.Property<DateTime?>("replyDateFeedback");
+
+                b.Property<string>("replyFeedback");
+
+                b.HasKey("id");
+
+                b.ToTable("Feedback");
+            });
+
 
             modelBuilder.Entity<Categoryfilm>(entity =>
             {
@@ -109,6 +133,14 @@ namespace CTIN.DataAccess.Contexts
                 entity.Property(e => e.fullName)
                     .HasColumnName("fullname")
                     .HasMaxLength(500);
+
+                entity.Property(e => e.feedBackaboutWord)
+                    .HasColumnName("feedBackaboutWord")
+                    .IsJson();
+
+                entity.Property(e => e.listPeopleContribute)
+                   .HasColumnName("listPeopleContribute")
+                   .IsJson();
 
                 entity.Property(e => e.textEn)
                     .HasColumnName("textEn")

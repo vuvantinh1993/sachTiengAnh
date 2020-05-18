@@ -2,7 +2,7 @@ import { FormBuilder } from '@angular/forms';
 import { UserLeanningService } from './../../_shared/services/UserLeanning.service';
 import { DialogService } from './../../_base/services/dialog.service';
 import { AESService } from './../../_base/services/aes.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ExtensionService } from './../../_base/services/extension.service';
 import { ExtentionTableService } from './../../_base/services/extention-table.service';
 import { WordFilmService } from './../../_shared/services/wordFilm.service';
@@ -18,6 +18,9 @@ import { NzMessageService } from 'ng-zorro-antd';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
+
+  // mySubscription: any;
+
   public idFilmComponent: any;
   public myTimer: any;
   public extran: string;
@@ -52,9 +55,23 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     private dl: DialogService,
     public router: Router) {
     super();
+
+
+    // this.mySubscription = this.router.events.subscribe((event) => {
+    //   console.log('event', event);
+
+    //   if (event instanceof NavigationEnd) {
+    //     this.router.navigated = false;
+    //   }
+    // });
   }
 
   ngOnInit() {
+    // yêu cầu load lại route khi có thay đổi
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
+
     this.getData();
     this.countdown();
   }
@@ -66,6 +83,13 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       if (this.counter === 0) { clearInterval(this.intervalId); }
     }, 10);
   }
+
+  // tslint:disable-next-line: use-lifecycle-interface
+  // ngOnDestroy() {
+  //   if (this.mySubscription) {
+  //     this.mySubscription.unsubscribe();
+  //   }
+  // }
 
 
   async getData(page = 1) {
@@ -109,25 +133,18 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         const result = await this.dl.alert(`${this.stypelean === 'old'
           ? 'Không có từ cần học lại, tiếp tục học từ mới'
           : 'Xin chúc mừng, bạn đã hoàn thành bộ phim này quay về trang chủ'}`, ' ');
+
         if (this.stypelean === 'old') {
-
-          this.router.navigateByUrl(`/leanning-words/new/${this.idfilmComponent}`, { skipLocationChange: false })
-            .then(() => {
-              this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
-            });
-
-          // if (result) {
-          //   this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
-          // }
-          // setTimeout(() => {
-          //   location.reload();
-          // }, 10);
+          this.router.navigate(['/leanning-words', 'new', this.idfilmComponent]);
         } else {
           this.router.navigate(['/']);
         }
       }
     }
   }
+
+
+
 
   // dùng để trộn các câu theo lịch trình
   // nếu sttWord == -2 là ko thể lấy được film
