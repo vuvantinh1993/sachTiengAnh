@@ -84,41 +84,11 @@ namespace CTIN.Domain.BackgroundTasks
                         // kiểm tra và quét cột film filmLearnning
                         if (userClone.filmLearnning.Count > 0)
                         {
-                            foreach (var word in userClone.filmLearnning)
-                            {
-                                if (word.check == 1)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalHours > 20)
-                                    {
-                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
-                                        //ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-                                        ChangeColumeWordBackGroundTasks2(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-
-                                        //// từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ////ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-                                        //ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-                                    }
-                                }
-                                if (word.check == 2)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalDays > 5)
-                                    {
-                                        //userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 2 sau 7 ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-                                    }
-                                }
-                                if (word.check == 3)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalDays > 18)
-                                    {
-                                        //userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 3 sau 30 ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
-                                    }
-                                }
-                            }
+                            var words = userClone.filmLearnning
+                                .Where(word => (word.check == 1 && (DateTime.UtcNow - word.time).TotalHours > 20) || (word.check == 2 && (DateTime.UtcNow - word.time).TotalDays > 5) || (word.check == 3 && (DateTime.UtcNow - word.time).TotalDays > 18))
+                                .ToArray();
+                            userClone.filmForgeted.AddRange(words);
+                            userClone.filmLearnning.RemoveAll(x => words.Contains(x));
                         }
 
                         // kiểm tra và quét cột film filmFinish
