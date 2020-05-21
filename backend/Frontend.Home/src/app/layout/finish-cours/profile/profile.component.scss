@@ -63,22 +63,22 @@
         }
       }
 
-      #tooltip{
+      #tooltip {
         text-decoration: none;
         position: relative;
 
-        .progress{
+        .progress {
           height: 0.4rem;
           width: 14rem;
-          background-image: linear-gradient(to right, #32ee20 , #ff4848);
+          background-image: linear-gradient(to right, #32ee20, #ff4848);
 
-          .progress-bar{
-            background-color: inherit!important;
+          .progress-bar {
+            background-color: inherit !important;
             transform: rotate(180deg);
           }
         }
 
-        .progress:hover + span {
+        .progress:hover+span {
           display: block;
           position: fixed;
           overflow: hidden;
@@ -108,42 +108,48 @@
           width: 12em;
         }
 
-        i{
+        i {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform:translate(-50%, -50%);
+          transform: translate(-50%, -50%);
           font-size: 20px;
           display: none;
           color: #00e13f94;
         }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.8);
+
+          img {
+            opacity: 0.7;
+          }
+        }
       }
 
-      .image:hover img{
-        opacity: 0.7;
-      }
-      .image:hover i{
+      .image:hover i {
         font-size: 2em;
         display: block;
       }
 
       .text {
 
-        h2,p {
+        h2,
+        p {
           margin: 0px;
         }
 
         p {
           font-size: 18px;
 
-          i{
+          i {
             cursor: pointer;
             display: none;
             color: #00e13f94;
           }
         }
 
-        .address:hover i{
+        .address:hover i {
           display: inline-block;
         }
       }
