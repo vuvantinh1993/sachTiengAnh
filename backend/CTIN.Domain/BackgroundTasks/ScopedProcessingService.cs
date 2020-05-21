@@ -55,27 +55,27 @@ namespace CTIN.Domain.BackgroundTasks
                                     if ((DateTime.UtcNow - word.time).TotalHours > 28)
                                     {
                                         // xóa từ cột leaning
-                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 1 sau 24h ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
                                     }
                                 }
                                 if (word.check == 2)
                                 {
                                     if ((DateTime.UtcNow - word.time).TotalDays > 7)
                                     {
-                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 2 sau 7 ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
                                     }
                                 }
                                 if (word.check == 3)
                                 {
                                     if ((DateTime.UtcNow - word.time).TotalDays > 23)
                                     {
-                                        userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
+                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 3 sau 30 ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
                                     }
                                 }
                             }
@@ -92,25 +92,30 @@ namespace CTIN.Domain.BackgroundTasks
                                     {
                                         userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                        //ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                        ChangeColumeWordBackGroundTasks2(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+
+                                        //// từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
+                                        ////ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                        //ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
                                     }
                                 }
                                 if (word.check == 2)
                                 {
                                     if ((DateTime.UtcNow - word.time).TotalDays > 5)
                                     {
-                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
+                                        //userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 2 sau 7 ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
                                     }
                                 }
                                 if (word.check == 3)
                                 {
                                     if ((DateTime.UtcNow - word.time).TotalDays > 18)
                                     {
-                                        userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
+                                        //userClone.filmLearnning = userClone.filmLearnning.Where(x => x.idWord != word.idWord).ToList();
                                         // từ này học lần 3 sau 30 ngày chuyển từ filmLearnning sang FilmForgeted
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
+                                        ChangeColumeWordBackGroundTasks(word, userClone.filmLearnning, userClone.filmForgeted, ClassicWordEnum.FilmForgeted);
                                     }
                                 }
                             }
@@ -125,9 +130,9 @@ namespace CTIN.Domain.BackgroundTasks
                                 if ((DateTime.UtcNow - word.time).TotalHours > (10 + word.check * 5))
                                 {
                                     // xóa ở cột filmFinish
-                                    userClone.filmFinish = userClone.filmFinish.Where(x => x.idWord != word.idWord).ToList();
+                                    //userClone.filmFinish = userClone.filmFinish.Where(x => x.idWord != word.idWord).ToList();
                                     // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
-                                    ChangeColumeWordBackGroundTasks(word, userClone.filmFinishForget, ClassicWordEnum.FilmFinishForget);
+                                    ChangeColumeWordBackGroundTasks(word, userClone.filmFinish, userClone.filmFinishForget, ClassicWordEnum.FilmFinishForget);
                                 }
                             }
                         }
@@ -175,12 +180,19 @@ namespace CTIN.Domain.BackgroundTasks
         /// <param name="word">từ cần update</param>
         /// <param name="columeAdd">Cột nhận từ word</param>
         /// <param name="changeToColume">id của cột</param>
-        public void ChangeColumeWordBackGroundTasks(wordleanedJson word, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
+        public void ChangeColumeWordBackGroundTasks(wordleanedJson word, List<wordleanedJson> columeDel, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
+        {
+            columeDel.Remove(word); // xóa từ
+            word.isforget = ForgetEnum.Forget;
+            word.classic = changeToColume;
+            columeAdd.Add(word); // thêm từ
+        }
+
+        public void ChangeColumeWordBackGroundTasks2(wordleanedJson word, List<wordleanedJson> columeDel, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
         {
             word.isforget = ForgetEnum.Forget;
             word.classic = changeToColume;
-            columeAdd.Add(word);
+            columeAdd.Add(word); // thêm từ
         }
-
     }
 }
