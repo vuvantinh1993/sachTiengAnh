@@ -78,4 +78,14 @@ export class ProfileComponent extends BaseDataComponent implements OnInit {
     tooltipSpan.style.top = (event.clientY - 30) + 'px';
     tooltipSpan.style.left = (event.clientX + 10) + 'px';
   }
+
+  clickSelector(idselecter) {
+    const selecter = document.getElementById(idselecter);
+    selecter.click();
+  }
+
+  log123(event) {
+    console.log(event);
+
+  }
 }

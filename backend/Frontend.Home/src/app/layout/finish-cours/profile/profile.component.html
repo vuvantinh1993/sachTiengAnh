@@ -22,10 +22,11 @@
       <p class="stage d-flex justify-content-center mt-1" style="color: #f63a1d;">{{namerank | async}}</p>
     </div>
     <div class="col-6 user d-flex align-items-center">
-      <div class="image">
+      <div class="image" (click)="clickSelector('editavatar')">
         <img [src]="avatar | async" alt="TLNEnglish">
         <i class="far fa-edit ml-2"></i>
       </div>
+      <input type="file" hidden id="editavatar" name="fileAvatar" (change)="log123($event)">
       <div class="text d-flex flex-column ml-2">
         <h2>{{fullName | async}}</h2>
         <p class="address">{{address | async}}<i class="far fa-edit ml-2"></i></p>

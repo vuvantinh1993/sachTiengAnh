@@ -1,7 +1,7 @@
 import { CategoryFilmService } from './../../_shared/services/categoryfilm.service';
-import { Component, OnInit, PipeTransform } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
-import { Pipe } from '@angular/core';
+import { NgwWowService } from 'ngx-wow';
 
 @Component({
   templateUrl: './home.component.html',
@@ -14,8 +14,11 @@ export class HomeComponent extends BaseListComponent implements OnInit {
   public finishload = false;
   constructor(
     private categoryFilmService: CategoryFilmService,
-
-  ) { super(); }
+    private wowService: NgwWowService
+  ) {
+    super();
+    this.wowService.init();
+  }
 
   ngOnInit() {
     this.getData();

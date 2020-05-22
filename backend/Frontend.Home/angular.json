@@ -47,7 +47,8 @@
               "src/assets/css/colors.min.css",
               "src/theme.less",
               "src/assets/scss/base-form.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/animate.css/animate.css"
             ],
             "scripts": [
               "src/assets/js/main/jquery.min.js",
@@ -55,7 +56,8 @@
               "src/assets/js/plugins/loaders/blockui.min.js",
               "src/assets/js/plugins/forms/styling/uniform.min.js",
               "src/assets/js/orgchart.js",
-              "src/assets/js/app.js"
+              "src/assets/js/app.js",
+              "node_modules/wowjs/dist/wow.js"
             ]
           },
           "configurations": {

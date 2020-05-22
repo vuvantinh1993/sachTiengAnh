@@ -13,6 +13,7 @@ import { NgZorroAntdModule, NZ_I18N, en_US, vi_VN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 import { LayoutModule } from './layout/layout.module';
+import { NgwWowModule } from 'ngx-wow';
 
 registerLocaleData(vi);
 
@@ -27,7 +28,9 @@ registerLocaleData(vi);
     // ForbiddenModule,
     NgZorroAntdModule,
     AppRoutes,
-    UserModule, LayoutModule
+    UserModule,
+    LayoutModule,
+    NgwWowModule
   ],
   providers: [
     AuthGuard,

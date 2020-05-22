@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
+import { NgwWowService } from 'ngx-wow';
 
 
 @Component({
@@ -47,19 +48,17 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     private wordFilmService: WordFilmService,
     private route: ActivatedRoute,
     public sanitizer: DomSanitizer,
-    public exTableService: ExtentionTableService,
     private userLeanningService: UserLeanningService,
     private message: NzMessageService,
-    public ex: ExtensionService,
     private aesservice: AESService,
     private dl: DialogService,
-    public router: Router) {
+    public router: Router,
+  ) {
     super();
 
 
     // this.mySubscription = this.router.events.subscribe((event) => {
     //   console.log('event', event);
-
     //   if (event instanceof NavigationEnd) {
     //     this.router.navigated = false;
     //   }
@@ -74,6 +73,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
 
     this.getData();
     this.countdown();
+    // this.wowService.init();
   }
 
   countdown() {
@@ -84,13 +84,9 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     }, 10);
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
-  // ngOnDestroy() {
-  //   if (this.mySubscription) {
-  //     this.mySubscription.unsubscribe();
-  //   }
+  // reset(){
+  //   this.wowService.init();
   // }
-
 
   async getData(page = 1) {
     this.data = null;

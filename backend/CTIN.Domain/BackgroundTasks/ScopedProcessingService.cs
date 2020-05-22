@@ -48,44 +48,20 @@ namespace CTIN.Domain.BackgroundTasks
                         // kiểm tra và quét cột film filmForgeted
                         if (userClone.filmForgeted.Count > 0)
                         {
-                            foreach (var word in userClone.filmForgeted)
-                            {
-                                if (word.check == 1)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalHours > 28)
-                                    {
-                                        // xóa từ cột leaning
-                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 1 sau 24h ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
-                                    }
-                                }
-                                if (word.check == 2)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalDays > 7)
-                                    {
-                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 2 sau 7 ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
-                                    }
-                                }
-                                if (word.check == 3)
-                                {
-                                    if ((DateTime.UtcNow - word.time).TotalDays > 23)
-                                    {
-                                        //userClone.filmForgeted = userClone.filmForgeted.Where(x => x.idWord != word.idWord).ToList();
-                                        // từ này học lần 3 sau 30 ngày chuyển từ filmForgeted sang FilmPunishing
-                                        ChangeColumeWordBackGroundTasks(word, userClone.filmForgeted, userClone.filmPunishing, ClassicWordEnum.FilmPunishing);
-                                    }
-                                }
-                            }
+                            var words = userClone.filmForgeted.Where(word => (word.check == 1 && (DateTime.UtcNow - word.time).TotalHours > 28)
+                            || (word.check == 2 && (DateTime.UtcNow - word.time).TotalDays > 7)
+                            || (word.check == 3 && (DateTime.UtcNow - word.time).TotalDays > 23)).ToArray();
+                            userClone.filmPunishing.AddRange(words);
+                            userClone.filmForgeted.RemoveAll(x => words.Contains(x));
                         }
 
                         // kiểm tra và quét cột film filmLearnning
                         if (userClone.filmLearnning.Count > 0)
                         {
                             var words = userClone.filmLearnning
-                                .Where(word => (word.check == 1 && (DateTime.UtcNow - word.time).TotalHours > 20) || (word.check == 2 && (DateTime.UtcNow - word.time).TotalDays > 5) || (word.check == 3 && (DateTime.UtcNow - word.time).TotalDays > 18))
+                                .Where(word => (word.check == 1 && (DateTime.UtcNow - word.time).TotalHours > 20)
+                                || (word.check == 2 && (DateTime.UtcNow - word.time).TotalDays > 5)
+                                || (word.check == 3 && (DateTime.UtcNow - word.time).TotalDays > 18))
                                 .ToArray();
                             userClone.filmForgeted.AddRange(words);
                             userClone.filmLearnning.RemoveAll(x => words.Contains(x));
@@ -94,20 +70,11 @@ namespace CTIN.Domain.BackgroundTasks
                         // kiểm tra và quét cột film filmFinish
                         if (userClone.filmFinish.Count > 0)
                         {
-                            foreach (var word in userClone.filmFinish)
-                            {
-                                // nếu thời gian lớn hơn 20 ngày + check * 10 thì chuyển sang cột đã quên
-                                if ((DateTime.UtcNow - word.time).TotalHours > (10 + word.check * 5))
-                                {
-                                    // xóa ở cột filmFinish
-                                    //userClone.filmFinish = userClone.filmFinish.Where(x => x.idWord != word.idWord).ToList();
-                                    // từ này học lần 1 sau 24h ngày chuyển từ filmLearnning sang FilmForgeted
-                                    ChangeColumeWordBackGroundTasks(word, userClone.filmFinish, userClone.filmFinishForget, ClassicWordEnum.FilmFinishForget);
-                                }
-                            }
+                            var words = userClone.filmFinish
+                                .Where(word => (DateTime.UtcNow - word.time).TotalHours > (10 + word.check * 5)).ToArray();
+                            userClone.filmFinishForget.AddRange(words);
+                            userClone.filmFinish.RemoveAll(x => words.Contains(x));
                         }
-
-
 
                         // trừ điểm theo ngày
                         if (userClone.filmPunishing != null && userClone.filmPunishing.Count > 0)
@@ -137,32 +104,10 @@ namespace CTIN.Domain.BackgroundTasks
                         _db.Entry(user).CurrentValues.SetValues(userClone);
                         await _db.SaveChangesAsync();
                     }
-
                 }
                 await Task.Delay(3600000, stoppingToken); // delay 1h
             }
 
-        }
-
-        /// <summary>
-        /// Hàm BackGroundTasks chạy ngầm thay đổi cột từ đang học sang cột quên, hay từ cột quên sang trừ điểm
-        /// </summary>
-        /// <param name="word">từ cần update</param>
-        /// <param name="columeAdd">Cột nhận từ word</param>
-        /// <param name="changeToColume">id của cột</param>
-        public void ChangeColumeWordBackGroundTasks(wordleanedJson word, List<wordleanedJson> columeDel, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
-        {
-            columeDel.Remove(word); // xóa từ
-            word.isforget = ForgetEnum.Forget;
-            word.classic = changeToColume;
-            columeAdd.Add(word); // thêm từ
-        }
-
-        public void ChangeColumeWordBackGroundTasks2(wordleanedJson word, List<wordleanedJson> columeDel, List<wordleanedJson> columeAdd, ClassicWordEnum changeToColume)
-        {
-            word.isforget = ForgetEnum.Forget;
-            word.classic = changeToColume;
-            columeAdd.Add(word); // thêm từ
         }
     }
 }
