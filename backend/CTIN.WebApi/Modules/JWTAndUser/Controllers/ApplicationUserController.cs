@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -191,31 +192,32 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Controllers
             return await BindData();
         }
 
-
-
-
-        //[HttpGet]
-        //[Authorize(Roles = "Admin")]
-        //[Route("ForAdmin")]
-        //public string GetForAdmin()
-        //{
-        //    return "Web for admin";
-        //}
-
-        //[HttpGet]
-        //[Authorize(Roles = "Customer")]
-        //[Route("ForCustomer")]
-        //public string GetForCustomer()
-        //{
-        //    return "Web for Customer";
-        //}
-
-        //[HttpGet]
-        //[Authorize(Roles = "Customer,Admin")]
-        //[Route("ForAdminOrCustomer")]
-        //public string GetForAdminOrCustomer()
-        //{
-        //    return "Web for ForAdminOrCustomer";
-        //}
+        [HttpPost("ChangeAvatarAndAddress")]
+        [Authorize]
+        public async Task<object> ChangeAvatarAndAddress([FromForm] Edit_AvartarModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.img != null)
+                {
+                    var exte = Path.GetExtension(model.img.FileName).ToUpper();
+                    if (exte != ".JPG" && exte != ".GIF" && exte != ".PNG" && exte != ".JPEG" && exte != ".RAW")
+                    {
+                        ModelState.AddModelError(key: "fileImg", "Chỉ nhận file .jpg, .gif, .png, .jpeg, .raw");
+                        return await BindData();
+                    }
+                }
+                //set value default
+                model.domain = GetDomain();
+                var result = await _sv.ChangeAvatarAndAddress(model);
+                if (result.errors.Count == 0)
+                {
+                    //new task  sent mail
+                    //push notification
+                }
+                return await BindData(result.data, result.errors);
+            }
+            return await BindData();
+        }
     }
 }

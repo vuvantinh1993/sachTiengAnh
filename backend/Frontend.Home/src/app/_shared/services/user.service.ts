@@ -46,7 +46,19 @@ export class UsersService extends BaseCrudService<any> {
 
   public login(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, body);
-    // return this.bindDataExtensionService.bindResponseApi(api);
+  }
+
+  public changeAvatarAndAddress(body: any): Observable<any> {
+    const api = this.http.post<any>(`${this.baseUrl}/ChangeAvatarAndAddress`, body);
+    api.subscribe(ress => {
+      if (ress.address) {
+        this.ChangeAddress(ress.address);
+      };
+      if (ress.avatar) {
+        this.ChangeAvatar(ress.avatar);
+      }
+    });
+    return api;
   }
 
   public getprofile(): Observable<any> {

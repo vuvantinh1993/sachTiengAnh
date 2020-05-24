@@ -152,6 +152,32 @@
         .address:hover i {
           display: inline-block;
         }
+
+        .edituser{
+          width: 80%;
+
+          ::ng-deep .formUser{
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: #fdf8e1;
+            font-size: large;
+            height: calc(1.5385em + .3rem);
+            width: 100%;
+
+            &:focus{
+              border: none;
+            }
+          }
+
+          i{
+            font-size: 24px;
+            cursor: pointer;
+
+            &:hover{
+              color: #58dd20;
+            }
+          }
+        }
       }
     }
   }

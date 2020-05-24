@@ -10,8 +10,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -21,6 +23,7 @@ namespace CTIN.Domain.Services
     {
         Task<(dynamic data, List<ErrorModel> errors)> register(ApplicationUserServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors)> ChangeProfile(ApplicationUser model);
+        Task<(dynamic data, List<ErrorModel> errors)> ChangeAvatarAndAddress(Edit_AvartarServiceModel model);
     }
 
     public class ApplicationUserService : IApplicationUserService
@@ -133,6 +136,56 @@ namespace CTIN.Domain.Services
             return (null, errors);
         }
 
+        public async Task<(dynamic data, List<ErrorModel> errors)> ChangeAvatarAndAddress(Edit_AvartarServiceModel model)
+        {
+            var errors = new List<ErrorModel>();
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "avatar");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            var userId = _currentUserService.userId;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                // Kiểm tra avartar cũ, nếu có xóa đi
+                if (model.img != null)
+                {
+                    // kiểm tra xem db đã lưu trữ avatar trước đó chưa nếu có xóa đi
+                    if (user.avatar != null)
+                    {
+                        var fileNameOld = Regex.Replace(user.avatar, ".*avatar\\/", "");
+                        var filePathOld = Path.Combine(folderPath, fileNameOld);
+                        File.Delete(filePathOld);
+                    }
+
+                    // taoj file và lưu database
+                    var fileName = userId + model.img.FileName;
+                    var linkimg = model.domain + $"/avatar/{fileName}";
+                    var filePath = Path.Combine(folderPath, fileName);
+                    using (var stream = File.Create(filePath))
+                    {
+                        await model.img.CopyToAsync(stream);
+                    }
+                    user.avatar = linkimg;
+                    _db.Users.Update(user);
+                    await _db.SaveChangesAsync();
+                    return (new { user.avatar }, errors);
+                }
+                if (model.address != null)
+                {
+                    // thay đổi vartar
+                    user.address = model.address;
+                    _db.Users.Update(user);
+                    await _db.SaveChangesAsync();
+                    return (new { user.address }, errors);
+                }
+            }
+            return (null, errors);
+        }
+
+
 
         //public async Task<object> Login([FromBody] LoginModel model)
         //{
@@ -158,5 +211,7 @@ namespace CTIN.Domain.Services
         //        return BadRequest(new { message = "Username or password is incorrect." });
         //    }
         //}
+
+
     }
 }

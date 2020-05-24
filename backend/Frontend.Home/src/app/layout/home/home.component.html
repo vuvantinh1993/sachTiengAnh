@@ -6,8 +6,8 @@
   </div>
   <div class="col-9 listfilm">
     <div class="row">
-      <div class="col-12">
-        <div class="film" *ngFor="let item of data">
+      <div class="col-12" [@filmsAnimation] *ngIf="data">
+        <div class="film" id="film" *ngFor="let item of data">
           <a [routerLink]="['/phim', item.id]">
             <div class="border1">
               <div class="border2">

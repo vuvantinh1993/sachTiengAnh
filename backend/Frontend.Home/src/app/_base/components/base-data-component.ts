@@ -4,7 +4,7 @@ import { Input, Output, EventEmitter } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
 export abstract class BaseDataComponent<T = any> extends BaseFormComponent {
-
+  timeMessage = 4000;
   data: T;
   public defauteSize = 200; // đang sử dụng cho phần tài liệu
   public listCurrency = [{

@@ -21,4 +21,9 @@ namespace CTIN.WebApi.Modules.JWTAndUser.Models
         public string avatar { get; set; }
         public string address { get; set; }
     }
+
+    public class Edit_AvartarModel : Edit_AvartarServiceModel
+    {
+
+    }
 }

@@ -1,16 +1,14 @@
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { UserLeanningService } from './../../_shared/services/UserLeanning.service';
 import { DialogService } from './../../_base/services/dialog.service';
 import { AESService } from './../../_base/services/aes.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { ExtensionService } from './../../_base/services/extension.service';
-import { ExtentionTableService } from './../../_base/services/extention-table.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WordFilmService } from './../../_shared/services/wordFilm.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd';
-import { NgwWowService } from 'ngx-wow';
+import { GlobalValidate } from 'src/app/_base/class/global-validate';
 
 
 @Component({
@@ -19,9 +17,6 @@ import { NgwWowService } from 'ngx-wow';
   styleUrls: ['./leanning-words.component.scss']
 })
 export class LeanningWordsComponent extends BaseListComponent implements OnInit {
-
-  // mySubscription: any;
-
   public idFilmComponent: any;
   public myTimer: any;
   public extran: string;
@@ -44,6 +39,14 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   urlSafe: SafeResourceUrl;
   public intervalId = null;
   public lengthlistword: number; // là tổng số các câu trong 1 lượt học
+  tplModalButtonLoading = false;
+  public listFeedback = [
+    { id: 1, name: 'Câu tiếng anh sai' },
+    { id: 2, name: 'Câu tiếng việt sai' },
+    { id: 3, name: 'Khác' }
+  ];
+  isVisible = false;
+
   constructor(
     private wordFilmService: WordFilmService,
     private route: ActivatedRoute,
@@ -53,17 +56,12 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     private aesservice: AESService,
     private dl: DialogService,
     public router: Router,
+    private fb: FormBuilder
   ) {
     super();
-
-
-    // this.mySubscription = this.router.events.subscribe((event) => {
-    //   console.log('event', event);
-    //   if (event instanceof NavigationEnd) {
-    //     this.router.navigated = false;
-    //   }
-    // });
   }
+
+
 
   ngOnInit() {
     // yêu cầu load lại route khi có thay đổi
@@ -72,8 +70,16 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     };
 
     this.getData();
+    this.createForm();
     this.countdown();
-    // this.wowService.init();
+  }
+
+  createForm() {
+    this.myForm = this.fb.group({
+      typeWord: [null, GlobalValidate.required({ error: 'Bạn hãy chọn 1 trường' })],
+      contentFeedBackaboutWord: [null, GlobalValidate.required({ error: 'Bạn hãy diền nội dung' })],
+      id: null
+    });
   }
 
   countdown() {
@@ -83,10 +89,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       if (this.counter === 0) { clearInterval(this.intervalId); }
     }, 10);
   }
-
-  // reset(){
-  //   this.wowService.init();
-  // }
 
   async getData(page = 1) {
     this.data = null;
@@ -120,6 +122,8 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
         this.totalWord = this.data.data[0].totalWord; // hiện tổng số từ trong html
         this.data = this.data.data;
         this.datalist = this.tron10Cau(this.sttWordLenning); // dùng để biến sour lấy về thành 10 câu rồi trộn 10 câu
+        console.log(' this.datalist', this.datalist);
+
         this.lengthlistword = this.datalist.length; // lấy tổng số câu hỏi
         setTimeout(() => {
           this.setupvideo();
@@ -138,9 +142,6 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       }
     }
   }
-
-
-
 
   // dùng để trộn các câu theo lịch trình
   // nếu sttWord == -2 là ko thể lấy được film
@@ -171,7 +172,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   // typeWord[key].v : là số từ tiếng việt
   laySoCauTheoSttWord(data: any, typeWord: any) {
     let listda = [];
-    for (const [key, value] of Object.entries(this.data)) {
+    for (const [key, value] of Object.entries(data)) {
       const list = this.laySoCauTheoTu(value, typeWord[key].e, typeWord[key].v);
       listda = listda.concat(list);
     }
@@ -187,11 +188,13 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     for (let i = 0; i < numberEn; i++) {
       const listanswerEn = this.getAnswer(this.answerWrongEn, sour.textEn, sour.urlaudio, true);
       listanswerEn.texttip = sour.textVn;
+      listanswerEn.id = sour.id;
       listdata.push(listanswerEn);
     }
     for (let i = 0; i < numberVn; i++) {
       const listanswerVn = this.getAnswer(this.answerWrongVn, sour.textVn, sour.urlaudio, false);
       listanswerVn.texttip = sour.textEn;
+      listanswerVn.id = sour.id;
       listdata.push(listanswerVn);
     }
     return listdata;
@@ -202,6 +205,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
   // return mảng 4 phần tử và vị trí nhần tử đúng
   getAnswer(sourceArray, stringRight: string, urlaudio: string, textshow: boolean) {
     const randomInFour = Math.floor(Math.random() * 4);
+    const id = 0;
     const result = [];
     const checkInFour = [];
     const checkInSource = [];
@@ -221,7 +225,7 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
       }
     }
     result[5] = this.sanitizer.bypassSecurityTrustResourceUrl(urlaudio);
-    return { result, key, texttip, textshow };
+    return { result, key, texttip, textshow, id };
   }
 
   // trộn 1 mảng bất kì
@@ -271,10 +275,10 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
               }
               this.router.navigate(['/finish-cours', this.idfilmComponent, rs.result.totalPointRight]);
             } else {
-              this.message.error('Lỗi! Lưu thất bại', { nzDuration: 40000 });
+              this.message.error('Lỗi! Lưu thất bại', { nzDuration: this.timeMessage });
               setTimeout(() => {
                 rs.errors.error.updateWordlened.forEach(ele => {
-                  this.message.error(ele, { nzDuration: 50000 });
+                  this.message.error(ele, { nzDuration: this.timeMessage });
                 });
               }, 300);
             }
@@ -369,5 +373,61 @@ export class LeanningWordsComponent extends BaseListComponent implements OnInit 
     const tooltipSpan = document.getElementById('tooltip-span');
     tooltipSpan.style.top = (event.clientY - 60) + 'px';
     tooltipSpan.style.left = (event.clientX + 10) + 'px';
+  }
+
+
+  // submit form
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  async handleOk(id: number) {
+
+    this.myForm.controls.id.setValue(id);
+    this.validateForm(this.myForm);
+    if (this.myForm.invalid) { return; }
+    this.tplModalButtonLoading = true;
+
+    console.log('this.myForm.value', this.myForm.value);
+
+    const rs = await this.wordFilmService.addFeedBackWord(this.myForm.value);
+    if (rs.ok) {
+      setTimeout(() => {
+        this.message.success('Hệ thống đã ghi nhận, cảm ơn bạn đã phản hồi!', { nzDuration: this.timeMessage });
+        this.createForm();
+        this.tplModalButtonLoading = false;
+        this.isVisible = false;
+      }, 1500);
+    } else {
+      setTimeout(() => {
+        this.message.error('Hệ thống đã Chưa nhận được phản hồi của bạn, hãy thử lại!', { nzDuration: this.timeMessage });
+        this.tplModalButtonLoading = false;
+      }, 1500);
+    }
+
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  private validateForm(form: FormGroup) {
+    for (const i in form.controls) {
+      form.controls[i].markAsDirty();
+      form.controls[i].updateValueAndValidity();
+      if (form.controls[i] instanceof FormGroup) {
+        this.validateForm(form.controls[i] as FormGroup);
+      }
+      if (form.controls[i] instanceof FormArray) {
+        for (const item of (form.controls[i] as FormArray).controls) {
+          if (item instanceof FormControl) {
+            form.controls[i].markAsDirty();
+            form.controls[i].updateValueAndValidity();
+          } else if (item instanceof FormGroup) {
+            this.validateForm(item as FormGroup);
+          }
+        }
+      }
+    }
   }
 }

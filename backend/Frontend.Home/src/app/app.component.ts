@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, } from '@angular/core';
-import { BaseListComponent } from './_base/components/base-list-component';
+import { SignalRHubService } from './_shared/services/signalr.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,12 @@ import { BaseListComponent } from './_base/components/base-list-component';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent extends BaseListComponent implements OnInit {
+export class AppComponent implements OnInit {
+
+  constructor(public signalRService: SignalRHubService, private http: HttpClient) { }
+
   ngOnInit() {
+    this.signalRService.startConnection();
+    this.signalRService.addTransferChartDataListener();
   }
 }

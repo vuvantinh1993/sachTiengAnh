@@ -82,18 +82,19 @@ export class WordFilmDataComponent extends BaseDataComponent implements OnInit {
     const rs = ((!this.item) ? await this.wordFilmService.add(this.formData)
       : await this.wordFilmService.edit(this.item.id as number, this.formData));
     if (rs.ok) {
-      this.message.success('Lưu thành công');
+      this.message.success('Lưu thành công', { nzDuration: this.timeMessage });
       if (close) {
         this.handleOk(rs.result);
       }
       this.item = rs.result;
     } else {
-      this.message.error('Lỗi! Lưu thất bại');
+      this.message.error('Lỗi! Lưu thất bại', { nzDuration: this.timeMessage });
     }
   }
 
 
   upload(event) {
+
     if (event.target.files.length > 0) {
       const profile1 = event.target.files[0];
       this.myForm.get('audio').setValue(profile1);

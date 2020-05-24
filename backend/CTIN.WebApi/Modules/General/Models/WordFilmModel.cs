@@ -18,6 +18,14 @@ namespace CTIN.WebApi.Modules.General.Models
 
     }
 
+    public class Add_FeedBackWord
+    {
+        public int id { get; set; }
+        public int typeWord { get; set; }
+        public string contentFeedBackaboutWord { get; set; }
+    }
+
+
     public class Edit_WordFilmModel : Add_WordFilmModel
     {
     }

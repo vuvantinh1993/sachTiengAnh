@@ -6,7 +6,7 @@ using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
 using CTIN.Domain.BackgroundTasks;
 using CTIN.Domain.Bases;
-using CTIN.Domain.Services;
+using CTIN.Domain.Hubs;
 using CTIN.WebApi.Bases.Services;
 using CTIN.WebApi.Bases.Swagger;
 using CTIN.WebApi.Modules.AES;
@@ -19,19 +19,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
 
@@ -117,7 +112,8 @@ namespace CTIN.WebApi
                 builder.
                 AllowAnyOrigin().
                 WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString(),
-                            Configuration["ApplicationSettings:Client_URL2"].ToString()).
+                            Configuration["ApplicationSettings:Client_URL2"].ToString(),
+                            Configuration["ApplicationSettings:Host_URL"].ToString()).
                 AllowAnyMethod().
                 AllowAnyHeader().
                 AllowCredentials();
@@ -191,6 +187,8 @@ namespace CTIN.WebApi
                 o.TokenLifespan = TimeSpan.FromHours(3));
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            services.AddSignalR();
         }
 
 
@@ -245,6 +243,10 @@ namespace CTIN.WebApi
             // router angular
             app.MapWhen(context => !context.Request.Path.Value.StartsWith("/api"), builder =>
             {
+                builder.UseSignalR(routes =>
+                {
+                    routes.MapHub<ChartHub>("/chart");
+                });
                 builder.UseMvc(routes =>
                 {
                     routes.MapSpaFallbackRoute(

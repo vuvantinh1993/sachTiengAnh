@@ -22,7 +22,6 @@ namespace CTIN.DataAccess.Models
         public int categoryfilmid { get; set; }
         public List<string> listPeopleContribute { get; set; }
         public List<FeedBackaboutWord> feedBackaboutWord { get; set; }
-
         public Categoryfilm categoryfilm { get; set; }
     }
 

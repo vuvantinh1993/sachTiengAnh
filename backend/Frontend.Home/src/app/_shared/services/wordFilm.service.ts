@@ -15,4 +15,9 @@ export class WordFilmService extends BaseCrudService<any> {
     super(http, bindDataExtensionService);
     this.baseUrl = 'WordFilm';
   }
+
+  public addFeedBackWord(body: any) {
+    const api = this.http.post<any>(`${this.baseUrl}/AddFeedBackWord`, body);
+    return this.bindDataExtensionService.bindResponseApi(api);
+  }
 }

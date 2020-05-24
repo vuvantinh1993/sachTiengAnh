@@ -43,7 +43,7 @@
     </div>
     <div class="col-12 ">
       <div class="feedback d-flex justify-content-end mb-1">
-        <i class="far fa-question-circle"></i>
+        <i class="far fa-question-circle" (click)="showModal()"></i>
       </div>
 
       <div class="row">
@@ -88,14 +88,24 @@
       </div>
     </div>
   </div>
+
+  <nz-modal [(nzVisible)]="isVisible" [nzClosable]="false" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk(datalist[wordNumber].id)" [nzOkLoading]="tplModalButtonLoading">
+    <form novalidate [formGroup]="myForm" class="row">
+      <h5 class="modal-title mb-2 text-left" id="exampleModalLongTitle">Cảm ơn bạn đã dành thời gian cho chúng tôi:</h5>
+      <div class="form-group col-md-12">
+        <input-select [items]="listFeedback" class="form-control" placeholder="Bạn muốn phản hồi về?"
+          formControlName="typeWord">
+        </input-select>
+        <render-error [data]="myForm.get('typeWord')"></render-error>
+      </div>
+      <div class="form-group col-md-12">
+        <input-textarea class="form-control" formControlName="contentFeedBackaboutWord"
+          [placeholder]="'Hãy cho chúng tôi biết nên cải thiện như thế nào?'">
+        </input-textarea>
+        <render-error [data]="myForm.get('contentFeedBackaboutWord')"></render-error>
+      </div>
+    </form>
+  </nz-modal>
+
 </div>
-
-
-
-<!--
-<h1 (click)="kiemtra(1)">click me</h1>
-
-
-<h1 id="logo" class="run-animation">
-  Fancy Text (click to restart)
-</h1> -->

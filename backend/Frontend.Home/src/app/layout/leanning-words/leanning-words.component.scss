@@ -157,48 +157,27 @@ label:hover {
 
 }
 
-
-.pclass {
-  animation-name: danhdau;
-  animation-duration: 2s;
-  opacity: 0;
-
-  @keyframes danhdau {
-    1% {
-      opacity: 1;
-    }
-
-    70% {
-      opacity: 1;
-    }
-
-    100% {
-      opacity: 0;
-    }
-  }
+#exampleModalLongTitle{
+  padding-left: 0.625em;
 }
 
 
+// .pclass {
+//   animation-name: danhdau;
+//   animation-duration: 2s;
+//   opacity: 0;
 
-///tét
-@keyframes my-animation {
-  from {
-    opacity: 0;
-    left: -500px;
-  }
+//   @keyframes danhdau {
+//     1% {
+//       opacity: 1;
+//     }
 
-  to {
-    opacity: 1;
-    left: 0;
-  }
-}
+//     70% {
+//       opacity: 1;
+//     }
 
-.run-animation {
-  position: relative;
-  animation: my-animation 2s ease;
-}
-
-#logo {
-  text-align: center;
-  font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
-}
+//     100% {
+//       opacity: 0;
+//     }
+//   }
+// }

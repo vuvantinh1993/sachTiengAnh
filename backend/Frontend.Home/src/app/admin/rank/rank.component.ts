@@ -61,7 +61,7 @@ export class RankComponent extends BaseListComponent implements OnInit {
       }
       await Promise.all(lstDeleting);
       this.exTableService.unselectAll(this.listOfData);
-      this.message.success('Xóa dữ liệu thành công');
+      this.message.success('Xóa dữ liệu thành công', { nzDuration: this.timeMessage });
       this.getData();
     }
   }
@@ -73,7 +73,7 @@ export class RankComponent extends BaseListComponent implements OnInit {
       this.ex.logDebug('Delete response', rs);
       if (rs.ok) {
         this.getData(this.paging.page);
-        this.message.success('Xóa dữ liệu thành công');
+        this.message.success('Xóa dữ liệu thành công', { nzDuration: this.timeMessage });
       }
     }
   }

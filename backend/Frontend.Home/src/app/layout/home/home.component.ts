@@ -1,23 +1,36 @@
 import { CategoryFilmService } from './../../_shared/services/categoryfilm.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseListComponent } from 'src/app/_base/components/base-list-component';
-import { NgwWowService } from 'ngx-wow';
+import { trigger, style, state, transition, animate, query, stagger } from '@angular/animations';
+import { SignalRHubService } from 'src/app/_shared/services/signalr.service';
 
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('filmsAnimation', [
+      transition('* => *', [
+        query(':enter', style({ transform: 'translateX(50%)', opacity: 0 })),
+        query(':enter',
+          stagger('300ms', [
+            animate('1000ms', style({ transform: 'translateX(0)', opacity: 1 }))
+          ]))
+      ])
+    ])
+  ]
 })
 export class HomeComponent extends BaseListComponent implements OnInit {
+
+  state = 'normal';
   public data: any;
   Arr = Array;
   public datalist: any[];
   public finishload = false;
   constructor(
     private categoryFilmService: CategoryFilmService,
-    private wowService: NgwWowService
+    private sigla: SignalRHubService
   ) {
     super();
-    this.wowService.init();
   }
 
   ngOnInit() {
@@ -50,6 +63,10 @@ export class HomeComponent extends BaseListComponent implements OnInit {
       this.paging = rs.result.paging;
     }
     this.finishload = true;
+  }
+
+  onAnimate() {
+    this.state === 'normal' ? this.state = 'new' : this.state = 'normal';
   }
 
 }

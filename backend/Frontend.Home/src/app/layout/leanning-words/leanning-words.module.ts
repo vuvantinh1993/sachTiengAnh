@@ -3,7 +3,7 @@ import { LeanningWordsComponent } from './leanning-words.component';
 import { LeanningWordsRouters } from './leanning-words.routing';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzInputNumberModule } from 'ng-zorro-antd';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 
 
@@ -14,7 +14,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd';
     CommonModule,
     LeanningWordsRouters,
     FormModule,
-    NzInputNumberModule
+    CommonModule,
+    NgZorroAntdModule,
   ],
   exports: [LeanningWordsComponent]
 })

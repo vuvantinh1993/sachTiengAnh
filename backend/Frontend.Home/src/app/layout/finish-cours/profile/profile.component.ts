@@ -14,6 +14,7 @@ import { RankService } from 'src/app/_shared/services/rank.service';
 })
 export class ProfileComponent extends BaseDataComponent implements OnInit {
   public avatar = this.userService.currentAvatar;
+
   public fullName = this.userService.currentFullName;
   public namerank = this.userService.currentNamerank;
   public address = this.userService.currentAddress;
@@ -26,12 +27,14 @@ export class ProfileComponent extends BaseDataComponent implements OnInit {
   public processing: number;
   public startYeelow: any;
   public startnon: any;
-
+  public formData = new FormData();
+  public isShowEditUser = false;
+  public nameEdit = '';
   constructor(
     fb: FormBuilder,
     private route: ActivatedRoute,
     public userService: UsersService,
-
+    private message: NzMessageService
   ) { super(fb); }
 
   ngOnInit() {
@@ -62,7 +65,6 @@ export class ProfileComponent extends BaseDataComponent implements OnInit {
         document.getElementById('point').style.left = `calc(50% - ${widthpoint / 2}px)`;
       }
     }, 900);
-
   }
 
   countdown() {
@@ -84,8 +86,34 @@ export class ProfileComponent extends BaseDataComponent implements OnInit {
     selecter.click();
   }
 
-  log123(event) {
-    console.log(event);
+  async changeAvatarAndAddress(event) {
+    if (event.target.files.length > 0) {
+      this.formData.append('img', event.target.files[0]);
+      console.log('fileasa', event.target.files[0].name.split('.').pop().toUpperCase());
+      const rs = await this.userService.changeAvatarAndAddress(this.formData);
+      this.formData.delete('img');
+      this.message.success('Thay đổi avatar thành công', { nzDuration: this.timeMessage });
+      // rs.subscribe(res => {
+      // }, err => {
+      //   this.message.success('Không thay đổi được avatar', { nzDuration: this.timeMessage });
+      // });
+    }
+  }
 
+  isShowFormUser() {
+    this.isShowEditUser = !this.isShowEditUser;
+  }
+
+  async offAndChangeAdress() {
+    // save address
+    if (this.nameEdit !== '') {
+      this.formData.append('address', this.nameEdit);
+      const rs = await this.userService.changeAvatarAndAddress(this.formData);
+      this.formData.delete('address');
+      this.isShowFormUser();
+    }
+  }
+  getEditUser(event) {
+    this.nameEdit = event.target.value;
   }
 }

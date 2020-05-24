@@ -1,6 +1,7 @@
 ﻿using CTIN.Common.Models;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,5 +16,12 @@ namespace CTIN.Domain.Models
         public string password { get; set; }
         public string fullName { get; set; }
         public string role { get; set; }
+    }
+
+    public class Edit_AvartarServiceModel
+    {
+        public IFormFile img { get; set; }
+        public string address { get; set; }
+        public string domain { get; set; }
     }
 }

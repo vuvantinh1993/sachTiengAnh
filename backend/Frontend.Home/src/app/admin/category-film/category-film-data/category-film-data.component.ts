@@ -57,13 +57,13 @@ export class CategoryFilmDataComponent extends BaseDataComponent implements OnIn
     const rs = ((!this.item) ? await this.categoryFilmService.add(this.myForm.value)
       : await this.categoryFilmService.edit(this.item.id as number, this.myForm.value));
     if (rs.ok) {
-      this.message.success('Lưu thành công');
+      this.message.success('Lưu thành công', { nzDuration: this.timeMessage });
       if (close) {
         this.handleOk(rs.result);
       }
       this.item = rs.result;
     } else {
-      this.message.error('Lỗi! Lưu thất bại');
+      this.message.error('Lỗi! Lưu thất bại', { nzDuration: this.timeMessage });
     }
   }
 

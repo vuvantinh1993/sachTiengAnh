@@ -3,6 +3,8 @@ using CTIN.Common.Extentions;
 using CTIN.DataAccess.Bases;
 using CTIN.DataAccess.Contexts;
 using CTIN.DataAccess.Models;
+using CTIN.Domain.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,12 +22,14 @@ namespace CTIN.Domain.BackgroundTasks
 
     public class ScopedProcessingService : IScopedProcessingService
     {
+        private IHubContext<ChartHub> _hub;
 
         private readonly NATemplateContext _db;
 
-        public ScopedProcessingService(NATemplateContext db)
+        public ScopedProcessingService(NATemplateContext db, IHubContext<ChartHub> hub)
         {
             _db = db;
+            _hub = hub;
         }
 
         /// <summary>
@@ -105,7 +109,10 @@ namespace CTIN.Domain.BackgroundTasks
                         await _db.SaveChangesAsync();
                     }
                 }
-                await Task.Delay(3600000, stoppingToken); // delay 1h
+                await _hub.Clients.All.SendAsync("transferchartdata", "tinh dep trai");
+                //await _hub.Clients.Client(connectionId)
+
+                await Task.Delay(1000, stoppingToken); // delay 1h
             }
 
         }

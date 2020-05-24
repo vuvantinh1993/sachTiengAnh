@@ -44,10 +44,10 @@ export class RegistrationComponent extends BaseDataComponent implements OnInit {
     if (this.myForm.invalid) { return; }
     const rs = await this.userservice.register(this.myForm.value);
     if (rs.ok) {
-      this.message.success('Đăng kí thành công', { nzDuration: 10000 });
+      this.message.success('Đăng kí thành công', { nzDuration: this.timeMessage });
       this.router.navigate(['user/login']);
     } else {
-      this.message.error('Lỗi! Lưu thất bại');
+      this.message.error('Lỗi! Lưu thất bại', { nzDuration: this.timeMessage });
     }
     // this.service.register().subscribe(
     //   (res: any) => {

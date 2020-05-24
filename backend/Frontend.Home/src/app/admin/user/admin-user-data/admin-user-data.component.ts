@@ -58,13 +58,13 @@ export class AdminUserDataComponent extends BaseDataComponent implements OnInit 
     const rs = ((!this.item) ? await this.userService.add(this.myForm.value)
       : await this.userService.edit(this.item.id as number, this.myForm.value));
     if (rs.ok) {
-      this.message.success('Lưu thành công');
+      this.message.success('Lưu thành công', { nzDuration: this.timeMessage });
       if (close) {
         this.handleOk(rs.result);
       }
       this.item = rs.result;
     } else {
-      this.message.error('Lỗi! Lưu thất bại');
+      this.message.error('Lỗi! Lưu thất bại', { nzDuration: this.timeMessage });
     }
   }
 

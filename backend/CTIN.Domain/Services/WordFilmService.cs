@@ -23,7 +23,7 @@ namespace CTIN.Domain.Services
         Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> GetWord(string style, Search_WordFilmServiceModel model, int idfilm = 0);
         Task<(dynamic data, List<ErrorModel> errors, PagingModel paging)> Get(Search_WordFilmServiceModel model);
         Task<(dynamic data, List<ErrorModel> errors)> Add(Add_WordFilmServiceModel model);
-
+        Task<(dynamic data, List<ErrorModel> errors)> AddFeedBackWord(int id, FeedBackaboutWord model);
         Task<(dynamic data, List<ErrorModel> errors)> Edit(int id, Edit_WordFilmServiceModel model);
 
         Task<(dynamic data, List<ErrorModel> errors)> Patch(int id, JObject model);
@@ -383,6 +383,32 @@ namespace CTIN.Domain.Services
                 createdDate = DateTime.Now
             };
             _db.WordFilm.Add(data);
+            await _db.SaveChangesAsync();
+            return (data, errors);
+        }
+
+        public async Task<(dynamic data, List<ErrorModel> errors)> AddFeedBackWord(int id, FeedBackaboutWord model)
+        {
+            var errors = new List<ErrorModel>();
+            var data = _db.WordFilm.FirstOrDefault(x => x.id == id);
+            if (data == null)
+            {
+                errors.Add(new ErrorModel { key = "AddFeedBackWord", value = "lỗi ko nhận được id của từ" });
+                return (null, errors);
+            }
+            if (data.feedBackaboutWord == null)
+            {
+                data.feedBackaboutWord = new List<FeedBackaboutWord>();
+            }
+            data.feedBackaboutWord.Add(new FeedBackaboutWord
+            {
+                typeWord = model.typeWord,
+                contentFeedBackaboutWord = model.contentFeedBackaboutWord,
+                createdBy = _currentUserService.userId,
+                createdDate = DateTime.UtcNow,
+                status = StatusFeedbackEnum.Show
+            });
+            _db.WordFilm.Update(data);
             await _db.SaveChangesAsync();
             return (data, errors);
         }

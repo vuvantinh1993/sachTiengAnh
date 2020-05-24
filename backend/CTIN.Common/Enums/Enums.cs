@@ -20,6 +20,13 @@ namespace CTIN.Common.Enums
         Deleted,
     }
 
+    public enum NotificationStatusEnum
+    {
+        Unread = 1,
+        Read,
+        Deleted
+    }
+
     public enum UserStatus
     {
         [Display(Name = "NotActive")]
@@ -52,6 +59,8 @@ namespace CTIN.Common.Enums
         EnWrong = 0,
         [Display(Name = "Sửa từ tiếng việt")]
         VnWrong = 1,
+        [Display(Name = "Khác")]
+        Orther = 2,
     }
 
     public enum ForgetEnum

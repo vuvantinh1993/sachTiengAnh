@@ -1,11 +1,13 @@
 ﻿using CTIN.Common.Extentions;
 using CTIN.Common.Interfaces;
+using CTIN.Domain.Hubs;
 using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
 using CTIN.WebApi.Modules.General.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
@@ -17,11 +19,14 @@ namespace CTIN.WebApi.Modules.General.Controllers
     {
         private readonly ICategoryfilmService _sv;
         public readonly ICurrentUserService _currentUserService;
+        private IHubContext<ChartHub> _hub;
 
-        public CategoryfilmController(ICategoryfilmService sv, ICurrentUserService currentUserService)
+
+        public CategoryfilmController(ICategoryfilmService sv, ICurrentUserService currentUserService, IHubContext<ChartHub> hub)
         {
             _sv = sv;
             _currentUserService = currentUserService;
+            _hub = hub;
         }
 
         [HttpGet]

@@ -2,6 +2,7 @@ import { PagingModel } from '../models/response-model';
 import { FormGroup } from '@angular/forms';
 
 export abstract class BaseListComponent<T = any> {
+  timeMessage = 4000;
   speedValueVideo = 1;
   isShowModalData = false;
   listOfData: T[] = [];

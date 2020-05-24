@@ -26,10 +26,17 @@
         <img [src]="avatar | async" alt="TLNEnglish">
         <i class="far fa-edit ml-2"></i>
       </div>
-      <input type="file" hidden id="editavatar" name="fileAvatar" (change)="log123($event)">
+      <input type="file" hidden id="editavatar" name="fileAvatar" (change)="changeAvatarAndAddress($event)"
+        accept="image/jpg, image/gif, image/png, image/jpeg, image/raw">
       <div class="text d-flex flex-column ml-2">
         <h2>{{fullName | async}}</h2>
-        <p class="address">{{address | async}}<i class="far fa-edit ml-2"></i></p>
+        <p class="address" *ngIf="!isShowEditUser">{{address | async}}<i class="far fa-edit ml-2"
+            (click)="isShowFormUser()"></i></p>
+        <div class="edituser d-flex align-items-center" *ngIf="isShowEditUser">
+          <input class="w3-input" type="text" class="formUser" name="editUser" (change)="getEditUser($event)">
+          <i class="fas fa-save pl-2 flex-fill" (click)="offAndChangeAdress()"></i>
+          <i class="fas fa-window-close pl-2 flex-fill" (click)="isShowFormUser()"></i>
+        </div>
         <p>Hạng : Chưa xếp hạng</p>
       </div>
     </div>

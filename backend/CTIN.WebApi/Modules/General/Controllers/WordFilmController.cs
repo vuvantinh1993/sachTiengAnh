@@ -1,5 +1,6 @@
 ﻿using CTIN.Common.Extentions;
 using CTIN.Common.Interfaces;
+using CTIN.DataAccess.Models;
 using CTIN.Domain.Models;
 using CTIN.Domain.Services;
 using CTIN.WebApi.Bases;
@@ -88,8 +89,6 @@ namespace CTIN.WebApi.Modules.General.Controllers
             }
             return await BindData();
         }
-
-
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
@@ -205,6 +204,23 @@ namespace CTIN.WebApi.Modules.General.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _sv.Count(model);
+                return await BindData(result.data, result.errors);
+            }
+            return await BindData();
+        }
+
+        [HttpPost("AddFeedBackWord")]
+        public async Task<object> AddFeedBackWord([FromBody] Add_FeedBackWord model)
+        {
+            if (ModelState.IsValid)
+            {
+                var modelService = model.MapToObject<FeedBackaboutWord>();
+                var result = await _sv.AddFeedBackWord(model.id, modelService);
+                if (result.errors.Count == 0)
+                {
+                    //new task  sent mail
+                    //push notification
+                }
                 return await BindData(result.data, result.errors);
             }
             return await BindData();
