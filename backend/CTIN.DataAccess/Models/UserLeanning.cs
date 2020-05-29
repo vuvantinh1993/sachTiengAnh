@@ -27,6 +27,8 @@ namespace CTIN.DataAccess.Models
         public int sttWord { get; set; }
         public bool isFinish { get; set; }
         public double speedVideo { get; set; }
+        public List<int> removedWords { get; set; } // danh sách các từ loại bỏ không muốn học của phim
+        public int totalRemainingWords { get; set; } // tổng số từ còn lại sau khi được lọc
     }
 
     public class wordleanedJson

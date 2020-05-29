@@ -281,6 +281,7 @@ namespace CTIN.Domain.Services
                 sttWord = -1,
                 isFinish = false,
                 speedVideo = 1.0,
+                removedWords = new List<int>(),
             };
 
             dataClone.listFilmLearned = new List<filmlearnedJson>();
